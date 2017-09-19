@@ -21,6 +21,6 @@ class Band(models.Model):
 
 class Bestilling(models.Model):
     dato = models.DateTimeField(blank=True,null=True)
-    band = models.ForeignKey('models.Band')
+    band = models.CharField(max_length=200)
     scene = models.CharField(max_length=200)
     godkjent = models.CharField(max_length=3)
