@@ -1,0 +1,12 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+  {% for konsert in konserts %}
+    <div>
+      <h1>{{konsert}}</h1>
+      <p>Teknikere:</p>
+      <p class="teknikerlist">{{ konsert.teknikere|linebreaksbr }}</p>
+    </div>
+  {% endfor %}
+
+{% endblock %}
