@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'webapp/base.html' %}
 
-</body>
-</html>
+{% block content %}
+    {% for konsert in konserts %}
+        <div>
+            <h1>{{konsert}}</h1>
+            <p>Teknikere:</p>
+            <p class = "teknikerlist">{{ konsert.teknikere|linebreaksbr }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
