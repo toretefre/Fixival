@@ -2,10 +2,13 @@
 
 {% block content %}
   {% for konsert in konserts %}
+  {%  %}
     <div>
-      <h1>{{konsert}}</h1>
-      <p>Teknikere:</p>
-      <p class="teknikerlist">{{ konsert.teknikere|linebreaksbr }}</p>
+      <h1 class="konsertheader">{{konsert}}</h1>
+      <div class="teknikkerdiv">
+        <p>Teknikere:</p>
+        <p class="teknikerlist">{{ konsert.teknikere|linebreaksbr }}</p>
+      </div>
     </div>
   {% endfor %}
 
