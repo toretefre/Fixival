@@ -3,6 +3,7 @@ from .models import Konserter
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 # Create your views here.
 @login_required
 def arrangoer_mainpage(request):
