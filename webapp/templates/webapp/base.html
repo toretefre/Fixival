@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% load groupAccess %}
 <!DOCTYPE html>
 <html lang="no-nb">
 <head>
@@ -13,11 +12,8 @@
 			<a href="{% url 'webapp/riggeliste' %}">Riggelister</a>
 		{% endif %}
 		<a href="{% url 'logout' %}">Log out</a>
-		<p>Du er logget inn som: {{request.user.groups.all}}</p>
-	</div>
+</div>
 	{% block content %}
 	{% endblock %}
-
-	<script src="{% static 'js/dropdown.js' %}"></script>
 </body>
 </html>
