@@ -15,8 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from webapp import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^arrangoer/sceneoversikt/', )
+    url(r'^arrangoer/sceneoversikt/', views.oversiktsview_konserter, name='webapp/oversiktsview_konserter'),
 ]
