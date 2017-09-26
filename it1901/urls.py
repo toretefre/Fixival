@@ -19,6 +19,6 @@ from webapp import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts',include('django.contrib.auth.urls')),
-    url(r'^arrangoer',views.arrangoer_mainpage,name='webapp/arrangoer_mainpage')
+    url(r'^arrangoer/riggeliste/',views.arrangoer_mainpage,name='webapp/riggeliste'),
+    url(r'^arrangoer/sceneoversikt/', views.oversiktsview_konserter, name='webapp/sceneoversikt')
 ]
