@@ -115,7 +115,7 @@ USE_L10N = True
 USE_TZ = True
 
 # avoids redirect to accounts/profile after logging in
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/redir/'
 
 
 # Static files (CSS, JavaScript, Images)
