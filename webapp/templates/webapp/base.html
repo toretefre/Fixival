@@ -12,7 +12,7 @@
 			<a href="{% url 'webapp/sceneoversikt' %}">Sceneoversikt</a>
 			<a href="{% url 'webapp/riggeliste' %}">Riggelister</a>
 		{% endif %}
-		<a href="">Log out</a>
+		<a href="{% url 'logout' %}">Log out</a>
 </div>
 	{% block content %}
 	{% endblock %}
