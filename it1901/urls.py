@@ -20,5 +20,5 @@ from webapp import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^tekniker', views.tech_view, name = "webapp/tech_view"),
+    url(r'^tekniker', views.tech_view, name = 'webapp/tech_view'),
 ]
