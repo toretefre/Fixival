@@ -1,0 +1,26 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+  <h3>Sjanger:</h3>
+  <select id="sjangerpicker" name="Sjanger">
+    {% for sjanger in sjangre %}
+      {% if sjanger == sjangre.0 %}
+        <option value="{{sjanger}}" selected>{{sjanger}}</option>
+      {% else %}
+        <option value="{{sjanger}}">{{sjanger}}</option>
+      {% endif %}
+    {% endfor %}
+  </select>
+  {% for sjanger in sjangre %}
+    {% for konsert in tidligere_konserter %}
+      {% if konsert.band.sjanger == sjanger %}
+        <div class="sjangerkonserter" id="{{sjanger}}">
+          <h1>{{konsert.konsert}}</h1>
+          <p>Scene: {{konsert.scene}}</p>
+          <p>Publikumsantall: {{konsert.publikumsantall}}
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+
+{% endblock %}

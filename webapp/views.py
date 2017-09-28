@@ -4,6 +4,8 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from django.utils import timezone
+
 # Create your views here.
 @login_required
 def arrangoer_mainpage(request):
@@ -44,3 +46,39 @@ def arrangoer(request):
 @login_required
 def teknikker(request):
     return render(request,'webapp/teknikker.html',{})
+
+@login_required
+def bookingansvarlig(request):
+    return render(request,'webapp/bookingansvarlig.html',{})
+
+@login_required
+def bookingansvarlig_tidligere_konserter(request):
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        konserter = Konserter.objects.all()
+        sjangre = ["-----"]
+        tidligere_konserter = []
+        kommende_festivaler = []
+        tidligere_festivaler = []
+        today = timezone.now()
+        for konsert in konserter:
+            # Finner alle individuelle sjangre
+            if konsert.band.sjanger not in sjangre:
+                sjangre.append(konsert.band.sjanger)
+            # Finner alle konserter hvor dato er senere enn dagens
+            if konsert.festival not in kommende_festivaler and konsert.dato > today:
+                kommende_festivaler.append(konsert.festival)
+            # Finner alle konserter hvor dato er tidligere enn dagens, kunne sikkert hatt "else"
+            if konsert.festival not in tidligere_festivaler and konsert.dato <= today:
+                tidligere_festivaler.append(konsert.festival)
+        # Fjerner pågående festivaler, festivaler med konserter både vært og kommende.
+        for festival in tidligere_festivaler:
+            if festival in kommende_festivaler:
+                tidligere_festivaler.remove(festival)
+        # Finner konserter som har vært
+        for konsert in konserter:
+            if konsert.festival in tidligere_festivaler:
+                tidligere_konserter.append(konsert)
+
+        return render(request,'webapp/bookingansvarlig_tidligere_konserter.html',{"tidligere_konserter":tidligere_konserter,"sjangre":sjangre})
+    else:
+        raise PermissionDenied
