@@ -5,12 +5,18 @@
 <head>
 	<title>Fixival - Arrangør</title>
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<meta charset="latin1"/>
 </head>
 <body>
 	<div id="navbar">
 		{% if request.user|has_group:"arrangoer" %}
+			<a href="{% url 'arrangoer' %}">Hjem</a>
 			<a href="{% url 'webapp/sceneoversikt' %}">Sceneoversikt</a>
 			<a href="{% url 'webapp/riggeliste' %}">Riggelister</a>
+		{% endif %}
+		{% if request.user|has_group:"bookingansvarlig" %}
+			<a href="{% url 'bookingansvarlig' %}">Hjem</a>
+			<a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a>
 		{% endif %}
 		<a href="{% url 'logout' %}">Log out</a>
 </div>
@@ -18,5 +24,6 @@
 	{% endblock %}
 
 	<script src="{% static 'js/dropdown.js' %}"></script>
+	<script src="{% static 'js/bookingansvarlig/show_konsert.js' %}"></script>
 </body>
 </html>
