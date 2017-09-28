@@ -15,10 +15,20 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.auth import views as loginviews
 from webapp import views
 
 
 urlpatterns = [
+    # index
+    url(r'^$', loginviews.login, name='login'),
     url(r'^admin/', admin.site.urls),
     url(r'^tekniker', views.tech_view, name = 'webapp/tech_view'),
+    url(r'^arrangoer/riggeliste/',views.arrangoer_mainpage,name='webapp/riggeliste'),
+    url(r'^arrangoer/sceneoversikt/', views.oversiktsview_konserter, name='webapp/sceneoversikt'),
+    url(r'^login/$', loginviews.login, name='login'),
+    url(r'^logout/$', loginviews.logout, name='logout', kwargs={'next_page': '/'}),
+    url(r'^redir/',views.redirect_login,name='redirect'),
+    url(r'^arrangoer',views.arrangoer,name='arrangoer'),
+    url(r'^teknikker',views.teknikker,name='teknikker')
 ]
