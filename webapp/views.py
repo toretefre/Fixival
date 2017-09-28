@@ -49,7 +49,10 @@ def teknikker(request):
 
 @login_required
 def tech_view(request):
-    konserter = Konserter.objects.all()
-    users = User.objects.all()
-    return render(request, "webapp/tekniker_view.html", {'konserts': konserter}, {'brukere': users})
+    if request.user.groups.filter(name="teknikker").exists():
+        konserter = Konserter.objects.all()
+        users = User.objects.all()
+        return render(request, "webapp/tekniker_view.html", {'konserts': konserter}, {'brukere': users})
+    else:
+        raise PermissionDenied
 
