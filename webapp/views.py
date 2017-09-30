@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Konserter
+from .models import Konserter, Band
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -80,5 +80,14 @@ def bookingansvarlig_tidligere_konserter(request):
                 tidligere_konserter.append(konsert)
 
         return render(request,'webapp/bookingansvarlig_tidligere_konserter.html',{"tidligere_konserter":tidligere_konserter,"sjangre":sjangre})
+    else:
+        raise PermissionDenied
+
+
+@login_required
+def bookingansvarlig_tekniske_behov(request):
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        bands = Band.objects.all()
+        return render(request, 'webapp/bookingansvarlig_tekniske_behov.html', {"bands":bands})
     else:
         raise PermissionDenied
