@@ -37,19 +37,31 @@ def logout(request):
 
 @login_required
 def redirect_login(request):
-    return HttpResponseRedirect(reverse(str(request.user.groups.all()[0])))
+    if len(request.user.groups.all()) > 0:
+        return HttpResponseRedirect(reverse(str(request.user.groups.all()[0])))
+    else:
+        raise PermissionDenied
 
 @login_required
 def arrangoer(request):
-    return render(request,'webapp/arrangoer.html',{})
+    if request.user.groups.filter(name="arrangoer").exists():
+        return render(request,'webapp/arrangoer.html',{})
+    else:
+        raise PermissionDenied
 
 @login_required
 def teknikker(request):
-    return render(request,'webapp/teknikker.html',{})
+    if request.user.groups.filter(name="teknikker").exists():
+        return render(request,'webapp/teknikker.html',{})
+    else:
+        raise PermissionDenied
 
 @login_required
 def bookingansvarlig(request):
-    return render(request,'webapp/bookingansvarlig.html',{})
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        return render(request,'webapp/bookingansvarlig.html',{})
+    else:
+        raise PermissionDenied
 
 @login_required
 def bookingansvarlig_tidligere_konserter(request):
