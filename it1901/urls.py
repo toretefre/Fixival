@@ -30,5 +30,7 @@ urlpatterns = [
     url(r'^logout/$', loginviews.logout, name='logout', kwargs={'next_page': '/'}),
     url(r'^redir/',views.redirect_login,name='redirect'),
     url(r'^arrangoer',views.arrangoer,name='arrangoer'),
+    url(r'^bookingansvarlig ',views.bookingansvarlig,name='bookingansvarlig'),
+    url(r'^bookingansvarlig/tidligere_konserter/$',views.bookingansvarlig_tidligere_konserter,name='webapp/bookingansvarlig_tidligere_konserter'),
 
 ]
