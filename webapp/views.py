@@ -1,9 +1,9 @@
-from django.shortcuts import render
-from .models import Konserter, Band
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
+from .models import Konserter, Band
+from django.shortcuts import render
 from django.utils import timezone
 
 # Create your views here.
@@ -37,19 +37,33 @@ def logout(request):
 
 @login_required
 def redirect_login(request):
-    return HttpResponseRedirect(reverse(str(request.user.groups.all()[0])))
+    if len(request.user.groups.all()) > 0:
+        return HttpResponseRedirect(reverse(str(request.user.groups.all()[0])))
+    else:
+        raise PermissionDenied
 
 @login_required
 def arrangoer(request):
-    return render(request,'webapp/arrangoer.html',{})
+    if request.user.groups.filter(name="arrangoer").exists():
+        return render(request,'webapp/arrangoer.html',{})
+    else:
+        raise PermissionDenied
+
 
 @login_required
-def teknikker(request):
-    return render(request,'webapp/teknikker.html',{})
+def tech_view(request):
+    if request.user.groups.filter(name="teknikker").exists():
+        konserter = Konserter.objects.filter(teknikere__icontains = request.user)
+        return render(request, "webapp/tekniker_view.html", {'konserts': konserter})
+    else:
+        raise PermissionDenied
 
 @login_required
 def bookingansvarlig(request):
-    return render(request,'webapp/bookingansvarlig.html',{})
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        return render(request,'webapp/bookingansvarlig.html',{})
+    else:
+        raise PermissionDenied
 
 @login_required
 def bookingansvarlig_tidligere_konserter(request):

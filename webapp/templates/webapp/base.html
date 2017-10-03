@@ -3,11 +3,12 @@
 <!DOCTYPE html>
 <html lang="no-nb">
 <head>
-	<title>Fixival - Arrangør</title>
+	<title>Fixival - {{ request.user.groups.all.0 }}</title>
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
 	<meta charset="latin1"/>
 </head>
 <body>
+
 	<div id="navbar">
 		{% if request.user|has_group:"arrangoer" %}
 			<a href="{% url 'arrangoer' %}">Hjem</a>
@@ -26,5 +27,6 @@
 
 	<script src="{% static 'js/dropdown.js' %}"></script>
 	<script src="{% static 'js/bookingansvarlig/show_konsert.js' %}"></script>
+
 </body>
 </html>
