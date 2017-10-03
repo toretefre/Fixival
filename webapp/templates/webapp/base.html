@@ -17,6 +17,7 @@
 		{% if request.user|has_group:"bookingansvarlig" %}
 			<a href="{% url 'bookingansvarlig' %}">Hjem</a>
 			<a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a>
+			<a href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a>
 		{% endif %}
 		<a href="{% url 'logout' %}">Log out</a>
 </div>
