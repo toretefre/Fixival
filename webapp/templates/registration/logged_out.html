@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logget ut</title>
+</head>
+<body>
+
+{% block content %}
+<p>Logged out!</p>
+
+<a href="{% url 'login'%}">Klikk her for å logge inn igjen</a>
+{% endblock %}
+
+</body>
+</html>

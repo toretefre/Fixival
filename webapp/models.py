@@ -33,6 +33,7 @@ class Konserter(models.Model):
     dato = models.DateTimeField(blank=True, null=True)
     band = models.ForeignKey('Band', models.SET_NULL, blank=True, null=True,)
     festival = models.CharField(max_length=200)
+    publikumsantall = models.IntegerField(blank=True)
 
     def __str__(self):
         return self.konsert
