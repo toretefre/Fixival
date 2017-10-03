@@ -43,14 +43,11 @@ def redirect_login(request):
 def arrangoer(request):
     return render(request,'webapp/arrangoer.html',{})
 
-@login_required
-def teknikker(request):
-    return render(request,'webapp/teknikker.html',{})
 
 @login_required
 def tech_view(request):
     if request.user.groups.filter(name="teknikker").exists():
-        konserter = Konserter.objects.all()
+        konserter = Konserter.objects.filter(teknikere__icontains = request.user)
         users = User.objects.all()
         return render(request, "webapp/tekniker_view.html", {'konserts': konserter}, {'brukere': users})
     else:
