@@ -16,9 +16,14 @@
 			<a href="{% url 'webapp/riggeliste' %}">Riggelister</a>
 		{% endif %}
 		{% if request.user|has_group:"bookingansvarlig" %}
-			<a href="{% url 'bookingansvarlig' %}">Hjem</a>
+			{% if request.user.groups.all.count == 1 %}
+				<a href="{% url 'bookingansvarlig' %}">Hjem</a>
+			{% endif %}
 			<a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a>
 			<a href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a>
+		{% endif %}
+		{% if request.user|has_group:"teknikker" %}
+			<a href="{% url 'teknikker' %}">Tekniker</a>
 		{% endif %}
 		<a href="{% url 'logout' %}">Log out</a>
 </div>
