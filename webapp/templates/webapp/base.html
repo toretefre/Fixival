@@ -16,13 +16,13 @@
 		{% endif %}
 		{% if request.user|has_group:"bookingansvarlig" %}
 			{% if request.user.groups.all.count == 1 %}
-				<a href="{% url 'bookingansvarlig' %}">Hjem</a>
+				<li><a href="{% url 'bookingansvarlig' %}">Hjem</a></li>
 			{% endif %}
-			<a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a>
-			<a href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a>
+			<li><a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a></li>
+			<li><a href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a></li>
 		{% endif %}
 		{% if request.user|has_group:"teknikker" %}
-			<a href="{% url 'teknikker' %}">Tekniker</a>
+			<li><a href="{% url 'teknikker' %}">Tekniker</a></li>
 		{% endif %}
 		<li><a href="{% url 'logout' %}">Log out</a></li>
 	</ul>
