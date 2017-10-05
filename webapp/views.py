@@ -56,3 +56,14 @@ def tech_view(request):
     else:
         raise PermissionDenied
 
+
+def bookingsjef_view(request):
+    if request.user.groups.filter(name="bookingsjef").exists():
+        bestillinger = Bestilling.objects.all()
+        if request.godkjenning.groups.filter(godkjenning = None):
+            return render(request, "webapp/bookingsjef.html", {'konserts': konserter})
+
+        #dynamisk URL kan benyttes
+        else:
+            return render(request,)
+
