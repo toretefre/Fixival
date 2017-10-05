@@ -23,6 +23,9 @@ class Bestilling(models.Model):
     godkjenning = ((True,'Godkjent'),(False,'Ikke godkjent'),(None,'Ikke vurdert enda'))
     godkjent = models.NullBooleanField(choices=godkjenning, default=None)
 
+    pris = models.IntegerField();
+
+
     def __str__(self):
         return self.band.navn
 

@@ -22,9 +22,15 @@
 			<a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a>
 			<a href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a>
 		{% endif %}
+
 		{% if request.user|has_group:"teknikker" %}
 			<a href="{% url 'teknikker' %}">Tekniker</a>
 		{% endif %}
+
+		{% if request.user|has_group:"bookingsjef" %}
+			<a href="{% url 'bookingsjef' %}">Bookingsjef</a>
+		{% endif %}
+
 		<a href="{% url 'logout' %}">Log out</a>
 </div>
 	{% block content %}

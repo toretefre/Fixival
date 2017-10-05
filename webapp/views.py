@@ -2,7 +2,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Konserter, Band
+from .models import Konserter, Band, Bestilling
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -99,17 +99,6 @@ def bookingansvarlig_tidligere_konserter(request):
     else:
         raise PermissionDenied
 
-
-def bookingsjef_view(request):
-    if request.user.groups.filter(name="bookingsjef").exists():
-        bestillinger = Bestilling.objects.all()
-        if request.godkjgienning.groups.filter(godkjenning = None):
-            return render(request, "webapp/bookingsjef.html", {'konserts': konserter})
-
-        #dynamisk URL kan benyttes
-        else:
-            return render(request,)
-
 @login_required
 def bookingansvarlig_tekniske_behov(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
@@ -129,3 +118,17 @@ def bookingansvarlig_tekniske_behov(request):
     else:
         raise PermissionDenied
 
+@login_required
+def bookingsjef_view(request):
+    if request.user.groups.filter(name="bookingsjef").exists():
+        uvurderte_bestillinger = []
+        bestillinger = Bestilling.objects.all()
+
+        for bestilling in bestillinger:
+            #Hent alle bestillinger med godkjenning = "Ikke vurdert enda"
+            if bestilling.godkjenning == None:
+                #Append uvurderte bestillinger til listen uvurderte_bestillinger
+                uvurderte_bestillinger.append(bestilling)
+        return render(request, 'webapp/bookingsjef.html', {"uvurderte_bestillinger": uvurderte_bestillinger})
+    else:
+        raise PermissionDenied
