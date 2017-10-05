@@ -24,13 +24,15 @@ urlpatterns = [
     url(r'^$', loginviews.login, name='login'),
     url(r'^admin/', admin.site.urls),
     url(r'^teknikker', views.tech_view, name = 'teknikker'),
-    url(r'^bookingansjef', views.bookingsjef_view, name='bookingsjef'),
     url(r'^arrangoer/riggeliste/',views.arrangoer_mainpage,name='webapp/riggeliste'),
     url(r'^arrangoer/sceneoversikt/', views.oversiktsview_konserter, name='webapp/sceneoversikt'),
     url(r'^login/$', loginviews.login, name='login'),
     url(r'^logout/$', loginviews.logout, name='logout', kwargs={'next_page': '/'}),
     url(r'^redir/',views.redirect_login,name='redirect'),
     url(r'^arrangoer',views.arrangoer,name='arrangoer'),
+    url(r'^bookingansvarlig ',views.bookingansvarlig,name='bookingansvarlig'),
+    url(r'^bookingansvarlig/tidligere_konserter/$',views.bookingansvarlig_tidligere_konserter,name='webapp/bookingansvarlig_tidligere_konserter'),
+    url(r'^bookingansvarlig/tekniske_behov/$',views.bookingansvarlig_tekniske_behov,name='webapp/bookingansvarlig_tekniske_behov'),
 
     url(r'^bookingsjef', views.bookingsjef_view, name = 'bookingsjef'),
 

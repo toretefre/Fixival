@@ -1,13 +1,37 @@
-{% load staticfiles %}
+{% load static %}
+{% load groupAccess %}
 <!DOCTYPE html>
 <html lang="no-nb">
 <head>
-	<title>Fixival</title>
+	<title>Fixival - {{ request.user.groups.all.0 }}</title>
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<meta charset="latin1"/>
 </head>
 <body>
-	<div id="navbar"></div>
+
+	<div id="navbar">
+		{% if request.user|has_group:"arrangoer" %}
+			<a href="{% url 'arrangoer' %}">Hjem</a>
+			<a href="{% url 'webapp/sceneoversikt' %}">Sceneoversikt</a>
+			<a href="{% url 'webapp/riggeliste' %}">Riggelister</a>
+		{% endif %}
+		{% if request.user|has_group:"bookingansvarlig" %}
+			{% if request.user.groups.all.count == 1 %}
+				<a href="{% url 'bookingansvarlig' %}">Hjem</a>
+			{% endif %}
+			<a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a>
+			<a href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a>
+		{% endif %}
+		{% if request.user|has_group:"teknikker" %}
+			<a href="{% url 'teknikker' %}">Tekniker</a>
+		{% endif %}
+		<a href="{% url 'logout' %}">Log out</a>
+</div>
 	{% block content %}
 	{% endblock %}
+
+	<script src="{% static 'js/dropdown.js' %}"></script>
+	<script src="{% static 'js/bookingansvarlig/show_konsert.js' %}"></script>
+
 </body>
 </html>
