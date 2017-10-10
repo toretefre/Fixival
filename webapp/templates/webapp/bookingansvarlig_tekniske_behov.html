@@ -1,0 +1,14 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+  {% for band in bands %}
+    <div>
+      <h1 class="bandheader">{{band.navn}}</h1>
+      <div class="utstyrdiv">
+        <p>Utstyr:</p>
+        <p>{{ band.utstyr|linebreaksbr }}</p>
+      </div>
+    </div>
+  {% endfor %}
+
+{% endblock %}
