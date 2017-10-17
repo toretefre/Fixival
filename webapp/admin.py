@@ -5,3 +5,5 @@ from .models import *
 admin.site.register(Konserter)
 admin.site.register(Band)
 admin.site.register(Bestilling)
+admin.site.register(Backline)
+admin.site.register(Tekniske_behov)
