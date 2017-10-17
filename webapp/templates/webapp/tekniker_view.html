@@ -6,7 +6,11 @@
         <div>
             <h3>{{ konsert }} {{ konsert.dato }} {{ konsert.scene }}</h3>
             <p>Teknikere:</p>
-            <p class = "teknikerList">{{ konsert.teknikere|linebreaksbr }}</p>
+            <p class = "teknikerList">
+              {% for tekniker in konsert.teknikere.all %}
+              <li>{{ tekniker }}</li>
+              {% endfor %}
+              </p>
         </div>
     {% endfor %}
 {% endblock %}
