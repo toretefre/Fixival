@@ -118,3 +118,11 @@ def bookingansvarlig_tekniske_behov(request):
         return render(request, 'webapp/bookingansvarlig_tekniske_behov.html', {"bands":godkjente_bands})
     else:
         raise PermissionDenied
+
+@login_required
+def bookingansvarlig_artister(request):
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        band = Band.objects.all()
+        return render(request, 'webapp/bookingansvarlig_artist.html', {'band': band})
+    else:
+        raise PermissionDenied
