@@ -1,0 +1,29 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+  <h3>Artist:</h3>
+  <select id="artistpicker" name="Artist">
+    {% for artist in band %}
+      {% if artist == band.0 %}
+        <option value="{{ artist }}" selected>{{ artist }}</option>
+      {% else %}
+        <option value="{{ artist }}">{{ artist }}</option>
+      {% endif %}
+    {% endfor %}
+  </select>
+
+   {% for artist in band %}
+     {% for artist in band.all %}
+      {% if band.artist == artist %}
+        <div class="artistinfo" id="{{ artist }}">
+          <h1>{{band.artist}}</h1>
+          <p>Informasjon om band:   {{ band.info }}</p>
+          <p>Popularitet Spotify:   {{ band.rating }}</p>
+          <p>Totalt solgte album:   {{ band.albums_sold }}</p>
+          <p>Tidligere konserter:   {{ band.previous_concerts }}</p>
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+
+{% endblock %}
