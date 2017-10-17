@@ -60,6 +60,10 @@ coverage.xml
 *.log
 local_settings.py
 
+
+# Database
+db.sqlite3
+
 # Flask stuff:
 instance/
 .webassets-cache
@@ -109,5 +113,9 @@ projectenv/
 # mypy
 .mypy_cache/
 
+<<<<<<< HEAD
 # Database
+=======
+# database
+>>>>>>> 601f6bb2ad7587add88843409f19779d5dc48079
 db.sqlite3
