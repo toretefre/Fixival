@@ -1,9 +1,8 @@
-
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Konserter
+from .models import Konserter, Band
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -76,9 +75,11 @@ def bookingansvarlig_tidligere_konserter(request):
         tidligere_festivaler = []
         today = timezone.now()
         for konsert in konserter:
-            # Finner alle individuelle sjangre
-            if konsert.band.sjanger not in sjangre:
-                sjangre.append(konsert.band.sjanger)
+            # Går gjennom alle band i en konsert
+            for band in konsert.band.all():
+                # Finner alle individuelle sjangre
+                if band.sjanger not in sjangre:
+                    sjangre.append(band.sjanger)
             # Finner alle konserter hvor dato er senere enn dagens
             if konsert.festival not in kommende_festivaler and konsert.dato > today:
                 kommende_festivaler.append(konsert.festival)
@@ -98,3 +99,22 @@ def bookingansvarlig_tidligere_konserter(request):
     else:
         raise PermissionDenied
 
+
+@login_required
+def bookingansvarlig_tekniske_behov(request):
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        godkjente_bands = []
+        konserter = Konserter.objects.all()
+        today = timezone.now()
+
+        for konsert in konserter:
+            # Hent alle konserter som skal skjer nå eller i framtiden
+            if konsert.dato >= today:
+                # Hent alle band derfra fordi der ligger bare godkjente band
+                        # Har gått gjennom bestillingen
+                for band in konsert.band.all():
+                    godkjente_bands.append(band)
+
+        return render(request, 'webapp/bookingansvarlig_tekniske_behov.html', {"bands":godkjente_bands})
+    else:
+        raise PermissionDenied

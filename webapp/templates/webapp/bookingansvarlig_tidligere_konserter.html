@@ -13,7 +13,8 @@
   </select>
   {% for sjanger in sjangre %}
     {% for konsert in tidligere_konserter %}
-      {% if konsert.band.sjanger == sjanger %}
+      {% for band in konsert.band.all %}
+      {% if band.sjanger == sjanger %}
         <div class="sjangerkonserter" id="{{sjanger}}">
           <h1>{{konsert.konsert}}</h1>
           <p>Scene: {{konsert.scene}}</p>
@@ -21,6 +22,7 @@
         </div>
       {% endif %}
     {% endfor %}
+  {% endfor %}
   {% endfor %}
 
 {% endblock %}
