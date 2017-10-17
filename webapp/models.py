@@ -37,7 +37,7 @@ class Konserter(models.Model):
 
     def __str__(self):
         return self.konsert
-<<<<<<< HEAD
+
 
 class Backline(models.Model):
     band = models.ForeignKey('band', models.SET_NULL, blank=True, null=True,)
@@ -54,5 +54,3 @@ class Tekniske_behov(models.Model):
 
     def __str__(self):
         return str(self.behov)
-=======
->>>>>>> 601f6bb2ad7587add88843409f19779d5dc48079

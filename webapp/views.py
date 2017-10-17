@@ -122,7 +122,7 @@ def bookingansvarlig_tekniske_behov(request):
         raise PermissionDenied
 
 @login_required
-    def manager_mainpage(request):
+def manager_mainpage(request):
     if request.user.groups.filter(name='manager').exists():
         band = Band.objects.all()
         backline = Backline.objects.all()
