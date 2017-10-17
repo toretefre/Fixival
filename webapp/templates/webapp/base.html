@@ -24,6 +24,9 @@
 		{% if request.user|has_group:"teknikker" %}
 			<li><a href="{% url 'teknikker' %}">Tekniker</a></li>
 		{% endif %}
+		{% if request.user|has_group:"bookingsjef" %}
+			<li><a href="{% url 'webapp/bookingsjef_prisgenerator' %}">Prisgenerator</a></li>
+		{% endif %}
 		<li><a href="{% url 'logout' %}">Log out</a></li>
 	</ul>
 	<div id="content">

@@ -27,7 +27,7 @@ class Bestilling(models.Model):
         return self.band.navn
 
 class Konserter(models.Model):
-    scene = models.CharField(max_length=200)
+    scene = models.ForeignKey('Scener')
     teknikere= models.TextField()
     konsert = models.CharField(max_length=200)
     dato = models.DateTimeField(blank=True, null=True)
@@ -37,3 +37,13 @@ class Konserter(models.Model):
 
     def __str__(self):
         return self.konsert
+
+class Scener(models.Model):
+    navn = models.CharField(max_length=200)
+    storrelse = models.IntegerField()
+    kostnad = models.IntegerField()
+
+    def __str__(self):
+        return self.navn
+    class Meta:
+        verbose_name_plural="Scener"

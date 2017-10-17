@@ -2,7 +2,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Konserter, Band
+from .models import Konserter, Band, Scener
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -116,5 +116,13 @@ def bookingansvarlig_tekniske_behov(request):
                     godkjente_bands.append(band)
 
         return render(request, 'webapp/bookingansvarlig_tekniske_behov.html', {"bands":godkjente_bands})
+    else:
+        raise PermissionDenied
+
+@login_required
+def bookingsjef_prisgenerator(request):
+    if request.user.groups.filter(name="bookingsjef").exists():
+        konserts = Konserter.objects.all()
+        return render(request,'webapp/bookingsjef_prisgenerator.html',{})
     else:
         raise PermissionDenied
