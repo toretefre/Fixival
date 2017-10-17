@@ -123,6 +123,6 @@ def bookingansvarlig_tekniske_behov(request):
 def bookingansvarlig_artister(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
         band = Band.objects.all()
-        return render(request, 'webapp/bookingansvarlig_artist.html', {'band': band})
+        return render(request, 'webapp/bookingansvarlig_artister.html', {'band': band})
     else:
         raise PermissionDenied
