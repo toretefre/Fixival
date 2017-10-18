@@ -123,6 +123,29 @@ def bookingansvarlig_tekniske_behov(request):
 def bookingsjef_prisgenerator(request):
     if request.user.groups.filter(name="bookingsjef").exists():
         konserts = Konserter.objects.all()
-        return render(request,'webapp/bookingsjef_prisgenerator.html',{})
+        print(request.method)
+        if request.method == "POST":
+            print(request.method)
+            relevantKonsert = Konserter.objects.get(konsert=request.POST["konsertliste"])
+            bandcost = 0
+            bandpopularity = 0
+            bandamount = 0
+            # Iterer over alle band i konserten, finner gjennomsnittlig popularitet, antall band og samlet kostnad
+            for band in relevantKonsert.band.all():
+                bandcost += band.kostnad
+                bandpopularity += band.rating
+                bandamount += 1
+            # Regner gjennomsnittet nevnt over
+            bandpopularity = int(bandpopularity / bandamount)
+
+            scenecosts = {}
+            allScener = Scener.objects.all()
+            # Bruker den sykt kreative, sykt avanserte formelen for å regne ut prisforslag per billett.
+            # Dette legges i en dict med key scenenavn og item prisforslag
+            for scene in allScener:
+                scenecosts[scene] = int((scene.kostnad + bandcost) / scene.storrelse + 5*bandpopularity)
+            return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts,"scenecost":scenecosts})
+        else:
+            return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts})
     else:
         raise PermissionDenied
