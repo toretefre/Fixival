@@ -147,5 +147,14 @@ def bookingsjef_prisgenerator(request):
             return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts,"scenecost":scenecosts})
         else:
             return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts})
+
+def bookingansvarlig_artister(request):
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        band = Band.objects.all()
+        if request.method == "POST":
+            selected_band = Band.objects.get(navn=request.POST['Artist'])
+            return render(request, 'webapp/bookingansvarlig_artister.html', {'artist': selected_band, 'band': band})
+
+        return render(request, 'webapp/bookingansvarlig_artister.html', {'band': band})
     else:
         raise PermissionDenied

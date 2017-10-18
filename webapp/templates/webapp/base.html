@@ -20,6 +20,7 @@
 			{% endif %}
 			<li><a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a></li>
 			<li><a href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a></li>
+            <li><a href="{% url 'webapp/bookingansvarlig_artister' %}">Artist</a></li>
 		{% endif %}
 		{% if request.user|has_group:"teknikker" %}
 			<li><a href="{% url 'teknikker' %}">Tekniker</a></li>
