@@ -34,4 +34,5 @@ urlpatterns = [
     url(r'^bookingansvarlig/tidligere_konserter/$',views.bookingansvarlig_tidligere_konserter,name='webapp/bookingansvarlig_tidligere_konserter'),
     url(r'^bookingansvarlig/tekniske_behov/$',views.bookingansvarlig_tekniske_behov,name='webapp/bookingansvarlig_tekniske_behov'),
     url(r'^bookingansvarlig/artister/$', views.bookingansvarlig_artister, name = 'webapp/bookingansvarlig_artister'),
+    url(r'^bookingsjef',views.bookingsjef_prisgenerator,name="webapp/bookingsjef_prisgenerator")
 ]
