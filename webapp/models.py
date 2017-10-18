@@ -27,13 +27,8 @@ class Bestilling(models.Model):
         return self.band.navn
 
 class Konserter(models.Model):
-<<<<<<< HEAD
     scene = models.ForeignKey('Scener')
-    teknikere= models.TextField()
-=======
-    scene = models.CharField(max_length=200)
-    teknikere = models.ManyToManyField('auth.User', blank=True)
->>>>>>> master
+    teknikere= models.ManyToManyField('auth.User', blank=True)
     konsert = models.CharField(max_length=200)
     dato = models.DateTimeField(blank=True, null=True)
     band = models.ManyToManyField(Band, blank=True)
