@@ -31,7 +31,7 @@ class Bestilling(models.Model):
 
 class Konserter(models.Model):
     scene = models.CharField(max_length=200)
-    teknikere = models.TextField()
+    teknikere = models.ManyToManyField('auth.User', blank=True)
     konsert = models.CharField(max_length=200)
     dato = models.DateTimeField(blank=True, null=True)
     band = models.ManyToManyField(Band, blank=True)
