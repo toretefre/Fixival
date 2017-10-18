@@ -53,7 +53,7 @@ def arrangoer(request):
 @login_required
 def tech_view(request):
     if request.user.groups.filter(name="teknikker").exists():
-        konserter = Konserter.objects.filter(teknikere__icontains = request.user)
+        konserter = Konserter.objects.filter(teknikere = request.user)
         return render(request, "webapp/tekniker_view.html", {'konserts': konserter})
     else:
         raise PermissionDenied
