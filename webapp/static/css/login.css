@@ -9,6 +9,9 @@ body,html{
 body {
 
   background-image: url("../img/Tomorrowland2015.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 
 #body-cover {
@@ -18,7 +21,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-
 }
 
 #row{
@@ -34,11 +36,19 @@ body {
 
 
 
-
-
 td:first-child{
   font-size: 2em;
   font-family:"Bevan",serif;
   color:#FFFFFF;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.button{
+  border-radius: 25px;
+  padding: 4px 10px;
+  text-align: center;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
 }

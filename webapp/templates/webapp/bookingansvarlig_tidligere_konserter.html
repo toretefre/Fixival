@@ -14,15 +14,15 @@
   {% for sjanger in sjangre %}
     {% for konsert in tidligere_konserter %}
       {% for band in konsert.band.all %}
-      {% if band.sjanger == sjanger %}
-        <div class="sjangerkonserter" id="{{sjanger}}">
-          <h1>{{konsert.konsert}}</h1>
-          <p>Scene: {{konsert.scene}}</p>
-          <p>Publikumsantall: {{konsert.publikumsantall}}
-        </div>
-      {% endif %}
+        {% if band.sjanger == sjanger %}
+          <div class="sjangerkonserter" id="{{sjanger}}">
+            <h1>{{konsert.konsert}}</h1>
+            <p>Scene: {{konsert.scene}}</p>
+            <p>Publikumsantall: {{konsert.publikumsantall}}
+          </div>
+        {% endif %}
+      {% endfor %}
     {% endfor %}
-  {% endfor %}
   {% endfor %}
 
 {% endblock %}
