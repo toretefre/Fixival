@@ -2,7 +2,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Konserter, Band
+from .models import Konserter, Band, Scener
 from django.shortcuts import render
 from django.utils import timezone
 
@@ -52,8 +52,8 @@ def arrangoer(request):
 
 @login_required
 def tech_view(request):
-    if request.user.groups.filter(name="teknikker").exists():
-        konserter = Konserter.objects.filter(teknikere__icontains = request.user)
+    if request.user.groups.filter(name="tekniker").exists():
+        konserter = Konserter.objects.filter(teknikere = request.user)
         return render(request, "webapp/tekniker_view.html", {'konserts': konserter})
     else:
         raise PermissionDenied
@@ -116,5 +116,45 @@ def bookingansvarlig_tekniske_behov(request):
                     godkjente_bands.append(band)
 
         return render(request, 'webapp/bookingansvarlig_tekniske_behov.html', {"bands":godkjente_bands})
+    else:
+        raise PermissionDenied
+
+@login_required
+def bookingsjef_prisgenerator(request):
+    if request.user.groups.filter(name="bookingsjef").exists():
+        konserts = Konserter.objects.all()
+        print(request.method)
+        if request.method == "POST":
+            print(request.method)
+            relevantKonsert = Konserter.objects.get(konsert=request.POST["konsertliste"])
+            bandcost = 0
+            bandpopularity = 0
+            bandamount = 0
+            # Iterer over alle band i konserten, finner gjennomsnittlig popularitet, antall band og samlet kostnad
+            for band in relevantKonsert.band.all():
+                bandcost += band.kostnad
+                bandpopularity += band.rating
+                bandamount += 1
+            # Regner gjennomsnittet nevnt over
+            bandpopularity = int(bandpopularity / bandamount)
+
+            scenecosts = {}
+            allScener = Scener.objects.all()
+            # Bruker den sykt kreative, sykt avanserte formelen for å regne ut prisforslag per billett.
+            # Dette legges i en dict med key scenenavn og item prisforslag
+            for scene in allScener:
+                scenecosts[scene] = int((scene.kostnad + bandcost) / scene.storrelse + 5*bandpopularity)
+            return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts,"scenecost":scenecosts})
+        else:
+            return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts})
+
+def bookingansvarlig_artister(request):
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        band = Band.objects.all()
+        if request.method == "POST":
+            selected_band = Band.objects.get(navn=request.POST['Artist'])
+            return render(request, 'webapp/bookingansvarlig_artister.html', {'artist': selected_band, 'band': band})
+
+        return render(request, 'webapp/bookingansvarlig_artister.html', {'band': band})
     else:
         raise PermissionDenied

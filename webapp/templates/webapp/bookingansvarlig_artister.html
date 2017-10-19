@@ -1,0 +1,25 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+  <h3>Artist:</h3>
+    <form id="artistform" method="POST">{% csrf_token %}
+    <select id="artistpicker" name="Artist" form="artistform">
+    {% for iterable_artist in band %}
+        {% if iterable_artist == artist %}
+            <option value="{{ iterable_artist }}" selected>{{ iterable_artist }}</option>
+        {% else %}
+            <option value="{{ iterable_artist }}">{{ iterable_artist }}</option>
+        {% endif %}
+    {% endfor %}
+  </select>
+    <button type="submit" name="submit" value="submit">Rock n roll baby</button></form>
+
+        <div class="artistinfo" id="{{ artist }}">
+          <h1>{{ artist }}</h1>
+          <p>Informasjon om band:   {{ artist.info }}</p>
+          <p>Popularitet Spotify:   {{ artist.rating }}</p>
+          <p>Totalt solgte album:   {{ artist.albums_sold }}</p>
+          <p>Tidligere konserter:   {{ artist.previous_concerts }}</p>
+        </div>
+
+{% endblock %}
