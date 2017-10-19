@@ -148,6 +148,7 @@ def bookingsjef_prisgenerator(request):
         else:
             return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts})
 
+@login_required
 def bookingansvarlig_artister(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
         band = Band.objects.all()
@@ -156,5 +157,28 @@ def bookingansvarlig_artister(request):
             return render(request, 'webapp/bookingansvarlig_artister.html', {'artist': selected_band, 'band': band})
 
         return render(request, 'webapp/bookingansvarlig_artister.html', {'band': band})
+    else:
+        raise PermissionDenied
+
+@login_required
+def bookingansvarlig_tidligere_artister(request):
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        konserter = Konserter.objects.all()
+        tidligere_konserter = []
+        today = timezone.now()
+        for konsert in konserter:
+            if konsert.dato < today:
+                tidligere_konserter.append(konsert)
+        if request.method == 'POST':
+            all_bands = Band.objects.all()
+            all_bandnames = []
+            for band in all_bands:
+                all_bandnames.append(band.navn)
+            if request.POST['search_box'] in all_bandnames:
+                band = Band.objects.get(navn= request.POST['search_box'])
+                return render(request, 'webapp/bookingansvarlig_tidligere_artister.html', {'band': band, 'tidligere_konserter':tidligere_konserter, 'konsert': konserter})
+            return render(request, 'webapp/bookingansvarlig_tidligere_artister.html', {'error': "Band har ikke spilt her"})
+        return render(request, 'webapp/bookingansvarlig_tidligere_artister.html')
+
     else:
         raise PermissionDenied

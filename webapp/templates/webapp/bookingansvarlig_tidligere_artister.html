@@ -1,0 +1,24 @@
+{% extends 'webapp/base.html' %}
+
+    {% block content %}
+        <h1>Søk etter band som har spilt her tidligere:</h1>
+        <form method="POST" action="."> {% csrf_token %}
+        <input  id="search_box" type="text" name="search_box"  placeholder="Skriv inn band">
+            <button type="submit" name="submit" value="submit">Søk</button>
+        </form>
+        {% for konsert in tidligere_konserter %}
+            {% for iterable_band in konsert.band.all %}
+                {% if iterable_band == band %}
+                    <p>Spilte på scene:{{ konsert.scene }} {{ konsert.dato }}</p>
+                    <p>Popularitet Spotify: {{ band.rating }}</p>
+                    <p>Solgte album: {{ band.albums_sold }}</p>
+                    <p>Andre konserter:{{ band.previous_concerts }}</p>
+
+
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+
+        <p>{{ error }}</p>
+
+    {% endblock %}
