@@ -114,4 +114,5 @@ projectenv/
 .mypy_cache/
 
 # database
+# superimportant
 db.sqlite3
