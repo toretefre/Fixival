@@ -4,9 +4,11 @@
   {% for konsert in konserts %}
     <div>
       <h1 class="konsertheader">{{konsert}}</h1>
-      <div class="teknikkerdiv">
+      <div class="teknikerdiv">
         <p>Teknikere:</p>
-        <p>{{ konsert.teknikere|linebreaksbr }}</p>
+        {% for tekniker in konsert.teknikere.all %}
+        <p>{{tekniker}}</p>
+        {% endfor %}
       </div>
     </div>
   {% endfor %}

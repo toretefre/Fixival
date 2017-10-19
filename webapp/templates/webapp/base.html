@@ -6,7 +6,29 @@
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
 </head>
 <body>
-	<div id="navbar"></div>
+	<ul id="navbar">
+		{% if request.user|has_group:"arrangoer" %}
+			<li><a href="{% url 'arrangoer' %}">Hjem</a></li>
+			<li><a href="{% url 'webapp/sceneoversikt' %}">Sceneoversikt</a></li>
+			<li><a href="{% url 'webapp/riggeliste' %}">Riggelister</a></li>
+		{% endif %}
+		{% if request.user|has_group:"bookingansvarlig" %}
+			{% if request.user.groups.all.count == 1 %}
+				<li><a href="{% url 'bookingansvarlig' %}">Hjem</a></li>
+			{% endif %}
+			<li><a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a></li>
+			<li><a href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a></li>
+            <li><a href="{% url 'webapp/bookingansvarlig_artister' %}">Artist</a></li>
+		{% endif %}
+		{% if request.user|has_group:"tekniker" %}
+			<li><a href="{% url 'tekniker' %}">Tekniker</a></li>
+		{% endif %}
+		{% if request.user|has_group:"bookingsjef" %}
+			<li><a href="{% url 'webapp/bookingsjef_prisgenerator' %}">Prisgenerator</a></li>
+		{% endif %}
+		<li><a href="{% url 'logout' %}">Log out</a></li>
+	</ul>
+	<div id="content">
 	{% block content %}
 	{% endblock %}
 </body>
