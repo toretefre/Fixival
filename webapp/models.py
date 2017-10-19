@@ -30,8 +30,8 @@ class Bestilling(models.Model):
 
 
 class Konserter(models.Model):
-    scene = models.CharField(max_length=200)
-    teknikere = models.TextField()
+    scene = models.ForeignKey('Scener')
+    teknikere= models.ManyToManyField('auth.User', blank=True)
     konsert = models.CharField(max_length=200)
     dato = models.DateTimeField(blank=True, null=True)
     band = models.ManyToManyField(Band, blank=True)
@@ -40,3 +40,13 @@ class Konserter(models.Model):
 
     def __str__(self):
         return self.konsert
+
+class Scener(models.Model):
+    navn = models.CharField(max_length=200)
+    storrelse = models.IntegerField()
+    kostnad = models.IntegerField()
+
+    def __str__(self):
+        return self.navn
+    class Meta:
+        verbose_name_plural="Scener"
