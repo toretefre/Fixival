@@ -52,7 +52,7 @@ def arrangoer(request):
 
 @login_required
 def tech_view(request):
-    if request.user.groups.filter(name="teknikker").exists():
+    if request.user.groups.filter(name="tekniker").exists():
         konserter = Konserter.objects.filter(teknikere = request.user)
         return render(request, "webapp/tekniker_view.html", {'konserts': konserter})
     else:
