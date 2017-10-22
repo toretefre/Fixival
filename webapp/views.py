@@ -121,7 +121,6 @@ def bookingansvarlig_tekniske_behov(request):
 
 @login_required
 def bookingsjef_prisgenerator(request):
-    print("Entered prisgenerator. FUCK!")
     if request.user.groups.filter(name="bookingsjef").exists():
         konserts = Konserter.objects.all()
         if request.method == "POST":
@@ -146,7 +145,7 @@ def bookingsjef_prisgenerator(request):
                     scenecosts[scene] = int((scene.kostnad + bandcost) / scene.storrelse + 5*bandpopularity)
             else:
                 scenecosts = {"Konsert": "ikke funnet"}
-            return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts,"scenecost":scenecosts})
+            return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts,"scenecost":scenecosts,"valgtkonsert":relevantKonsert})
         else:
             return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts})
 
@@ -176,9 +175,8 @@ def bookingsjef_rapport(request):
                     for band in konsert.band.all():
                         kostnad += band.kostnad
                     resultat = konsert.billettpris * konsert.publikumsantall - kostnad
-                    print(resultat)
                     konsertinfo[konsert] = {"kostnad":kostnad,"publikumsantall":konsert.publikumsantall,"resultat":resultat}
-                return render(request,'webapp/bookingsjef_rapport.html',{"konsertinfo":konsertinfo,"scener":scener})
+                return render(request,'webapp/bookingsjef_rapport.html',{"konsertinfo":konsertinfo,"scener":scener,"valgtscene":scene})
         return render(request, 'webapp/bookingsjef_rapport.html',{"scener":scener})
     else:
         raise PermissionDenied
