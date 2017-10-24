@@ -1,0 +1,23 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+<form method="POST">
+
+  <h1>Legg inn bestilling her for godkjenning til bookingssjef</h1>
+    {% csrf_token %}
+<!--  Band:<br>
+  <input type="text" name="band" value=""><br>
+  Scene:<br>
+  <input type="text" name="scene" value=""><br>
+  Dato:<br>
+  <input type="text" name="dato" value=""><br>
+  Pris:<br>
+  <input type="text" name="pris" value=""><br><br>
+
+  <input type="submit" value="Send til godkjenning">-->
+    {{form_band.as_p}}
+    {{form.as_p}}
+    <input type="submit" value="Send til godkjenning">
+</form>
+  <p>{{response}}</p>
+{% endblock %}

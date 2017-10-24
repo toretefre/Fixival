@@ -3,8 +3,9 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Konserter, Band, Bestilling
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils import timezone
+from .forms import PostBestilling, PostBand
 
 # Create your views here.
 @login_required
@@ -119,16 +120,25 @@ def bookingansvarlig_tekniske_behov(request):
         raise PermissionDenied
 
 @login_required
-def bookingsjef_view(request):
-    if request.user.groups.filter(name="bookingsjef").exists():
-        uvurderte_bestillinger = []
-        bestillinger = Bestilling.objects.all()
+def bookingansvarlig_bestilling_view(request):
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        if request.method == "POST":
+            form = PostBestilling(request.POST)
+            form_band = PostBand(request.POST)
+            if form.is_valid() and form_band.is_valid():
+                bestilling = form.save(commit=False)
+                band = form_band.save(commit=False)
+                band.kostnad = 0         #Default verdier
+                band.rating = 0          #Default verdier
+                band.manager = request.user
+                band.save()
+                bestilling.band = band
+                bestilling.godkjent = None
+                bestilling.save()
 
-        for bestilling in bestillinger:
-            #Hent alle bestillinger med godkjenning = "Ikke vurdert enda"
-            if bestilling.godkjenning == None:
-                #Append uvurderte bestillinger til listen uvurderte_bestillinger
-                uvurderte_bestillinger.append(bestilling)
-        return render(request, 'webapp/bookingsjef.html', {"uvurderte_bestillinger": uvurderte_bestillinger})
-    else:
-        raise PermissionDenied
+                return render(request, 'webapp/bookingansvarlig.html', {'form': form, 'form_band': form_band,'response':"Bestilling sendt"})
+        else:
+            form = PostBestilling()
+            form_band = PostBand()
+        return render(request, 'webapp/bookingansvarlig.html', {'form': form, 'form_band': form_band})
+
