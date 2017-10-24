@@ -1,0 +1,25 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+<form action="" method="post">
+  {% csrf_token %}
+  <select name="scenerapport">
+    {% for scene in scener %}
+    	{% if valgtscene == scene %}
+    		<option value="{{scene}}" selected>{{scene}}</option>
+    	{% else %}
+      		<option value="{{scene}}">{{scene}}</option>
+      	{% endif %}
+    {% endfor %}
+  </select>
+  <input type="submit" value="Velg scene for rapportgenerering">
+</form>
+
+{% for key,item in konsertinfo.items %}
+  <h3>{{key}}</h3>
+  <p>Publikumsantall: {{item.publikumsantall}}</p>
+  <p>Kostnad: {{item.kostnad}}</p>
+  <p>Økonomisk resultat: {{item.resultat}}</p>
+{% endfor %}
+
+{% endblock %}

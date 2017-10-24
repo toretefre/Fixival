@@ -8,33 +8,34 @@
 	<meta charset="latin1"/>
 </head>
 <body>
-
-	<div id="navbar">
+	<ul id="navbar">
 		{% if request.user|has_group:"arrangoer" %}
-			<a href="{% url 'arrangoer' %}">Hjem</a>
-			<a href="{% url 'webapp/sceneoversikt' %}">Sceneoversikt</a>
-			<a href="{% url 'webapp/riggeliste' %}">Riggelister</a>
+			<li><a href="{% url 'arrangoer' %}">Hjem</a></li>
+			<li><a href="{% url 'webapp/sceneoversikt' %}">Sceneoversikt</a></li>
+			<li><a href="{% url 'webapp/riggeliste' %}">Riggelister</a></li>
 		{% endif %}
 		{% if request.user|has_group:"bookingansvarlig" %}
 			{% if request.user.groups.all.count == 1 %}
-				<a href="{% url 'bookingansvarlig' %}">Hjem</a>
+				<li><a href="{% url 'bookingansvarlig' %}">Hjem</a></li>
 			{% endif %}
-			<a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a>
-			<a href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a>
+			<li><a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a></li>
+			<li><a href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a></li>
+      <li><a href="{% url 'webapp/bookingansvarlig_artister' %}">Artist</a></li>
 		{% endif %}
-
-		{% if request.user|has_group:"teknikker" %}
-			<a href="{% url 'teknikker' %}">Tekniker</a>
+		{% if request.user|has_group:"tekniker" %}
+			<li><a href="{% url 'tekniker' %}">Tekniker</a></li>
 		{% endif %}
-
 		{% if request.user|has_group:"bookingsjef" %}
-			<a href="{% url 'bookingsjef' %}">Bookingsjef</a>
+			<li><a href="{% url 'bookingsjef' %}">Prisgenerator</a></li>
+			<li><a href="{% url 'webapp/bookingsjef_rapport' %}">Konsertrapporter</a></li>
 		{% endif %}
+		<li><a href="{% url 'logout' %}">Log out</a></li>
+	</ul>
+	<div id="content">
 
-		<a href="{% url 'logout' %}">Log out</a>
-</div>
 	{% block content %}
 	{% endblock %}
+	</div>
 
 	<script src="{% static 'js/dropdown.js' %}"></script>
 	<script src="{% static 'js/bookingansvarlig/show_konsert.js' %}"></script>

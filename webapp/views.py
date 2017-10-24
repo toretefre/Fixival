@@ -2,7 +2,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Konserter, Band, Bestilling
+from .models import Konserter, Band, Scener, Bestilling
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from .forms import PostBestilling, PostBand
@@ -53,8 +53,8 @@ def arrangoer(request):
 
 @login_required
 def tech_view(request):
-    if request.user.groups.filter(name="teknikker").exists():
-        konserter = Konserter.objects.filter(teknikere__icontains = request.user)
+    if request.user.groups.filter(name="tekniker").exists():
+        konserter = Konserter.objects.filter(teknikere = request.user)
         return render(request, "webapp/tekniker_view.html", {'konserts': konserter})
     else:
         raise PermissionDenied
@@ -142,3 +142,63 @@ def bookingansvarlig_bestilling_view(request):
             form_band = PostBand()
         return render(request, 'webapp/bookingansvarlig.html', {'form': form, 'form_band': form_band})
 
+def bookingsjef_prisgenerator(request):
+    if request.user.groups.filter(name="bookingsjef").exists():
+        konserts = Konserter.objects.all()
+        if request.method == "POST":
+            if 'konsertliste' in request.POST:
+                relevantKonsert = Konserter.objects.get(konsert=request.POST["konsertliste"])
+                bandcost = 0
+                bandpopularity = 0
+                bandamount = 0
+                # Iterer over alle band i konserten, finner gjennomsnittlig popularitet, antall band og samlet kostnad
+                for band in relevantKonsert.band.all():
+                    bandcost += band.kostnad
+                    bandpopularity += band.rating
+                    bandamount += 1
+                # Regner gjennomsnittet nevnt over
+                bandpopularity = int(bandpopularity / bandamount)
+
+                scenecosts = {}
+                allScener = Scener.objects.all()
+                # Bruker den sykt kreative, sykt avanserte formelen for å regne ut prisforslag per billett.
+                # Dette legges i en dict med key scenenavn og item prisforslag
+                for scene in allScener:
+                    scenecosts[scene] = int((scene.kostnad + bandcost) / scene.storrelse + 5*bandpopularity)
+            else:
+                scenecosts = {"Konsert": "ikke funnet"}
+            return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts,"scenecost":scenecosts,"valgtkonsert":relevantKonsert})
+        else:
+            return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts})
+
+@login_required
+def bookingansvarlig_artister(request):
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        band = Band.objects.all()
+        if request.method == "POST":
+            selected_band = Band.objects.get(navn=request.POST['Artist'])
+            return render(request, 'webapp/bookingansvarlig_artister.html', {'artist': selected_band, 'band': band})
+
+        return render(request, 'webapp/bookingansvarlig_artister.html', {'band': band})
+    else:
+        raise PermissionDenied
+
+@login_required
+def bookingsjef_rapport(request):
+    if request.user.groups.filter(name="bookingsjef").exists():
+        scener = Scener.objects.all()
+        if request.method == "POST":
+            if 'scenerapport' in request.POST:
+                scene = Scener.objects.get(navn=request.POST['scenerapport'])
+                konserter = Konserter.objects.filter(scene=scene)
+                konsertinfo = {}
+                for konsert in konserter:
+                    kostnad = konsert.scene.kostnad
+                    for band in konsert.band.all():
+                        kostnad += band.kostnad
+                    resultat = konsert.billettpris * konsert.publikumsantall - kostnad
+                    konsertinfo[konsert] = {"kostnad":kostnad,"publikumsantall":konsert.publikumsantall,"resultat":resultat}
+                return render(request,'webapp/bookingsjef_rapport.html',{"konsertinfo":konsertinfo,"scener":scener,"valgtscene":scene})
+        return render(request, 'webapp/bookingsjef_rapport.html',{"scener":scener})
+    else:
+        raise PermissionDenied

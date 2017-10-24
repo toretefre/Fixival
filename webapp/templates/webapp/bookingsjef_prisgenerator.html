@@ -1,0 +1,26 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+
+
+  <select name="konsertliste" form="prisform">
+    {% for konsert in konserter %}
+      {% if valgtkonsert == konsert %}
+        <option value="{{konsert}}" selected>{{konsert}}</option>
+      {% else %}
+        <option value="{{konsert}}">{{konsert}}</option>
+      {% endif %}
+    {% endfor %}
+  </select>
+
+    <form method="POST" action="" id="prisform">
+      {% csrf_token %}
+      <input type="submit" value="Generer pris"/>
+    </form>
+
+
+    {% for key, item in scenecost.items %}
+      <h3>{{key}}</h3>
+      <p>{{item}}</p>
+    {% endfor %}
+{% endblock %}

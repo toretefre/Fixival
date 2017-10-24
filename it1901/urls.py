@@ -23,7 +23,7 @@ urlpatterns = [
     # index
     url(r'^$', loginviews.login, name='login'),
     url(r'^admin/', admin.site.urls),
-    url(r'^teknikker', views.tech_view, name = 'teknikker'),
+    url(r'^tekniker', views.tech_view, name = 'tekniker'),
     url(r'^arrangoer/riggeliste/',views.arrangoer_mainpage,name='webapp/riggeliste'),
     url(r'^arrangoer/sceneoversikt/', views.oversiktsview_konserter, name='webapp/sceneoversikt'),
     url(r'^login/$', loginviews.login, name='login'),
@@ -33,6 +33,12 @@ urlpatterns = [
 
     url(r'^bookingansvarlig/tidligere_konserter/$',views.bookingansvarlig_tidligere_konserter,name='webapp/bookingansvarlig_tidligere_konserter'),
     url(r'^bookingansvarlig/tekniske_behov/$',views.bookingansvarlig_tekniske_behov,name='webapp/bookingansvarlig_tekniske_behov'),
+
     url(r'^bookingansvarlig$',views.bookingansvarlig,name="bookingansvarlig"),
     url(r'^bookingansvarlig/bestilling$', views.bookingansvarlig_bestilling_view, name='webapp/bookingansvarlig_bestilling'),
+
+    url(r'^bookingansvarlig/artister/$', views.bookingansvarlig_artister, name = 'webapp/bookingansvarlig_artister'),
+    url(r'^bookingsjef$',views.bookingsjef_prisgenerator,name="bookingsjef"),
+    url(r'^bookingsjef/rapport/$',views.bookingsjef_rapport,name="webapp/bookingsjef_rapport"),
+
 ]

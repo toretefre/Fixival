@@ -1,12 +1,18 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Innlogging påkrevd</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link href='http://fonts.googleapis.com/css?family=Bevan' rel='stylesheet' type='text/css'>
 </head>
 <body>
-
+<div id="body-cover">
 {% block content %}
+    <div id="row">
+        <img src="{% static 'img/Fixival-logo.png' %}"/>
     {% if form.errors %}
         <p>Your username and password didn't match. Please try again.</p>
     {% endif %}
@@ -27,7 +33,9 @@
         <input type="submit" value="login" />
         <input type="hidden" name="next" value="{{ base.html }}" />
     </form>
+  </div>
 {% endblock %}
+</div>
 
 </body>
 </html>
