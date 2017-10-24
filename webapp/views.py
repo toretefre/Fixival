@@ -5,6 +5,7 @@ from django.urls import reverse
 from .models import Konserter, Band, Scener
 from django.shortcuts import render
 from django.utils import timezone
+from datetime import datetime
 
 # Create your views here.
 @login_required
@@ -165,10 +166,13 @@ def bookingansvarlig_tidligere_artister(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
         konserter = Konserter.objects.all()
         tidligere_konserter = []
+        scene_tabell = []
         today = timezone.now()
+        relevant_konsert = []
         for konsert in konserter:
             if konsert.dato < today:
                 tidligere_konserter.append(konsert)
+
         if request.method == 'POST':
             all_bands = Band.objects.all()
             all_bandnames = []
@@ -176,7 +180,13 @@ def bookingansvarlig_tidligere_artister(request):
                 all_bandnames.append(band.navn)
             if request.POST['search_box'] in all_bandnames:
                 band = Band.objects.get(navn= request.POST['search_box'])
-                return render(request, 'webapp/bookingansvarlig_tidligere_artister.html', {'band': band, 'tidligere_konserter':tidligere_konserter, 'konsert': konserter})
+                for konsert in tidligere_konserter:
+                    for iterable_band in konsert.band.all():
+                        if iterable_band == band:
+                          relevant_konsert.append(str(konsert.scene))
+                          relevant_konsert.append(konsert.dato.strftime("%d-%m-%Y %H:%M"))
+                datostring = ", ".join(relevant_konsert)
+                return render(request, 'webapp/bookingansvarlig_tidligere_artister.html', {'band': band, 'tidligere_konserter':tidligere_konserter, "datostring" : datostring})
             return render(request, 'webapp/bookingansvarlig_tidligere_artister.html', {'error': "Band har ikke spilt her"})
         return render(request, 'webapp/bookingansvarlig_tidligere_artister.html')
 
