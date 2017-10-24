@@ -124,9 +124,12 @@ def bookingansvarlig_tekniske_behov(request):
 @login_required
 def manager_mainpage(request):
     if request.user.groups.filter(name='manager').exists():
+        manager = Band.objects.filter(manager = request.user)
+        user = request.user
         band = Band.objects.all()
         backline = Backline.objects.all()
         behov = Tekniske_behov.objects.all()
+        backline_form = PostBackline()
 
         if request.method == 'POST' and 'submitBehov' in request.POST:
             behov_form = PostBehov(request.POST)
@@ -147,7 +150,7 @@ def manager_mainpage(request):
             else:
                 backline_form = PostBackline()
 
-        return render(request, 'webapp/manager_mainpage.html', {'band' : band, 'backline' : backline, 'behov' : behov, 'behov_form' : behov_form, 'backline_form' : backline_form})
+        return render(request, 'webapp/manager_mainpage.html', {'band' : band, 'backline' : backline, 'behov' : behov,  'user' : user, 'manager' : manager, 'behov_form' : behov_form, 'backline_form' : backline_form})
 
 def bookingsjef_prisgenerator(request):
     if request.user.groups.filter(name="bookingsjef").exists():

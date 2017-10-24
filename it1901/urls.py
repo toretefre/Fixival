@@ -23,7 +23,7 @@ urlpatterns = [
     # index
     url(r'^$', loginviews.login, name='login'),
     url(r'^admin/', admin.site.urls),
-    url(r'^manager/tekniskebehov/', views.manager_mainpage, name='webapp/manager_mainpage'),
+    url(r'^manager/tekniskebehov/', views.manager_mainpage, name='manager'),
     url(r'^tekniker', views.tech_view, name = 'tekniker'),
     url(r'^arrangoer/riggeliste/',views.arrangoer_mainpage,name='webapp/riggeliste'),
     url(r'^arrangoer/sceneoversikt/', views.oversiktsview_konserter, name='webapp/sceneoversikt'),

@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load groupAccess %}
 <!DOCTYPE html>
 <html lang="no-nb">
 <head>
@@ -25,6 +26,9 @@
 		{% endif %}
 		{% if request.user|has_group:"bookingsjef" %}
 			<li><a href="{% url 'webapp/bookingsjef_prisgenerator' %}">Prisgenerator</a></li>
+		{% endif %}
+		{% if request.user|has_group:"manager" %}
+			<li><a href="{% url 'manager' %}">Tekniske behov</a></li>
 		{% endif %}
 		<li><a href="{% url 'logout' %}">Log out</a></li>
 	</ul>

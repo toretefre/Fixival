@@ -16,18 +16,19 @@
   </form>
 
 
-<h2>"Ridere"</h2>
+<h2>Tekniske behov</h2>
 
   {% for bands in band %}
+  {% if bands.manager == user %}
     <ul>
       <li>Band: {{bands.navn}}</li>
         <ul>
         {% for backln in backline %}
           {% if backln.band == bands %}
-          <li><p>{{backln.backline}}</p></li>
+            <li><p>{{backln.backsline}}</p></li>
           {% endif %}
           {% if not backln.band %}
-          <li><p>{{backln.backline}}</p></li>
+            <li><p>{{backln.backline}}</p></li>
           {% endif %}
             <ul>
             {% for behv in behov %}
@@ -39,6 +40,7 @@
         {% endfor %}
         </ul>
     </ul>
+  {% endif %}
   {% endfor %}
 
   <p><a href="">Return to home</a></p>
