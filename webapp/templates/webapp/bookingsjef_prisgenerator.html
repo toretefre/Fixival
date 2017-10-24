@@ -5,7 +5,11 @@
 
   <select name="konsertliste" form="prisform">
     {% for konsert in konserter %}
-      <option value="{{konsert}}">{{konsert}}</option>
+      {% if valgtkonsert == konsert %}
+        <option value="{{konsert}}" selected>{{konsert}}</option>
+      {% else %}
+        <option value="{{konsert}}">{{konsert}}</option>
+      {% endif %}
     {% endfor %}
   </select>
 
