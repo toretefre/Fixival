@@ -37,6 +37,8 @@ class Konserter(models.Model):
     band = models.ManyToManyField(Band, blank=True)
     festival = models.CharField(max_length=200)
     publikumsantall = models.IntegerField(blank=True)
+    solgtebilletter = models.PositiveIntegerField(default=0)
+    billettpris = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.konsert

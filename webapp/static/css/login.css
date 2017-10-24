@@ -9,6 +9,7 @@ body,html{
 body {
 
   background-image: url("../img/Tomorrowland2015.jpg");
+  background-size: cover;
 }
 
 #body-cover {
@@ -30,6 +31,11 @@ body {
   color:#FFFFFF;
   text-shadow: -1px 0 red, 0 1px red, 1px 0 red, 0 -1px red;
 
+}
+
+#row > img {
+  display:block;
+  margin:auto;
 }
 
 
