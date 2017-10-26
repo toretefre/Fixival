@@ -1,6 +1,5 @@
 from django import forms
-<<<<<<< HEAD
-from .models import Backline, Tekniske_behov
+from .models import Backline, Tekniske_behov, Bestilling, Band
 
 class PostBehov(forms.ModelForm):
 
@@ -13,11 +12,6 @@ class PostBackline(forms.ModelForm):
     class Meta:
         model = Backline
         fields = ('band', 'backline')
-=======
-
-from .models import Bestilling, Band
-
-
 
 class PostBestilling(forms.ModelForm):
 
@@ -31,4 +25,3 @@ class PostBand(forms.ModelForm):
     class Meta:
         model = Band
         fields = {'navn'}
->>>>>>> master
