@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from .models import Konserter, Band, Scener, Bestilling
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.utils import timezone
 from .forms import PostBestilling, PostBand
 
