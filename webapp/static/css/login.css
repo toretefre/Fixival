@@ -34,6 +34,11 @@ body {
 
 }
 
+#row > img {
+  display:block;
+  margin:auto;
+}
+
 
 
 td:first-child{

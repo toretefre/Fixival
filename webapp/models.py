@@ -26,6 +26,8 @@ class Bestilling(models.Model):
     godkjent = models.NullBooleanField(choices=godkjenning, default=None)
     pris = models.PositiveIntegerField()
 
+    pris = models.IntegerField();
+
     def __str__(self):
         return self.band.navn
 
@@ -38,9 +40,27 @@ class Konserter(models.Model):
     band = models.ManyToManyField(Band, blank=True)
     festival = models.CharField(max_length=200)
     publikumsantall = models.IntegerField(blank=True)
+    solgtebilletter = models.PositiveIntegerField(default=0)
+    billettpris = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.konsert
+
+class Backline(models.Model):
+    band = models.ForeignKey('band', models.SET_NULL, blank=True, null=True,)
+    backline = models.CharField(max_length=50, db_index=True)
+
+    def __str__(self):
+        return self.backline
+
+class Tekniske_behov(models.Model):
+    band = models.ForeignKey('band', models.SET_NULL, blank=True, null=True,)
+    backline = models.ForeignKey('backline', models.SET_NULL, blank=True, null=True,)
+    behov = models.CharField(max_length=50, db_index=True)
+    opplastet = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.behov)
 
 class Scener(models.Model):
     navn = models.CharField(max_length=200)
