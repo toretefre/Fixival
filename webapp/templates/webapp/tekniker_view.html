@@ -5,7 +5,7 @@
     {% for konsert in konserts %}
         <div>
             <h3>{{ konsert }} --- {{ konsert.dato }} --- {{ konsert.scene }}</h3>
-            <h5>Band: {{konsert.band}}</h5>
+            <h5>Band: {{ konsert.band.all|unordered_list}}</h5>
             <p>Teknikere:</p>
             <p class = "teknikerList">
               {% for tekniker in konsert.teknikere.all %}
@@ -13,7 +13,13 @@
               {% endfor %}
               </p>
             <p>Tekniske behov for konserten:</p>
-
+            {{% for band in konsert.get_children %}}
+              {{% for backln in backline %}}
+                {{% if backln.band ==  %}}
+                {{% endif %}}
+              {{% endfor %}}
+            {{% endfor %}}
         </div>
+        <hr>
     {% endfor %}
 {% endblock %}

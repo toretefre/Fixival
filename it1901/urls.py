@@ -42,5 +42,4 @@ urlpatterns = [
     url(r'^bookingansvarlig/tidligere_artister/$', views.bookingansvarlig_tidligere_artister, name = 'webapp/bookingansvarlig_tidligere_artister'),
     url(r'^bookingsjef$',views.bookingsjef_prisgenerator,name="bookingsjef"),
     url(r'^bookingsjef/rapport/$',views.bookingsjef_rapport,name="webapp/bookingsjef_rapport"),
-
 ]
