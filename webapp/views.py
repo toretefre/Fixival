@@ -136,11 +136,11 @@ def bookingansvarlig_bestilling_view(request):
                 bestilling.godkjent = None
                 bestilling.save()
 
-                return render(request, 'webapp/bookingansvarlig.html', {'form': form, 'form_band': form_band,'response':"Bestilling sendt"})
+                return render(request, 'webapp/bookingansvarlig_bestilling.html', {'form': form, 'form_band': form_band,'response':"Bestilling sendt"})
         else:
             form = PostBestilling()
             form_band = PostBand()
-        return render(request, 'webapp/bookingansvarlig.html', {'form': form, 'form_band': form_band})
+        return render(request, 'webapp/bookingansvarlig_bestilling.html', {'form': form, 'form_band': form_band})
 
 def bookingsjef_prisgenerator(request):
     if request.user.groups.filter(name="bookingsjef").exists():
