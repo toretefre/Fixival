@@ -13,12 +13,12 @@
               {% endfor %}
               </p>
             <p>Tekniske behov for konserten:</p>
-            {{% for band in konsert.get_children %}}
+
               {{% for backln in backline %}}
                 {{% if backln.band ==  %}}
                 {{% endif %}}
               {{% endfor %}}
-            {{% endfor %}}
+
         </div>
         <hr>
     {% endfor %}
