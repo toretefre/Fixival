@@ -44,9 +44,7 @@ li > a{
   display:none;
 }
 
-input[type=text] {
-    @import "bootstrap";
-}
+
 
 
 
