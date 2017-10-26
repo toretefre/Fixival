@@ -55,7 +55,9 @@ def arrangoer(request):
 def tech_view(request):
     if request.user.groups.filter(name="tekniker").exists():
         konserter = Konserter.objects.filter(teknikere = request.user)
-        return render(request, "webapp/tekniker_view.html", {'konserts': konserter})
+        backline = Backline.objects.all()
+        behov = Tekniske_behov.objects.all()
+        return render(request, "webapp/tekniker_view.html", {'konserts': konserter, 'backline' : backline, 'behov' : behov})
     else:
         raise PermissionDenied
 
@@ -106,6 +108,8 @@ def bookingansvarlig_tekniske_behov(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
         godkjente_bands = []
         konserter = Konserter.objects.all()
+        backline = Backline.objects.all()
+        behov = Tekniske_behov.objects.all()
         today = timezone.now()
 
         for konsert in konserter:
@@ -116,7 +120,7 @@ def bookingansvarlig_tekniske_behov(request):
                 for band in konsert.band.all():
                     godkjente_bands.append(band)
 
-        return render(request, 'webapp/bookingansvarlig_tekniske_behov.html', {"bands":godkjente_bands})
+        return render(request, 'webapp/bookingansvarlig_tekniske_behov.html', {"bands":godkjente_bands, 'backline' : backline, 'behov' : behov})
 
     else:
         raise PermissionDenied
@@ -124,9 +128,7 @@ def bookingansvarlig_tekniske_behov(request):
 @login_required
 def manager_mainpage(request):
     if request.user.groups.filter(name='manager').exists():
-        manager = Band.objects.filter(manager = request.user)
-        user = request.user
-        band = Band.objects.all()
+        band = Band.objects.filter(manager = request.user)
         backline = Backline.objects.all()
         behov = Tekniske_behov.objects.all()
         backline_form = PostBackline()
@@ -150,7 +152,7 @@ def manager_mainpage(request):
             else:
                 backline_form = PostBackline()
 
-        return render(request, 'webapp/manager_mainpage.html', {'band' : band, 'backline' : backline, 'behov' : behov,  'user' : user, 'manager' : manager, 'behov_form' : behov_form, 'backline_form' : backline_form})
+        return render(request, 'webapp/manager_mainpage.html', {'band' : band, 'backline' : backline, 'behov' : behov, 'behov_form' : behov_form, 'backline_form' : backline_form})
 
 def bookingsjef_prisgenerator(request):
     if request.user.groups.filter(name="bookingsjef").exists():
