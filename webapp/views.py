@@ -2,7 +2,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Konserter, Band, Scener
+from .models import Konserter, Band, Scener, Bestilling
 from django.shortcuts import render
 from django.utils import timezone
 from datetime import datetime
@@ -208,5 +208,31 @@ def bookingsjef_rapport(request):
                     konsertinfo[konsert] = {"kostnad":kostnad,"publikumsantall":konsert.publikumsantall,"resultat":resultat}
                 return render(request,'webapp/bookingsjef_rapport.html',{"konsertinfo":konsertinfo,"scener":scener,"valgtscene":scene})
         return render(request, 'webapp/bookingsjef_rapport.html',{"scener":scener})
+    else:
+        raise PermissionDenied
+
+
+def bookingsjef_oversikt(request):
+    if request.user.groups.filter(name="bookingsjef").exists():
+        today = timezone.now()
+        relevante_bestillinger = Bestilling.objects.filter(dato__range=[today, today + timezone.timedelta(days=31)])
+        godkjente_bestillinger = relevante_bestillinger.filter(godkjent = True)
+        gb_datoer_stygt = []
+        sendte_bestillinger = relevante_bestillinger.filter(godkjent = None)
+        sb_datoer_stygt = []
+
+        for bestilling in godkjente_bestillinger:
+            gb_datoer_stygt.append(bestilling.dato)
+        for bestilling in sendte_bestillinger:
+            sb_datoer_stygt.append(bestilling.dato)
+
+        alle_datoer_stygt = [today + timezone.timedelta(days=x) for x in range(31)]
+        alle_datoer = [datetime.strftime(d, '%m-%d-%Y') for d in alle_datoer_stygt]
+        gb_datoer = [datetime.strftime(d, '%m-%d-%Y') for d in gb_datoer_stygt]
+        sb_datoer = [datetime.strftime(d, '%m-%d-%Y') for d in sb_datoer_stygt]
+        ledige_datoer = list(set(alle_datoer) - set(gb_datoer))
+
+
+        return render(request, 'webapp/bookingsjef_oversikt.html',{"godkjente_bestillinger": godkjente_bestillinger, "gb_datoer":gb_datoer, "sendte_bestillinger": sendte_bestillinger, "sb_datoer":sb_datoer, "ledige_datoer": ledige_datoer})
     else:
         raise PermissionDenied
