@@ -30,11 +30,16 @@ urlpatterns = [
     url(r'^logout/$', loginviews.logout, name='logout', kwargs={'next_page': '/'}),
     url(r'^redir/',views.redirect_login,name='redirect'),
     url(r'^arrangoer',views.arrangoer,name='arrangoer'),
-    url(r'^bookingansvarlig ',views.bookingansvarlig,name='bookingansvarlig'),
+
     url(r'^bookingansvarlig/tidligere_konserter/$',views.bookingansvarlig_tidligere_konserter,name='webapp/bookingansvarlig_tidligere_konserter'),
     url(r'^bookingansvarlig/tekniske_behov/$',views.bookingansvarlig_tekniske_behov,name='webapp/bookingansvarlig_tekniske_behov'),
+
+    url(r'^bookingansvarlig/$',views.bookingansvarlig,name="bookingansvarlig"),
+    url(r'^bookingansvarlig/bestilling/$', views.bookingansvarlig_bestilling_view, name='webapp/bookingansvarlig_bestilling'),
+
     url(r'^bookingansvarlig/artister/$', views.bookingansvarlig_artister, name = 'webapp/bookingansvarlig_artister'),
     url(r'^bookingansvarlig/tidligere_artister/$', views.bookingansvarlig_tidligere_artister, name = 'webapp/bookingansvarlig_tidligere_artister'),
     url(r'^bookingsjef$',views.bookingsjef_prisgenerator,name="bookingsjef"),
     url(r'^bookingsjef/rapport/$',views.bookingsjef_rapport,name="webapp/bookingsjef_rapport"),
+
 ]

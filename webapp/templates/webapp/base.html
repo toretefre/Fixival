@@ -20,8 +20,10 @@
 			{% endif %}
 			<li><a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a></li>
 			<li><a href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a></li>
-            <li><a href="{% url 'webapp/bookingansvarlig_artister' %}">Artist</a></li>
-            <li><a href="{% url 'webapp/bookingansvarlig_tidligere_artister' %}">Tidligere artister</a></li>
+			<li><a href="{% url 'webapp/bookingansvarlig_bestilling' %}">Bestilling</a></li>
+      <li><a href="{% url 'webapp/bookingansvarlig_artister' %}">Artist</a></li>
+      <li><a href="{% url 'webapp/bookingansvarlig_tidligere_artister' %}">Tidligere artister</a></li>
+
 
 		{% endif %}
 		{% if request.user|has_group:"tekniker" %}
@@ -34,6 +36,7 @@
 		<li><a href="{% url 'logout' %}">Log out</a></li>
 	</ul>
 	<div id="content">
+
 	{% block content %}
 	{% endblock %}
 	</div>

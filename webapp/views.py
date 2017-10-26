@@ -2,9 +2,10 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Konserter, Band, Scener
+from .models import Konserter, Band, Scener, Bestilling
 from django.shortcuts import render
 from django.utils import timezone
+from .forms import PostBestilling, PostBand
 from datetime import datetime
 
 # Create your views here.
@@ -100,7 +101,6 @@ def bookingansvarlig_tidligere_konserter(request):
     else:
         raise PermissionDenied
 
-
 @login_required
 def bookingansvarlig_tekniske_behov(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
@@ -121,6 +121,28 @@ def bookingansvarlig_tekniske_behov(request):
         raise PermissionDenied
 
 @login_required
+def bookingansvarlig_bestilling_view(request):
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        if request.method == "POST":
+            form = PostBestilling(request.POST)
+            form_band = PostBand(request.POST)
+            if form.is_valid() and form_band.is_valid():
+                bestilling = form.save(commit=False)
+                band = form_band.save(commit=False)
+                band.kostnad = 0         #Default verdier
+                band.rating = 0          #Default verdier
+                band.manager = request.user
+                band.save()
+                bestilling.band = band
+                bestilling.godkjent = None
+                bestilling.save()
+
+                return render(request, 'webapp/bookingansvarlig_bestilling.html', {'form': form, 'form_band': form_band,'response':"Bestilling sendt"})
+        else:
+            form = PostBestilling()
+            form_band = PostBand()
+        return render(request, 'webapp/bookingansvarlig_bestilling.html', {'form': form, 'form_band': form_band})
+
 def bookingsjef_prisgenerator(request):
     if request.user.groups.filter(name="bookingsjef").exists():
         konserts = Konserter.objects.all()
