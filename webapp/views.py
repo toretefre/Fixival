@@ -2,10 +2,11 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Konserter, Band, Scener, Tekniske_behov, Backline
+from .models import Konserter, Band, Scener, Tekniske_behov, Backline, Bestilling
 from django.shortcuts import render, redirect
-from .forms import PostBehov, PostBackline
+from .forms import PostBehov, PostBackline, PostBestilling, PostBand
 from django.utils import timezone
+from datetime import datetime
 
 # Create your views here.
 @login_required
@@ -102,7 +103,6 @@ def bookingansvarlig_tidligere_konserter(request):
     else:
         raise PermissionDenied
 
-
 @login_required
 def bookingansvarlig_tekniske_behov(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
@@ -126,6 +126,28 @@ def bookingansvarlig_tekniske_behov(request):
         raise PermissionDenied
 
 @login_required
+def bookingansvarlig_bestilling_view(request):
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        if request.method == "POST":
+            form = PostBestilling(request.POST)
+            form_band = PostBand(request.POST)
+            if form.is_valid() and form_band.is_valid():
+                bestilling = form.save(commit=False)
+                band = form_band.save(commit=False)
+                band.kostnad = 0         #Default verdier
+                band.rating = 0          #Default verdier
+                band.manager = request.user
+                band.save()
+                bestilling.band = band
+                bestilling.godkjent = None
+                bestilling.save()
+
+                return render(request, 'webapp/bookingansvarlig_bestilling.html', {'form': form, 'form_band': form_band,'response':"Bestilling sendt"})
+        else:
+            form = PostBestilling()
+            form_band = PostBand()
+        return render(request, 'webapp/bookingansvarlig_bestilling.html', {'form': form, 'form_band': form_band})
+
 def manager_mainpage(request):
     if request.user.groups.filter(name='manager').exists():
         band = Band.objects.filter(manager = request.user)
@@ -153,6 +175,7 @@ def manager_mainpage(request):
                 backline_form = PostBackline()
 
         return render(request, 'webapp/manager_mainpage.html', {'band' : band, 'backline' : backline, 'behov' : behov, 'behov_form' : behov_form, 'backline_form' : backline_form})
+
 
 def bookingsjef_prisgenerator(request):
     if request.user.groups.filter(name="bookingsjef").exists():
@@ -196,6 +219,35 @@ def bookingansvarlig_artister(request):
         raise PermissionDenied
 
 @login_required
+def bookingansvarlig_tidligere_artister(request):
+    if request.user.groups.filter(name="bookingansvarlig").exists():
+        konserter = Konserter.objects.all()
+        tidligere_konserter = []
+        scene_tabell = []
+        today = timezone.now()
+        relevant_konsert = []
+        for konsert in konserter:
+            if konsert.dato < today:
+                tidligere_konserter.append(konsert)
+
+        if request.method == 'POST':
+            all_bands = Band.objects.all()
+            all_bandnames = []
+            for band in all_bands:
+                all_bandnames.append(band.navn)
+            if request.POST['search_box'] in all_bandnames:
+                band = Band.objects.get(navn= request.POST['search_box'])
+                for konsert in tidligere_konserter:
+                    for iterable_band in konsert.band.all():
+                        if iterable_band == band:
+                          relevant_konsert.append(str(konsert.scene))
+                          relevant_konsert.append(konsert.dato.strftime("%d-%m-%Y %H:%M"))
+                datostring = ", ".join(relevant_konsert)
+                return render(request, 'webapp/bookingansvarlig_tidligere_artister.html', {'band': band, 'tidligere_konserter':tidligere_konserter, "datostring" : datostring})
+            return render(request, 'webapp/bookingansvarlig_tidligere_artister.html', {'error': "Band har ikke spilt her"})
+        return render(request, 'webapp/bookingansvarlig_tidligere_artister.html')
+
+
 def bookingsjef_rapport(request):
     if request.user.groups.filter(name="bookingsjef").exists():
         scener = Scener.objects.all()
