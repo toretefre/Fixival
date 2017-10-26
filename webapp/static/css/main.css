@@ -43,3 +43,11 @@ li > a{
 .sjangerkonserter{
   display:none;
 }
+
+input[type=text] {
+    @import "bootstrap";
+}
+
+
+
+

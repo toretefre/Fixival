@@ -1,14 +1,16 @@
 {% extends 'webapp/base.html' %}
 
 {% block content %}
+<h1>Legg inn bestilling her for godkjenning til bookingssjef</h1>
 <form method="POST">
+    <div class="form-group">
 
-  <h1>Legg inn bestilling her for godkjenning til bookingssjef</h1>
-    {% csrf_token %}
+      {% csrf_token %}
 
-    {{form_band.as_p}}
-    {{form.as_p}}
-    <input type="submit" value="Send til godkjenning">
+      {{form_band.as_p}}
+      {{form.as_p}}
+      <input type="submit" value="Send til godkjenning" class="btn btn-default">
+    </div>
 </form>
   <p>{{response}}</p>
 {% endblock %}
