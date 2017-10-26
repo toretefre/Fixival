@@ -125,6 +125,7 @@ def bookingsjef_prisgenerator(request):
     if request.user.groups.filter(name="bookingsjef").exists():
         konserts = Konserter.objects.all()
         if request.method == "POST":
+            relevantKonsert=""
             if 'konsertliste' in request.POST:
                 relevantKonsert = Konserter.objects.get(konsert=request.POST["konsertliste"])
                 bandcost = 0
@@ -155,9 +156,10 @@ def bookingansvarlig_artister(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
         band = Band.objects.all()
         if request.method == "POST":
-            selected_band = Band.objects.get(navn=request.POST['Artist'])
-            return render(request, 'webapp/bookingansvarlig_artister.html', {'artist': selected_band, 'band': band})
-
+            if "Artist" in request.POST:
+                selected_band = Band.objects.get(navn=request.POST['Artist'])
+                return render(request, 'webapp/bookingansvarlig_artister.html', {'artist': selected_band, 'band': band})
+            return render(request, 'webapp/bookingansvarlig_artister.html', {'band': band,"error":"Ingen band valgt"})
         return render(request, 'webapp/bookingansvarlig_artister.html', {'band': band})
     else:
         raise PermissionDenied
