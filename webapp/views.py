@@ -2,9 +2,10 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Konserter, Band, Scener
+from .models import Konserter, Band, Scener, Bestilling
 from django.shortcuts import render
 from django.utils import timezone
+from datetime import datetime
 
 # Create your views here.
 @login_required
@@ -156,5 +157,46 @@ def bookingansvarlig_artister(request):
             return render(request, 'webapp/bookingansvarlig_artister.html', {'artist': selected_band, 'band': band})
 
         return render(request, 'webapp/bookingansvarlig_artister.html', {'band': band})
+    else:
+        raise PermissionDenied
+
+@login_required
+def bookingsjef_bandtilbud(request):
+    if request.user.groups.filter(name="bookingsjef").exists():
+        tilbud = Bestilling.objects.filter(godkjent=None)
+        if request.method == "POST":
+            respons = ""
+            months = {"januar":"01","februar":"02","mars":"03","april":"04","mai":"05","juni":"06","juli":"07","august":"08","september":"09","oktober":"10","november":"11","desember":"12"}
+            valgt_band = Band.objects.get(navn=request.POST["tilbud"])
+            bestillingsdato = request.POST["dato"]
+            datolist = bestillingsdato.split(" ")
+            datolist[1] = months[datolist[1]]
+            bestillingsdato = " ".join(datolist)
+            valgt_bestilling = Bestilling.objects.get(band=valgt_band,dato=datetime.strptime(bestillingsdato,"%d. %m %Y %H:%M"))
+            if request.POST["answer"] == "True":
+                respons = "Bestilling godkjent"
+                valgt_bestilling.godkjent = True
+                valgt_bestilling.save()
+                valgt_band.kostnad = valgt_bestilling.pris
+                valgt_band.save()
+                if Konserter.objects.filter(dato=valgt_bestilling.dato).exists():
+                    konsert = Konserter.objects.get(dato=valgt_bestilling.dato)
+                    konsert.band.add(valgt_band)
+                    konsert.save()
+                else:
+                    konsert=Konserter.objects.create(
+                    scene = valgt_bestilling.scene,
+                    dato = valgt_bestilling.dato,
+                    konsert = valgt_band.navn,
+                    publikumsantall = 0,
+                    festival="UKA")
+                    konsert.save()
+            else:
+                respons = "Bestilling avslått"
+                valgt_bestilling.godkjent = False
+                valgt_bestilling.save()
+            return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud":tilbud, "respons":respons})
+
+        return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud": tilbud})
     else:
         raise PermissionDenied

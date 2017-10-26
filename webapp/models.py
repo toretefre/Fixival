@@ -21,9 +21,10 @@ class Band(models.Model):
 class Bestilling(models.Model):
     dato = models.DateTimeField(blank=True, null=True)
     band = models.ForeignKey('Band')
-    scene = models.CharField(max_length=200)
+    scene = models.ForeignKey('Scener')
     godkjenning = ((True, 'Godkjent'),(False, 'Ikke godkjent'),(None, 'Ikke vurdert enda'))
     godkjent = models.NullBooleanField(choices=godkjenning, default=None)
+    pris = models.PositiveIntegerField()
 
     def __str__(self):
         return self.band.navn

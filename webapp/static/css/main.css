@@ -6,7 +6,7 @@ body, html {
 
 ul{
   margin:0;
-  background-color: #FF0000;
+  background-color:#FF0000;
   padding:1.5%;
   display: flex;
   justify-content: center;

@@ -1,0 +1,25 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+    <h2>Tilbud til band som er forberedt av bookingansvarlige:</h2>
+    <p><i>{{ respons }}</i></p>
+    {% for tilbud in tilbud %}
+        <div class="bandtilbuddiv">
+            <p><b>Band/Artist: </b>{{ tilbud.band }}<br>
+                <b>Pris: </b>{{ tilbud.pris }}<br>
+                <b>Scene: </b>{{ tilbud.scene }}<br>
+                <b>Dato: </b>{{ tilbud.dato }}</p>
+
+            <form id="bandtilbudsform" method="POST">{% csrf_token %}
+                <p><input type="radio" name="answer" value="True" required/>Godkjenn
+                <input type="radio" name="answer" value="False" required/>Avslå</p>
+                <input type="submit" name="submit" value="Ok"/>
+                <input type="text" name="tilbud" value="{{ tilbud }}" style="display: none" readonly>
+                <input type="text" name="dato" value="{{ tilbud.dato }}" style="display: none" readonly>
+            </form>
+        </div>
+    {% endfor %}
+    {% if not tilbud%}
+        <p>Det er for øyeblikket ingen tilbud som trenger godkjenning.</p>
+    {% endif %}
+{% endblock %}
