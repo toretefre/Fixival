@@ -33,6 +33,9 @@
 			<li><a href="{% url 'bookingsjef' %}">Prisgenerator</a></li>
 			<li><a href="{% url 'webapp/bookingsjef_rapport' %}">Konsertrapporter</a></li>
 		{% endif %}
+		{% if request.user|has_group:"manager" %}
+			<li><a href="{% url 'webapp/manager_mainpage' %}">Tekniske behov</a></li>
+		{% endif %}
 		<li><a href="{% url 'logout' %}">Log out</a></li>
 	</ul>
 	<div id="content">

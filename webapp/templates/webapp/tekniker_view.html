@@ -4,13 +4,16 @@
     <h1>Mine konserter</h1>
     {% for konsert in konserts %}
         <div>
-            <h3>{{ konsert }} {{ konsert.dato }} {{ konsert.scene }}</h3>
+            <h3>{{ konsert }} --- {{ konsert.dato }} --- {{ konsert.scene }}</h3>
+            <h5>Band: {{konsert.band}}</h5>
             <p>Teknikere:</p>
             <p class = "teknikerList">
               {% for tekniker in konsert.teknikere.all %}
               <li>{{ tekniker }}</li>
               {% endfor %}
               </p>
+            <p>Tekniske behov for konserten:</p>
+
         </div>
     {% endfor %}
 {% endblock %}
