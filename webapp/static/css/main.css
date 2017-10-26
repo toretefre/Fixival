@@ -5,12 +5,7 @@ body, html {
 }
 
 ul{
-  margin:0;
-  background-color: #FF0000;
-  padding:1.5%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
 }
 
 li{
@@ -37,9 +32,18 @@ li > a{
 }
 
 .utstyrdiv {
-  display:none;
+  display: block;
 }
 
 .sjangerkonserter{
   display:none;
+}
+
+#navbar{
+  margin:0;
+  background-color: #FF0000;
+  padding:1.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
