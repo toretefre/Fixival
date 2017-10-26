@@ -113,5 +113,5 @@ projectenv/
 # mypy
 .mypy_cache/
 
-# database
+# Database
 db.sqlite3
