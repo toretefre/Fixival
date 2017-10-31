@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -
+
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -118,7 +120,8 @@ def bookingansvarlig_tekniske_behov(request):
                 # Hent alle band derfra fordi der ligger bare godkjente band
                         # Har gått gjennom bestillingen
                 for band in konsert.band.all():
-                    godkjente_bands.append(band)
+                    if band not in godkjente_bands:
+                        godkjente_bands.append(band)
 
         return render(request, 'webapp/bookingansvarlig_tekniske_behov.html', {"bands":godkjente_bands, 'backline' : backline, 'behov' : behov})
 
@@ -132,15 +135,22 @@ def bookingansvarlig_bestilling_view(request):
             form = PostBestilling(request.POST)
             form_band = PostBand(request.POST)
             if form.is_valid() and form_band.is_valid():
-                bestilling = form.save(commit=False)
-                band = form_band.save(commit=False)
-                band.kostnad = 0         #Default verdier
-                band.rating = 0          #Default verdier
-                band.manager = request.user
-                band.save()
-                bestilling.band = band
-                bestilling.godkjent = None
-                bestilling.save()
+                if not Band.objects.filter(navn=request.POST['navn']).exists():
+                    bestilling = form.save(commit=False)
+                    band = form_band.save(commit=False)
+                    band.kostnad = 0         #Default verdier
+                    band.rating = 0          #Default verdier
+                    band.manager = request.user
+                    band.save()
+                    bestilling.band = band
+                    bestilling.godkjent = None
+                    bestilling.save()
+                else:
+                    bestilling = form.save(commit=False)
+                    band = Band.objects.get(navn=request.POST['navn'])
+                    bestilling.band = band
+                    bestilling.godkjent = None
+                    bestilling.save()
 
                 return render(request, 'webapp/bookingansvarlig_bestilling.html', {'form': form, 'form_band': form_band,'response':"Bestilling sendt"})
         else:
@@ -247,10 +257,11 @@ def bookingsjef_bandtilbud(request):
                 else:
                     konsert=Konserter.objects.create(
                     scene = valgt_bestilling.scene,
-                    dato = valgt_bestilling.dato,
                     konsert = valgt_band.navn,
                     publikumsantall = 0,
                     festival="UKA")
+                    konsert.save()
+                    konsert.band.add(valgt_band)
                     konsert.save()
             else:
                 respons = "Bestilling avslått"
