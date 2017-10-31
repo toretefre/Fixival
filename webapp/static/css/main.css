@@ -4,15 +4,6 @@ body, html {
   height:100%;
 }
 
-ul{
-  margin:0;
-  background-color: #FF0000;
-  padding:1.5%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 li{
   display:inline-block;
   margin-left:2%;
@@ -37,15 +28,19 @@ li > a{
 }
 
 .utstyrdiv {
-  display:none;
+  display: block;
 }
 
 .sjangerkonserter{
   display:none;
 }
 
-
-
-
-
+#navbar{
+  margin:0;
+  background-color: #FF0000;
+  padding:1.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 

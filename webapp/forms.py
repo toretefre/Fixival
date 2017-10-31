@@ -1,8 +1,17 @@
 from django import forms
+from .models import Backline, Tekniske_behov, Bestilling, Band
 
-from .models import Bestilling, Band
+class PostBehov(forms.ModelForm):
 
+    class Meta:
+        model = Tekniske_behov
+        fields = ('band', 'backline', 'behov')
 
+class PostBackline(forms.ModelForm):
+
+    class Meta:
+        model = Backline
+        fields = ('band', 'backline')
 
 class PostBestilling(forms.ModelForm):
 
