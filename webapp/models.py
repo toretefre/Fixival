@@ -21,9 +21,10 @@ class Band(models.Model):
 class Bestilling(models.Model):
     dato = models.DateTimeField(blank=True, null=True)
     band = models.ForeignKey('Band')
-    scene = models.CharField(max_length=200)
+    scene = models.ForeignKey('Scener')
     godkjenning = ((True, 'Godkjent'),(False, 'Ikke godkjent'),(None, 'Ikke vurdert enda'))
     godkjent = models.NullBooleanField(choices=godkjenning, default=None)
+    pris = models.PositiveIntegerField()
 
     pris = models.IntegerField();
 
@@ -44,6 +45,22 @@ class Konserter(models.Model):
 
     def __str__(self):
         return self.konsert
+
+class Backline(models.Model):
+    band = models.ForeignKey('band', models.SET_NULL, blank=True, null=True,)
+    backline = models.CharField(max_length=50, db_index=True)
+
+    def __str__(self):
+        return self.backline
+
+class Tekniske_behov(models.Model):
+    band = models.ForeignKey('band', models.SET_NULL, blank=True, null=True,)
+    backline = models.ForeignKey('backline', models.SET_NULL, blank=True, null=True,)
+    behov = models.CharField(max_length=50, db_index=True)
+    opplastet = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.behov)
 
 class Scener(models.Model):
     navn = models.CharField(max_length=200)

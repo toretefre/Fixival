@@ -2,10 +2,10 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from .models import Konserter, Band, Scener, Bestilling
-from django.shortcuts import render
+from .models import Konserter, Band, Scener, Tekniske_behov, Backline, Bestilling
+from django.shortcuts import render, redirect
+from .forms import PostBehov, PostBackline, PostBestilling, PostBand
 from django.utils import timezone
-from .forms import PostBestilling, PostBand
 from datetime import datetime
 
 # Create your views here.
@@ -56,7 +56,9 @@ def arrangoer(request):
 def tech_view(request):
     if request.user.groups.filter(name="tekniker").exists():
         konserter = Konserter.objects.filter(teknikere = request.user)
-        return render(request, "webapp/tekniker_view.html", {'konserts': konserter})
+        backline = Backline.objects.all()
+        behov = Tekniske_behov.objects.all()
+        return render(request, "webapp/tekniker_view.html", {'konserts': konserter, 'backline' : backline, 'behov' : behov})
     else:
         raise PermissionDenied
 
@@ -106,6 +108,8 @@ def bookingansvarlig_tekniske_behov(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
         godkjente_bands = []
         konserter = Konserter.objects.all()
+        backline = Backline.objects.all()
+        behov = Tekniske_behov.objects.all()
         today = timezone.now()
 
         for konsert in konserter:
@@ -116,7 +120,8 @@ def bookingansvarlig_tekniske_behov(request):
                 for band in konsert.band.all():
                     godkjente_bands.append(band)
 
-        return render(request, 'webapp/bookingansvarlig_tekniske_behov.html', {"bands":godkjente_bands})
+        return render(request, 'webapp/bookingansvarlig_tekniske_behov.html', {"bands":godkjente_bands, 'backline' : backline, 'behov' : behov})
+
     else:
         raise PermissionDenied
 
@@ -143,10 +148,40 @@ def bookingansvarlig_bestilling_view(request):
             form_band = PostBand()
         return render(request, 'webapp/bookingansvarlig_bestilling.html', {'form': form, 'form_band': form_band})
 
+def manager_mainpage(request):
+    if request.user.groups.filter(name='manager').exists():
+        band = Band.objects.filter(manager = request.user)
+        backline = Backline.objects.all()
+        behov = Tekniske_behov.objects.all()
+        backline_form = PostBackline()
+
+        if request.method == 'POST' and 'submitBehov' in request.POST:
+            behov_form = PostBehov(request.POST)
+            if behov_form.is_valid():
+                behov = behov_form.save(commit=False)
+                behov.save()
+                return redirect('webapp/manager_mainpage.html', pk=behov.pk)
+        else:
+            behov_form = PostBehov()
+
+        if request.method == 'POST' and 'submitBackline' in request.POST:
+            backline_form = PostBackline(request.POST)
+            if backline_form.is_valid():
+                backline = backline_form.save(commit=False)
+                backline.save()
+                return redirect('webapp/manager_mainpage.html', pk=backline.pk)
+
+            else:
+                backline_form = PostBackline()
+
+        return render(request, 'webapp/manager_mainpage.html', {'band' : band, 'backline' : backline, 'behov' : behov, 'behov_form' : behov_form, 'backline_form' : backline_form})
+
+
 def bookingsjef_prisgenerator(request):
     if request.user.groups.filter(name="bookingsjef").exists():
         konserts = Konserter.objects.all()
         if request.method == "POST":
+            relevantKonsert=""
             if 'konsertliste' in request.POST:
                 relevantKonsert = Konserter.objects.get(konsert=request.POST["konsertliste"])
                 bandcost = 0
@@ -177,14 +212,53 @@ def bookingansvarlig_artister(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
         band = Band.objects.all()
         if request.method == "POST":
-            selected_band = Band.objects.get(navn=request.POST['Artist'])
-            return render(request, 'webapp/bookingansvarlig_artister.html', {'artist': selected_band, 'band': band})
-
+            if "Artist" in request.POST:
+                selected_band = Band.objects.get(navn=request.POST['Artist'])
+                return render(request, 'webapp/bookingansvarlig_artister.html', {'artist': selected_band, 'band': band})
+            return render(request, 'webapp/bookingansvarlig_artister.html', {'band': band,"error":"Ingen band valgt"})
         return render(request, 'webapp/bookingansvarlig_artister.html', {'band': band})
     else:
         raise PermissionDenied
 
 @login_required
+def bookingsjef_bandtilbud(request):
+    if request.user.groups.filter(name="bookingsjef").exists():
+        tilbud = Bestilling.objects.filter(godkjent=None)
+        if request.method == "POST":
+            respons = ""
+            months = {"januar":"01","februar":"02","mars":"03","april":"04","mai":"05","juni":"06","juli":"07","august":"08","september":"09","oktober":"10","november":"11","desember":"12"}
+            valgt_band = Band.objects.get(navn=request.POST["tilbud"])
+            bestillingsdato = request.POST["dato"]
+            datolist = bestillingsdato.split(" ")
+            datolist[1] = months[datolist[1]]
+            bestillingsdato = " ".join(datolist)
+            valgt_bestilling = Bestilling.objects.get(band=valgt_band,dato=datetime.strptime(bestillingsdato,"%d. %m %Y %H:%M"))
+            if request.POST["answer"] == "True":
+                respons = "Bestilling godkjent"
+                valgt_bestilling.godkjent = True
+                valgt_bestilling.save()
+                valgt_band.kostnad = valgt_bestilling.pris
+                valgt_band.save()
+                if Konserter.objects.filter(dato=valgt_bestilling.dato).exists():
+                    konsert = Konserter.objects.get(dato=valgt_bestilling.dato)
+                    konsert.band.add(valgt_band)
+                    konsert.save()
+                else:
+                    konsert=Konserter.objects.create(
+                    scene = valgt_bestilling.scene,
+                    dato = valgt_bestilling.dato,
+                    konsert = valgt_band.navn,
+                    publikumsantall = 0,
+                    festival="UKA")
+                    konsert.save()
+            else:
+                respons = "Bestilling avslått"
+                valgt_bestilling.godkjent = False
+                valgt_bestilling.save()
+            return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud":tilbud, "respons":respons})
+
+        return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud": tilbud})
+
 def bookingansvarlig_tidligere_artister(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
         konserter = Konserter.objects.all()
@@ -230,5 +304,31 @@ def bookingsjef_rapport(request):
                     konsertinfo[konsert] = {"kostnad":kostnad,"publikumsantall":konsert.publikumsantall,"resultat":resultat}
                 return render(request,'webapp/bookingsjef_rapport.html',{"konsertinfo":konsertinfo,"scener":scener,"valgtscene":scene})
         return render(request, 'webapp/bookingsjef_rapport.html',{"scener":scener})
+    else:
+        raise PermissionDenied
+
+
+def bookingsjef_oversikt(request):
+    if request.user.groups.filter(name="bookingsjef").exists():
+        today = timezone.now()
+        relevante_bestillinger = Bestilling.objects.filter(dato__range=[today, today + timezone.timedelta(days=31)])
+        godkjente_bestillinger = relevante_bestillinger.filter(godkjent = True)
+        gb_datoer_stygt = []
+        sendte_bestillinger = relevante_bestillinger.filter(godkjent = None)
+        sb_datoer_stygt = []
+
+        for bestilling in godkjente_bestillinger:
+            gb_datoer_stygt.append(bestilling.dato)
+        for bestilling in sendte_bestillinger:
+            sb_datoer_stygt.append(bestilling.dato)
+
+        alle_datoer_stygt = [today + timezone.timedelta(days=x) for x in range(31)]
+        alle_datoer = [datetime.strftime(d, '%m-%d-%Y') for d in alle_datoer_stygt]
+        gb_datoer = [datetime.strftime(d, '%m-%d-%Y') for d in gb_datoer_stygt]
+        sb_datoer = [datetime.strftime(d, '%m-%d-%Y') for d in sb_datoer_stygt]
+        ledige_datoer = list(set(alle_datoer) - set(gb_datoer))
+
+
+        return render(request, 'webapp/bookingsjef_oversikt.html',{"godkjente_bestillinger": godkjente_bestillinger, "gb_datoer":gb_datoer, "sendte_bestillinger": sendte_bestillinger, "sb_datoer":sb_datoer, "ledige_datoer": ledige_datoer})
     else:
         raise PermissionDenied

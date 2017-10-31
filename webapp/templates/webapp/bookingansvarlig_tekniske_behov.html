@@ -5,10 +5,25 @@
     <div>
       <h1 class="bandheader">{{band.navn}}</h1>
       <div class="utstyrdiv">
-        <p>Utstyr:</p>
-        <p>{{ band.utstyr|linebreaksbr }}</p>
+        <h3>Utstyr:</h3>
+        <ul>
+          {% for backln in backline %}
+          {% if backln.band == band %}
+            <li><p>{{backln}}</p></li>
+              <ul>
+                {% for behv in behov %}
+                {% if behv.backline == backln and behv.band == band %}
+                  <li><p>{{behv.behov}}</p></li>
+                {% endif %}
+                {% endfor %}
+              </ul>
+          {% endif %}
+          {% endfor %}
+        </ul>
       </div>
     </div>
+  {% empty %}
+  <p>Ingen band er registrert i systemet. Om du tror dette er feil, kontakt systemansvarlig.</p>
   {% endfor %}
 
 {% endblock %}

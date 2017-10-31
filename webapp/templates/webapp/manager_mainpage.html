@@ -1,0 +1,45 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+  <h1>Tekniske behov</h1>
+
+  <h3>Legg til backline</h3>
+  <form method="POST" class="post-form">{% csrf_token %}
+    {{ backline_form.as_p }}
+    <button type="submit" name="submitBackline">Save</button>
+  </form>
+
+  <h3>Legg til behov</h3>
+  <form method="POST" class="post-form">{% csrf_token %}
+    {{ behov_form.as_p }}
+    <button type="submit" name="submitBehov">Save</button>
+  </form>
+
+
+<h2>Tekniske behov</h2>
+
+  {% for bands in band %}
+    <ul>
+      <li>Band: {{bands.navn}}</li>
+        <ul>
+        {% for backln in backline %}
+          {% if backln.band == bands %}
+            <li><p>{{backln.backline}}</p></li>
+          {% endif %}
+          {% if not backln.band %}
+            <li><p>{{backln.backline}}</p></li>
+          {% endif %}
+            <ul>
+            {% for behv in behov %}
+              {% if behv.backline == backln and behv.band == bands %}
+              <li><p>{{behv.behov}}</p></li>
+              {% endif %}
+            {% endfor %}
+            </ul>
+        {% endfor %}
+        </ul>
+    </ul>
+    <hr>
+  {% endfor %}
+
+{% endblock %}

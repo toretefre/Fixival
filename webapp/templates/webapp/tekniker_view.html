@@ -4,13 +4,25 @@
     <h1>Mine konserter</h1>
     {% for konsert in konserts %}
         <div>
-            <h3>{{ konsert }} {{ konsert.dato }} {{ konsert.scene }}</h3>
+            <h3>{{ konsert }} --- {{ konsert.dato }} --- {{ konsert.scene }}</h3>
+            <h5>Band: {{ konsert.band.all|unordered_list}}</h5>
             <p>Teknikere:</p>
             <p class = "teknikerList">
               {% for tekniker in konsert.teknikere.all %}
               <li>{{ tekniker }}</li>
+              {% empty %}
+              <li>Ingen teknikere satt opp på denne konserten.</li>
               {% endfor %}
               </p>
+            <p>Tekniske behov for konserten:</p>
+
+
         </div>
+
+        <hr>
+
+    {% empty %}
+    <p>Du er ikke satt opp på noen konserter enda.</p>
+
     {% endfor %}
 {% endblock %}

@@ -36,7 +36,12 @@
 		{% endif %}
 		{% if request.user|has_group:"bookingsjef" %}
 			<li><a href="{% url 'bookingsjef' %}">Prisgenerator</a></li>
+            <li><a href="{% url 'webapp/bookingsjef_bandtilbud' %}">Bandtilbud</a></li>
 			<li><a href="{% url 'webapp/bookingsjef_rapport' %}">Konsertrapporter</a></li>
+			<li><a href="{% url 'webapp/bookingsjef_oversikt' %}">Oversikt</a></li>
+		{% endif %}
+		{% if request.user|has_group:"manager" %}
+			<li><a href="{% url 'manager' %}">Tekniske behov</a></li>
 		{% endif %}
 		<li><a href="{% url 'logout' %}">Log out</a></li>
 	</ul>
