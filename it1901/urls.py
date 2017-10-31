@@ -40,7 +40,6 @@ urlpatterns = [
     url(r'^bookingsjef$',views.bookingsjef_prisgenerator,name="bookingsjef"),
     url(r'^bookingsjef/rapport/$',views.bookingsjef_rapport,name="webapp/bookingsjef_rapport"),
     url(r'^bookingsjef/bandtilbud/',views.bookingsjef_bandtilbud,name="webapp/bookingsjef_bandtilbud"),
-
     url(r'^bookingsjef/oversikt/$',views.bookingsjef_oversikt,name="webapp/bookingsjef_oversikt")
 ]
 
