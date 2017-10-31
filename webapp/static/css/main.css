@@ -2,6 +2,11 @@ body, html {
   margin:0;
   width:100%;
   height:100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
 }
 
 li{
@@ -12,15 +17,17 @@ li{
 li > a{
   color: #FFFFFF;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: none;
   font-size: 1.2em;
 }
 
 #content{
   padding:1%;
-  background-color: rgba(244,212,66,0.1);
+  background-color: #F7F3F2;
   height:97%;
   text-align: center;
+  font-family: 'Roboto', sans-serif;
+
 }
 
 .teknikerdiv {
@@ -37,10 +44,12 @@ li > a{
 
 #navbar{
   margin:0;
-  background-color: #FF0000;
+  background-color: #000;
+  opacity: 0.75;
   padding:1.5%;
   display: flex;
   justify-content: center;
   align-items: center;
+  text-transform: uppercase;
+  font-family: 'Julius Sans One', sans-serif;
 }
-
