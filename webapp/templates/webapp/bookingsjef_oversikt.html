@@ -1,0 +1,23 @@
+{% extends 'webapp/base.html' %}
+
+{% block content %}
+  <div>
+  <p> Antall konsertdatoer booket: </p>
+  <p>
+    {{ godkjente_bestillinger.count }} <!--to show length-->
+  </p>
+</div>
+<div>
+<p> Antall tilbud sendt: </p>
+<p>
+  {{ sendte_bestillinger.count }}   <!--to show length-->
+</p>
+</div>
+<div>
+<p> Antall ledige datoer (Obs! Det er bare én måned fram i tid): </p>
+<p>
+  {{ ledige_datoer|length }}   <!--to show length-->
+</p>
+</div>
+
+{% endblock %}

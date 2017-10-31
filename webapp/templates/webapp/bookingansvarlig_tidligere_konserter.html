@@ -11,6 +11,10 @@
       {% endif %}
     {% endfor %}
   </select>
+  
+  {% if sjangre|length == 1 %}
+  <p>Ingen konserter har vært tidligere.</p>
+  {% endif %}
 
   {% for sjanger in sjangre %}
     {% for konsert in tidligere_konserter %}
@@ -21,6 +25,10 @@
           <p>Scene: {{konsert.scene}}</p>
           <p>Publikumsantall: {{konsert.publikumsantall}}
         </div>
+      {% else %}
+      <div class="sjangerkonserter" id="{{sjanger}}">
+        <p>Det har enda ikke vært noen konserter innen denne sjangeren.</p>
+      </div>
       {% endif %}
     {% endfor %}
    {% endfor %}
