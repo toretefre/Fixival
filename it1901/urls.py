@@ -42,5 +42,4 @@ urlpatterns = [
     url(r'^bookingsjef/bandtilbud/',views.bookingsjef_bandtilbud,name="webapp/bookingsjef_bandtilbud"),
 
     url(r'^bookingsjef/oversikt/$',views.bookingsjef_oversikt,name="webapp/bookingsjef_oversikt")
-
-
+]
