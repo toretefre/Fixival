@@ -37,7 +37,9 @@ class Konserter(models.Model):
     dato = models.DateTimeField(blank=True, null=True)
     band = models.ManyToManyField(Band, blank=True)
     festival = models.CharField(max_length=200)
-    publikumsantall = models.IntegerField(blank=True)
+    # forventet antall billetter
+    publikumsantall = models.PositiveIntegerField(default=0, blank=True, null=True)
+    # faktisk solgte billetter, gjerne hentet fra billettsystem
     solgtebilletter = models.PositiveIntegerField(default=0, blank=True, null=True)
     billettpris = models.PositiveIntegerField(default=0)
 
