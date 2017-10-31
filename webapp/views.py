@@ -148,6 +148,7 @@ def bookingansvarlig_bestilling_view(request):
             form_band = PostBand()
         return render(request, 'webapp/bookingansvarlig_bestilling.html', {'form': form, 'form_band': form_band})
 
+@login_required
 def manager_mainpage(request):
     if request.user.groups.filter(name='manager').exists():
         band = Band.objects.filter(manager = request.user)
@@ -176,7 +177,7 @@ def manager_mainpage(request):
 
         return render(request, 'webapp/manager_mainpage.html', {'band' : band, 'backline' : backline, 'behov' : behov, 'behov_form' : behov_form, 'backline_form' : backline_form})
 
-
+login_required
 def bookingsjef_prisgenerator(request):
     if request.user.groups.filter(name="bookingsjef").exists():
         konserts = Konserter.objects.all()
@@ -259,6 +260,7 @@ def bookingsjef_bandtilbud(request):
 
         return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud": tilbud})
 
+@login_required
 def bookingansvarlig_tidligere_artister(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
         konserter = Konserter.objects.all()
@@ -287,7 +289,7 @@ def bookingansvarlig_tidligere_artister(request):
             return render(request, 'webapp/bookingansvarlig_tidligere_artister.html', {'error': "Band har ikke spilt her"})
         return render(request, 'webapp/bookingansvarlig_tidligere_artister.html')
 
-
+@login_required
 def bookingsjef_rapport(request):
     if request.user.groups.filter(name="bookingsjef").exists():
         scener = Scener.objects.all()
@@ -307,7 +309,7 @@ def bookingsjef_rapport(request):
     else:
         raise PermissionDenied
 
-
+@login_required
 def bookingsjef_oversikt(request):
     if request.user.groups.filter(name="bookingsjef").exists():
         today = timezone.now()
@@ -332,3 +334,12 @@ def bookingsjef_oversikt(request):
         return render(request, 'webapp/bookingsjef_oversikt.html',{"godkjente_bestillinger": godkjente_bestillinger, "gb_datoer":gb_datoer, "sendte_bestillinger": sendte_bestillinger, "sb_datoer":sb_datoer, "ledige_datoer": ledige_datoer})
     else:
         raise PermissionDenied
+
+@login_required
+def pr_ansvarlig_mainpage(request):
+    if request.user.groups.filter(name = "PR_ansvarlig").exists():
+        return render(request, 'webapp/pr_ansvarlig.html')
+    else:
+        raise PermissionDenied
+
+
