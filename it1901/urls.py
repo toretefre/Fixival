@@ -43,3 +43,4 @@ urlpatterns = [
 
     url(r'^bookingsjef/oversikt/$',views.bookingsjef_oversikt,name="webapp/bookingsjef_oversikt")
 ]
+
