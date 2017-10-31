@@ -342,4 +342,16 @@ def pr_ansvarlig_mainpage(request):
     else:
         raise PermissionDenied
 
+@login_required
+def pr_ansvarlig_bookede_band(request):
+    if request.user.groups.filter(name="PR_ansvarlig").exists():
+        godkjente_bestillinger = Bestilling.objects.filter(godkjent = True)
+        bookede_band = []
+        for bestilling in godkjente_bestillinger:
+            bookede_band.append(bestilling.band)
+
+        return render(request, 'webapp/pr_ansvarlig_bookede_band.html', {"bookede_band": bookede_band})
+    else:
+        raise PermissionDenied
+
 

@@ -26,8 +26,6 @@ class Bestilling(models.Model):
     godkjent = models.NullBooleanField(choices=godkjenning, default=None)
     pris = models.PositiveIntegerField()
 
-    pris = models.IntegerField();
-
     def __str__(self):
         return self.band.navn
 
