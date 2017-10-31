@@ -44,3 +44,4 @@ urlpatterns = [
     url(r'^pr_ansvarlig$',views.pr_ansvarlig_mainpage, name="PR_ansvarlig"),
     url(r'^pr_ansvarlig/bookede_band', views.pr_ansvarlig_bookede_band, name="webapp/pr_ansvarlig_bookede_band"),
 ]
+
