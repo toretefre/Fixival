@@ -8,13 +8,13 @@ li{
   display:inline-block;
   margin-left:2%;
 }
-
+/*
 li > a{
   color: #FFFFFF;
   text-decoration: none;
   font-weight: bold;
   font-size: 1.2em;
-}
+}*/
 
 #content{
   padding:1%;
@@ -43,4 +43,3 @@ li > a{
   justify-content: center;
   align-items: center;
 }
-
