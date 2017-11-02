@@ -17,24 +17,31 @@
 
 
 <h2>Tekniske behov</h2>
-
+  <!-- Iterer gjennom alle band relatert til manageren -->
   {% for bands in band %}
     <ul>
       <li>Band: {{bands.navn}}</li>
         <ul>
+        <!-- Itererer gjennom alle backline-elementene -->
         {% for backln in backline %}
+          <!-- Sjekker om backlinen er koblet til samme band som manager -->
           {% if backln.band == bands %}
             <li><p>{{backln.backline}}</p></li>
           {% endif %}
+          <!-- Viser backline som ikke er koblet mot et spesifikt band (mikrofoner) -->
           {% if not backln.band %}
-            <li><p>{{backln.backline}}</p></li>
+            <li><p>{{backln.backline}}:</p></li>
           {% endif %}
             <ul>
+            <p>
+            <!-- Iterer gjennom alle tekniske behov -->
             {% for behv in behov %}
+              <!-- Sjekker om det tekniske behovet matcher backline og band -->
               {% if behv.backline == backln and behv.band == bands %}
-              <li><p>{{behv.behov}}</p></li>
+              <li>{{behv.behov}}</li>
               {% endif %}
             {% endfor %}
+            </p>
             </ul>
         {% endfor %}
         </ul>
@@ -42,4 +49,5 @@
     <hr>
   {% endfor %}
 
+  <p><a href="">Return to home</a></p>
 {% endblock %}

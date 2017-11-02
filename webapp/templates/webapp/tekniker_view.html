@@ -6,7 +6,7 @@
         <div>
             <h3>{{ konsert }} --- {{ konsert.dato }} --- {{ konsert.scene }}</h3>
             <h5>Band: {{ konsert.band.all|unordered_list}}</h5>
-            <p>Teknikere:</p>
+            <b>Teknikere:</b>
             <p class = "teknikerList">
               {% for tekniker in konsert.teknikere.all %}
               <li>{{ tekniker }}</li>
@@ -15,7 +15,22 @@
               {% endfor %}
               </p>
             <p>Tekniske behov for konserten:</p>
+              {% for band in konsert.band.all %}
+               <b>{{band}}</b>
 
+                 {% for backln in backline %}
+                 {% if backln.band == band %}
+                  <p>{{backln}}:</p>
+                  <p>
+                       {% for behv in behov %}
+                       {% if behv.backline == backln and behv.band == band %}
+                       <li>{{behv.behov}}</li>
+                       {% endif %}
+                       {% endfor %}
+                  </p>
+                 {% endif %}
+                 {% endfor %}
+              {% endfor %}
 
         </div>
 
