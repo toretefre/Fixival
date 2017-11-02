@@ -11,7 +11,7 @@
       {% endif %}
     {% endfor %}
   </select>
-  
+
   {% if sjangre|length == 1 %}
   <p>Ingen konserter har vært tidligere.</p>
   {% endif %}
@@ -22,6 +22,7 @@
       {% if band.sjanger == sjanger %}
         <div class="sjangerkonserter" id="{{sjanger}}">
           <h1>{{konsert.konsert}}</h1>
+          <p>Band: {{ konsert.band.all|unordered_list}}</p>
           <p>Scene: {{konsert.scene}}</p>
           <p>Publikumsantall: {{konsert.publikumsantall}}
         </div>
