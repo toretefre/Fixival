@@ -354,4 +354,15 @@ def pr_ansvarlig_bookede_band(request):
     else:
         raise PermissionDenied
 
-
+@login_required
+def pr_ansvarlig_konserter(request):
+    if request.user.groups.filter(name= "PR_ansvarlig").exists():
+        konserter = Konserter.objects.all()
+        festivaler = []
+        for konsert in konserter:
+            if konsert.festival not in festivaler:
+                festivaler.append(konsert.festival)
+        print(festivaler)
+        return render(request, 'webapp/pr_ansvarlig_konserter.html', {"konserter": konserter, "festivaler": festivaler})
+    else:
+        raise PermissionDenied
