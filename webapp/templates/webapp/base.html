@@ -45,9 +45,10 @@
 		{% endif %}
         {% if request.user|has_group:"PR_ansvarlig" %}
             <li><a href="{% url 'PR_ansvarlig' %}">Hjem</a></li>
-            <li><a href="{% url 'webapp/pr_ansvarlig_bookede_band' %}">Bestilte band</a></li>
+						<li><a href="{% url 'webapp/pr_ansvarlig_bookede_band' %}">Bestilte band</a></li>
+				{% endif %}
 		<li><a href="{% url 'logout' %}">Log out</a></li>
-        {% endif %}
+
 	</ul>
 	<div id="content">
 
