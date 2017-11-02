@@ -1,9 +1,11 @@
 {% extends 'webapp/base.html' %}
 
 {% block content %}
+  <h2>Riggeliste</h2>
+  <p>Klikk på bandnavnene for mer informasjon...</p>
   {% for konsert in konserts %}
-    <div>
-      <h1 class="konsertheader">{{konsert}}</h1>
+    <div class="col-sm-4">
+      <h1 class="konsertheader ">{{konsert}}</h1>
       <div class="teknikerdiv">
         <p>Teknikere:</p>
         {% for tekniker in konsert.teknikere.all %}

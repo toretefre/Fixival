@@ -2,7 +2,9 @@
 
 {% block content %}
     <h1> Oversikt over scenene og tilhørende konserter:</h1>
+
     {% for scene in scener %}
+    <div class="col-sm-4 col">
         <div id="sceneoversikt">
             <h2 class="sceneoversikt">{{scene}}:</h2>
         </div>
@@ -13,5 +15,6 @@
             {% endif %}
         </div>
         {% endfor %}
+    </div>
     {% endfor %}
 {% endblock %}

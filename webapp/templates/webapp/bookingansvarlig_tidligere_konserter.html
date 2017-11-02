@@ -1,7 +1,9 @@
 {% extends 'webapp/base.html' %}
 
 {% block content %}
-  <h3>Sjanger:</h3>
+  <h2>Tidligere konserter</h2>
+  <p>Her ser du konserter som har vært tidligere hos oss i Fixival..</p>
+  <h3>Velg sjanger:</h3>
   <select id="sjangerpicker" name="Sjanger">
     {% for sjanger in sjangre %}
       {% if sjanger == sjangre.0 %}
@@ -10,14 +12,14 @@
         <option value="{{sjanger}}">{{sjanger}}</option>
       {% endif %}
     {% endfor %}
-  </select>
+  </select><br>
 
   {% for sjanger in sjangre %}
     {% for konsert in tidligere_konserter %}
      {% for band in konsert.band.all %}
       {% if band.sjanger == sjanger %}
-        <div class="sjangerkonserter" id="{{sjanger}}">
-          <h1>{{konsert.konsert}}</h1>
+        <div class="sjangerkonserter col-sm-4 col" id="{{sjanger}}">
+          <h3>{{konsert.konsert}}</h3>
           <p>Scene: {{konsert.scene}}</p>
           <p>Publikumsantall: {{konsert.publikumsantall}}
         </div>
