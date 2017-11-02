@@ -61,7 +61,6 @@
 						<a class="nav-link" href="{% url 'webapp/bookingansvarlig_tidligere_artister' %}">Tidligere artister</a>
 					</li>
 			{% endif %}
-<<<<<<< HEAD
 
 			{% if request.user|has_group:"bookingsjef" %}
 
@@ -96,6 +95,17 @@
 
 			{% endif %}
 
+			{% if request.user|has_group:"PR_ansvarlig" %}
+
+					<li class="nav-item active">
+						<a class="nav-link" href="{% url 'PR_ansvarlig' %}">PR-ansvarlig <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/pr_ansvarlig_bookede_band' %}">Bestilte band</a>
+					</li>
+
+			{% endif %}
+
 					<li class="nav-item">
 					 <a class="nav-link" href="{% url 'logout' %}">Logg ut</a>
 					</li>
@@ -103,35 +113,7 @@
 		</nav>
 
 	</header>
-=======
-			<li><a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a></li>
-			<li><a href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a></li>
-			<li><a href="{% url 'webapp/bookingansvarlig_bestilling' %}">Bestilling</a></li>
-      <li><a href="{% url 'webapp/bookingansvarlig_artister' %}">Artist</a></li>
-      <li><a href="{% url 'webapp/bookingansvarlig_tidligere_artister' %}">Tidligere artister</a></li>
 
-
-		{% endif %}
-		{% if request.user|has_group:"tekniker" %}
-			<li><a href="{% url 'tekniker' %}">Tekniker</a></li>
-		{% endif %}
-		{% if request.user|has_group:"bookingsjef" %}
-			<li><a href="{% url 'bookingsjef' %}">Prisgenerator</a></li>
-            <li><a href="{% url 'webapp/bookingsjef_bandtilbud' %}">Bandtilbud</a></li>
-			<li><a href="{% url 'webapp/bookingsjef_rapport' %}">Konsertrapporter</a></li>
-			<li><a href="{% url 'webapp/bookingsjef_oversikt' %}">Oversikt</a></li>
-		{% endif %}
-		{% if request.user|has_group:"manager" %}
-			<li><a href="{% url 'manager' %}">Tekniske behov</a></li>
-		{% endif %}
-        {% if request.user|has_group:"PR_ansvarlig" %}
-            <li><a href="{% url 'PR_ansvarlig' %}">Hjem</a></li>
-            <li><a href="{% url 'webapp/pr_ansvarlig_bookede_band' %}">Bestilte band</a></li>
-		<li><a href="{% url 'logout' %}">Log out</a></li>
-        {% endif %}
-	</ul>
-	<div id="content">
->>>>>>> f12ed05dd99362b22c46fe1203135add80f2eb01
 
 	{% block content %}
 	{% endblock %}
