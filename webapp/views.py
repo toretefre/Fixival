@@ -237,12 +237,15 @@ def bookingsjef_bandtilbud(request):
         if request.method == "POST":
             respons = ""
             months = {"januar":"01","februar":"02","mars":"03","april":"04","mai":"05","juni":"06","juli":"07","august":"08","september":"09","oktober":"10","november":"11","desember":"12"}
-            valgt_band = Band.objects.get(navn=request.POST["tilbud"])
+            if Band.objects.filter(navn=request.POST["tilbud"]).exists():
+                valgt_band = Band.objects.get(navn=request.POST["tilbud"])
+            else:
+                return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud": tilbud})
             bestillingsdato = request.POST["dato"]
             datolist = bestillingsdato.split(" ")
             datolist[1] = months[datolist[1]]
             bestillingsdato = " ".join(datolist)
-            valgt_bestilling = Bestilling.objects.get(band=valgt_band,dato=datetime.strptime(bestillingsdato,"%d. %m %Y %H:%M"))
+            valgt_bestilling = Bestilling.objects.get(band=valgt_band,dato=datetime.strptime(bestillingsdato,"%d. %m %Y %H:%M"),godkjent=None)
             if request.POST["answer"] == "True":
                 respons = "Bestilling godkjent"
                 valgt_bestilling.godkjent = True
