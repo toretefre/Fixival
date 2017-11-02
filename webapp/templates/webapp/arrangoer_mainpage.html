@@ -10,9 +10,15 @@
         <p>Teknikere:</p>
         {% for tekniker in konsert.teknikere.all %}
         <p>{{tekniker}}</p>
+        {% empty %}
+        <p>Ingen tekniker satt opp</p>
         {% endfor %}
       </div>
     </div>
   {% endfor %}
+
+  {% if konserts|length == 0 %}
+  <p>Ingen konserter satt opp</p>
+  {% endif %}
 
 {% endblock %}

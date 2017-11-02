@@ -15,6 +15,10 @@
   <input type="submit" value="Velg scene for rapportgenerering" class="btn btn-default">
 </form>
 
+{% if scener|length == 0 %}
+<p>Ingen konserter å velge</p>
+{% endif %}
+
 {% for key,item in konsertinfo.items %}
   <h3>{{key}}</h3>
   <p>Publikumsantall: {{item.publikumsantall}}</p>

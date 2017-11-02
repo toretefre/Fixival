@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -
+
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -118,7 +120,8 @@ def bookingansvarlig_tekniske_behov(request):
                 # Hent alle band derfra fordi der ligger bare godkjente band
                         # Har gått gjennom bestillingen
                 for band in konsert.band.all():
-                    godkjente_bands.append(band)
+                    if band not in godkjente_bands:
+                        godkjente_bands.append(band)
 
         return render(request, 'webapp/bookingansvarlig_tekniske_behov.html', {"bands":godkjente_bands, 'backline' : backline, 'behov' : behov})
 
@@ -132,15 +135,22 @@ def bookingansvarlig_bestilling_view(request):
             form = PostBestilling(request.POST)
             form_band = PostBand(request.POST)
             if form.is_valid() and form_band.is_valid():
-                bestilling = form.save(commit=False)
-                band = form_band.save(commit=False)
-                band.kostnad = 0         #Default verdier
-                band.rating = 0          #Default verdier
-                band.manager = request.user
-                band.save()
-                bestilling.band = band
-                bestilling.godkjent = None
-                bestilling.save()
+                if not Band.objects.filter(navn=request.POST['navn']).exists():
+                    bestilling = form.save(commit=False)
+                    band = form_band.save(commit=False)
+                    band.kostnad = 0         #Default verdier
+                    band.rating = 0          #Default verdier
+                    band.manager = request.user
+                    band.save()
+                    bestilling.band = band
+                    bestilling.godkjent = None
+                    bestilling.save()
+                else:
+                    bestilling = form.save(commit=False)
+                    band = Band.objects.get(navn=request.POST['navn'])
+                    bestilling.band = band
+                    bestilling.godkjent = None
+                    bestilling.save()
 
                 return render(request, 'webapp/bookingansvarlig_bestilling.html', {'form': form, 'form_band': form_band,'response':"Bestilling sendt"})
         else:
@@ -148,6 +158,7 @@ def bookingansvarlig_bestilling_view(request):
             form_band = PostBand()
         return render(request, 'webapp/bookingansvarlig_bestilling.html', {'form': form, 'form_band': form_band})
 
+@login_required
 def manager_mainpage(request):
     if request.user.groups.filter(name='manager').exists():
         band = Band.objects.filter(manager = request.user)
@@ -176,11 +187,12 @@ def manager_mainpage(request):
 
         return render(request, 'webapp/manager_mainpage.html', {'band' : band, 'backline' : backline, 'behov' : behov, 'behov_form' : behov_form, 'backline_form' : backline_form})
 
-
+login_required
 def bookingsjef_prisgenerator(request):
     if request.user.groups.filter(name="bookingsjef").exists():
         konserts = Konserter.objects.all()
         if request.method == "POST":
+            relevantKonsert=""
             if 'konsertliste' in request.POST:
                 relevantKonsert = Konserter.objects.get(konsert=request.POST["konsertliste"])
                 bandcost = 0
@@ -211,9 +223,10 @@ def bookingansvarlig_artister(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
         band = Band.objects.all()
         if request.method == "POST":
-            selected_band = Band.objects.get(navn=request.POST['Artist'])
-            return render(request, 'webapp/bookingansvarlig_artister.html', {'artist': selected_band, 'band': band})
-
+            if "Artist" in request.POST:
+                selected_band = Band.objects.get(navn=request.POST['Artist'])
+                return render(request, 'webapp/bookingansvarlig_artister.html', {'artist': selected_band, 'band': band})
+            return render(request, 'webapp/bookingansvarlig_artister.html', {'band': band,"error":"Ingen band valgt"})
         return render(request, 'webapp/bookingansvarlig_artister.html', {'band': band})
     else:
         raise PermissionDenied
@@ -225,12 +238,15 @@ def bookingsjef_bandtilbud(request):
         if request.method == "POST":
             respons = ""
             months = {"januar":"01","februar":"02","mars":"03","april":"04","mai":"05","juni":"06","juli":"07","august":"08","september":"09","oktober":"10","november":"11","desember":"12"}
-            valgt_band = Band.objects.get(navn=request.POST["tilbud"])
+            if Band.objects.filter(navn=request.POST["tilbud"]).exists():
+                valgt_band = Band.objects.get(navn=request.POST["tilbud"])
+            else:
+                return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud": tilbud})
             bestillingsdato = request.POST["dato"]
             datolist = bestillingsdato.split(" ")
             datolist[1] = months[datolist[1]]
             bestillingsdato = " ".join(datolist)
-            valgt_bestilling = Bestilling.objects.get(band=valgt_band,dato=datetime.strptime(bestillingsdato,"%d. %m %Y %H:%M"))
+            valgt_bestilling = Bestilling.objects.get(band=valgt_band,dato=datetime.strptime(bestillingsdato,"%d. %m %Y %H:%M"),godkjent=None)
             if request.POST["answer"] == "True":
                 respons = "Bestilling godkjent"
                 valgt_bestilling.godkjent = True
@@ -244,10 +260,11 @@ def bookingsjef_bandtilbud(request):
                 else:
                     konsert=Konserter.objects.create(
                     scene = valgt_bestilling.scene,
-                    dato = valgt_bestilling.dato,
                     konsert = valgt_band.navn,
                     publikumsantall = 0,
                     festival="UKA")
+                    konsert.save()
+                    konsert.band.add(valgt_band)
                     konsert.save()
             else:
                 respons = "Bestilling avslått"
@@ -257,6 +274,7 @@ def bookingsjef_bandtilbud(request):
 
         return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud": tilbud})
 
+@login_required
 def bookingansvarlig_tidligere_artister(request):
     if request.user.groups.filter(name="bookingansvarlig").exists():
         konserter = Konserter.objects.all()
@@ -285,7 +303,7 @@ def bookingansvarlig_tidligere_artister(request):
             return render(request, 'webapp/bookingansvarlig_tidligere_artister.html', {'error': "Band har ikke spilt her"})
         return render(request, 'webapp/bookingansvarlig_tidligere_artister.html')
 
-
+@login_required
 def bookingsjef_rapport(request):
     if request.user.groups.filter(name="bookingsjef").exists():
         scener = Scener.objects.all()
@@ -305,7 +323,7 @@ def bookingsjef_rapport(request):
     else:
         raise PermissionDenied
 
-
+@login_required
 def bookingsjef_oversikt(request):
     if request.user.groups.filter(name="bookingsjef").exists():
         today = timezone.now()
@@ -330,3 +348,24 @@ def bookingsjef_oversikt(request):
         return render(request, 'webapp/bookingsjef_oversikt.html',{"godkjente_bestillinger": godkjente_bestillinger, "gb_datoer":gb_datoer, "sendte_bestillinger": sendte_bestillinger, "sb_datoer":sb_datoer, "ledige_datoer": ledige_datoer})
     else:
         raise PermissionDenied
+
+@login_required
+def pr_ansvarlig_mainpage(request):
+    if request.user.groups.filter(name = "PR_ansvarlig").exists():
+        return render(request, 'webapp/pr_ansvarlig.html')
+    else:
+        raise PermissionDenied
+
+@login_required
+def pr_ansvarlig_bookede_band(request):
+    if request.user.groups.filter(name="PR_ansvarlig").exists():
+        godkjente_bestillinger = Bestilling.objects.filter(godkjent = True)
+        bookede_band = []
+        for bestilling in godkjente_bestillinger:
+            bookede_band.append(bestilling.band)
+
+        return render(request, 'webapp/pr_ansvarlig_bookede_band.html', {"bookede_band": bookede_band})
+    else:
+        raise PermissionDenied
+
+

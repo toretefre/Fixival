@@ -14,7 +14,12 @@
                 <p>{{konsert}} - <i>{{ konsert.dato }}</i></p>
             {% endif %}
         </div>
+        {% empty %}
+        <p>Ingen konserter på denne scenen.</p>
         {% endfor %}
     </div>
+
+        {% empty %}
+        <p>Ingen scener lagt til enda. Om du tror dette er feil, kontakt systemansvarlig.</p>
     {% endfor %}
 {% endblock %}
