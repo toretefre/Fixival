@@ -1,0 +1,12 @@
+{% extends "webapp/base.html" %}
+{% block content %}
+    {% for iterable_band in bookede_band %}
+        <h1>{{ iterable_band }}</h1>
+        <a href="https://www.google.com/search?q=site:bbc.co.uk+{{ iterable_band }}">Presseomtale engelsk</a>
+        <a href="https://www.google.com/search?q=site:vg.no+ {{ iterable_band }}">Presseomtale norsk</a>
+          <p>Popularitet Spotify:   {{ iterable_band.rating }}</p>
+          <p>Totalt solgte album:   {{ iterable_band.albums_sold }}</p>
+          <p>Tidligere konserter:   {{ iterable_band.previous_concerts }}</p>
+
+    {% endfor %}
+{% endblock %}
