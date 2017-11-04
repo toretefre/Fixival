@@ -199,6 +199,8 @@ def bookingsjef_prisgenerator(request):
                 bandpopularity = 0
                 bandamount = 0
                 # Iterer over alle band i konserten, finner gjennomsnittlig popularitet, antall band og samlet kostnad
+                if relevantKonsert.band.all().count() == 0:
+                    return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts,"error":"Konserten har ingen band. Book et band til denne konserten eller kontakt systemansvarlig om du tror det er feil."})
                 for band in relevantKonsert.band.all():
                     bandcost += band.kostnad
                     bandpopularity += band.rating
@@ -367,5 +369,3 @@ def pr_ansvarlig_bookede_band(request):
         return render(request, 'webapp/pr_ansvarlig_bookede_band.html', {"bookede_band": bookede_band})
     else:
         raise PermissionDenied
-
-
