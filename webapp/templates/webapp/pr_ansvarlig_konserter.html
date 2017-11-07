@@ -5,12 +5,11 @@
         <h2>{{ festival }}</h2>
         {% for konsert in konserter %}
             {% if festival == konsert.festival %}
-                <p>{{ konsert.konsert }}</p>
+                <h3> Konsert: {{ konsert.konsert }}</h3>
                 {% for band in konsert.band.all %}
-                    <p>{{ band }} {{ band.rating }}</p>
-                    <p>{{ band.info }}</p>
-                    <p>Publikumsantall: {{konsert.publikumsantall}}</p>
-
+                    <p>Band: {{ band }}</p>
+                    <p>Rating: {{ band.rating }}</p>
+                    <p>Info: {{ band.info }}</p>
             {% endfor %}
                 <hr>
             {% endif %}

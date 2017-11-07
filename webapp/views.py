@@ -362,7 +362,6 @@ def pr_ansvarlig_konserter(request):
         for konsert in konserter:
             if konsert.festival not in festivaler:
                 festivaler.append(konsert.festival)
-        print(festivaler)
         return render(request, 'webapp/pr_ansvarlig_konserter.html', {"konserter": konserter, "festivaler": festivaler})
     else:
         raise PermissionDenied
