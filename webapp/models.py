@@ -17,6 +17,9 @@ class Band(models.Model):
     def __str__(self):
         return self.navn
 
+    class Meta:
+        verbose_name_plural = "Band"
+
 
 class Bestilling(models.Model):
     dato = models.DateTimeField(blank=True, null=True)
@@ -28,6 +31,9 @@ class Bestilling(models.Model):
 
     def __str__(self):
         return self.band.navn
+
+    class Meta:
+        verbose_name_plural = "Bestillinger"
 
 
 class Konserter(models.Model):
@@ -46,6 +52,9 @@ class Konserter(models.Model):
     def __str__(self):
         return self.konsert
 
+    class Meta:
+        verbose_name_plural = "Konserter"
+
 
 class Backline(models.Model):
     band = models.ForeignKey('band', models.SET_NULL, blank=True, null=True,)
@@ -63,6 +72,9 @@ class Tekniske_behov(models.Model):
 
     def __str__(self):
         return str(self.behov)
+
+    class Meta:
+        verbose_name_plural = "Tekniske behov"
 
 
 class Scener(models.Model):
