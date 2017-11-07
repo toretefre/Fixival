@@ -256,9 +256,12 @@ def bookingsjef_bandtilbud(request):
                 valgt_band.kostnad = valgt_bestilling.pris
                 valgt_band.save()
                 if Konserter.objects.filter(dato=valgt_bestilling.dato).exists():
-                    konsert = Konserter.objects.get(dato=valgt_bestilling.dato)
-                    konsert.band.add(valgt_band)
-                    konsert.save()
+                    if not extraConf in request.POST:
+                        return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud":tilbud,"chosenTilbud":valgt_bestilling})
+                    if request.POST[extraConf] == "True":
+                        konsert = Konserter.objects.get(dato=valgt_bestilling.dato)
+                        konsert.band.add(valgt_band)
+                        konsert.save()
                 else:
                     konsert=Konserter.objects.create(
                     scene = valgt_bestilling.scene,
