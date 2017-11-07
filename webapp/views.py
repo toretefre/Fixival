@@ -248,24 +248,18 @@ def bookingsjef_bandtilbud(request):
                 return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud": tilbud})
             bestillingsdato = request.POST["dato"]
             bestillingsPK = request.POST["chosenPK"]
-
-            valgt_bestilling = Bestilling.objects.get(band=valgt_band,pk=bestillingsPK,godkjent=None)
+            if Bestilling.objects.filter(band=valgt_band,pk=bestillingsPK,godkjent=None).exists():
+                valgt_bestilling = Bestilling.objects.get(band=valgt_band,pk=bestillingsPK,godkjent=None)
+            else:
+                return HttpResponse("Dataen ble sendt flere ganger og dermed ikke godkjent.")
             if request.POST["answer"] == "True":
                 respons = "Bestilling godkjent"
-                valgt_bestilling.godkjent = True
-                valgt_bestilling.save()
-                valgt_band.kostnad = valgt_bestilling.pris
-                valgt_band.save()
+
                 if Konserter.objects.filter(dato=valgt_bestilling.dato).exists():
-                    if not "extraConf" in request.POST:
-                        print("DU ER JO FAEN MEG PÅ RETT STED?! GLATT KJØRING BBY!")
-                        print(tilbud)
-                        print(valgt_bestilling)
+                    if not 'extraConf' in request.POST:
                         return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud":tilbud,"chosenTilbud":valgt_bestilling})
-                    if request.POST['extraConf'] == "True":
+                    if request.POST['extraConf']:
                         konsert = Konserter.objects.get(dato=valgt_bestilling.dato)
-                        konsert.band.add(valgt_band)
-                        konsert.save()
                 else:
                     konsert=Konserter.objects.create(
                     scene = valgt_bestilling.scene,
@@ -273,9 +267,15 @@ def bookingsjef_bandtilbud(request):
                     dato = bestillingsdato,
                     publikumsantall = 0,
                     festival="UKA")
-                    konsert.save()
-                    konsert.band.add(valgt_band)
-                    konsert.save()
+
+
+                valgt_bestilling.godkjent = True
+                valgt_bestilling.save()
+                valgt_band.kostnad = valgt_bestilling.pris
+                valgt_band.save()
+                konsert.save()
+                konsert.band.add(valgt_band)
+                konsert.save()
             else:
                 respons = "Bestilling avslått"
                 valgt_bestilling.godkjent = False
@@ -377,7 +377,7 @@ def pr_ansvarlig_bookede_band(request):
         return render(request, 'webapp/pr_ansvarlig_bookede_band.html', {"bookede_band": bookede_band})
     else:
         raise PermissionDenied
-        
+
 
 @login_required
 def pr_ansvarlig_konserter(request):
