@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from .forms import PostBehov, PostBackline, PostBestilling, PostBand
 from django.utils import timezone
 from datetime import datetime
+import pytz
 
 # Create your views here.
 @login_required
@@ -240,17 +241,15 @@ def bookingsjef_bandtilbud(request):
         tilbud = Bestilling.objects.filter(godkjent=None)
         if request.method == "POST":
             respons = ""
-            months = {"januar":"01","februar":"02","mars":"03","april":"04","mai":"05","juni":"06","juli":"07","august":"08","september":"09","oktober":"10","november":"11","desember":"12"}
+            #months = {"januar":"01","februar":"02","mars":"03","april":"04","mai":"05","juni":"06","juli":"07","august":"08","september":"09","oktober":"10","november":"11","desember":"12"}
             if Band.objects.filter(navn=request.POST["tilbud"]).exists():
                 valgt_band = Band.objects.get(navn=request.POST["tilbud"])
             else:
                 return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud": tilbud})
             bestillingsdato = request.POST["dato"]
-            datolist = bestillingsdato.split(" ")
-            datolist[1] = months[datolist[1]]
-            bestillingsdato = " ".join(datolist)
-            bestillingsdato = datetime.strptime(bestillingsdato,"%d. %m %Y %H:%M")
-            valgt_bestilling = Bestilling.objects.get(band=valgt_band,dato=bestillingsdato,godkjent=None)
+            bestillingsPK = request.POST["chosenPK"]
+
+            valgt_bestilling = Bestilling.objects.get(band=valgt_band,pk=bestillingsPK,godkjent=None)
             if request.POST["answer"] == "True":
                 respons = "Bestilling godkjent"
                 valgt_bestilling.godkjent = True
@@ -258,14 +257,16 @@ def bookingsjef_bandtilbud(request):
                 valgt_band.kostnad = valgt_bestilling.pris
                 valgt_band.save()
                 if Konserter.objects.filter(dato=valgt_bestilling.dato).exists():
-                    if not extraConf in request.POST:
+                    if not "extraConf" in request.POST:
+                        print("DU ER JO FAEN MEG PÅ RETT STED?! GLATT KJØRING BBY!")
+                        print(tilbud)
+                        print(valgt_bestilling)
                         return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud":tilbud,"chosenTilbud":valgt_bestilling})
-                    if request.POST[extraConf] == "True":
+                    if request.POST['extraConf'] == "True":
                         konsert = Konserter.objects.get(dato=valgt_bestilling.dato)
                         konsert.band.add(valgt_band)
                         konsert.save()
                 else:
-                    #ny_bestillingsdato = datetime.strptime(bestillingsdato, "")
                     konsert=Konserter.objects.create(
                     scene = valgt_bestilling.scene,
                     konsert = valgt_band.navn,
