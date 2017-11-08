@@ -1,28 +1,3 @@
-body, html {
-  margin:0;
-  width:100%;
-  height:100%;
-}
-
-li{
-  display:inline-block;
-  margin-left:2%;
-}
-/*
-li > a{
-  color: #FFFFFF;
-  text-decoration: none;
-  font-weight: bold;
-  font-size: 1.2em;
-}*/
-
-#content{
-  padding:1%;
-  background-color: rgba(244,212,66,0.1);
-  height:97%;
-  text-align: center;
-}
-
 .teknikerdiv {
   display:none;
 }
@@ -35,11 +10,11 @@ li > a{
   display:none;
 }
 
-#navbar{
-  margin:0;
-  background-color: #FF0000;
-  padding:1.5%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+body {
+  /*padding-top: 20px;*/
+  padding-bottom: 20px;
+}
+
+.navbar {
+  margin-bottom: 20px;
 }

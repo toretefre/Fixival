@@ -1,53 +1,62 @@
-{% load static %}
-{% load groupAccess %}
+{% load static %} {% load groupAccess %}
 <!DOCTYPE html>
 <html lang="no-nb">
+
 <head>
 	<title>Fixival - {{ request.user.groups.all.0 }}</title>
-	<meta charset="latin1"/>
+	<meta charset="latin1" />
 
 	<!-- BOOTSTRAP - Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
 
 	<script src="{% static 'js/dropdown.js' %}"></script>
 	<script src="{% static 'js/bookingansvarlig/show_konsert.js' %}"></script>
 
 	<!-- Latest compiled and minified JavaScript -->
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
-	<link rel="stylesheet" href="{% static 'css/main.css' %}">
 </head>
 
 <body>
 
 	<header>
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<ul class="navbar-nav mr-auto">
-			{% if request.user|has_group:"arrangoer" %}
+
+
+		<nav class="navbar navbar-toggleable-md navbar-light bg-light">
+			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			<!-- Logo bilde og navnet -->
+			<a class="navbar-brand"> <img src="{% static 'img/Fixival-logo.png' %}" width="40" height="40" alt=""> Fixival</a>
+
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav mr-auto">
+					{% if request.user|has_group:"arrangoer" %}
 
 					<li class="nav-item active">
 						<a class="nav-link" href="{% url 'arrangoer' %}"> Arrangør <span class="sr-only">(current)</span></a>
 					</li>
 
 					<li class="nav-item">
-					 	<a class="nav-link" href="{% url 'webapp/sceneoversikt' %}">Sceneoversikt</a>
-				 	</li>
-				 	<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/sceneoversikt' %}">Sceneoversikt</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" href="{% url 'webapp/riggeliste' %}">Riggelister</a>
 					</li>
 
-			{% endif %}
-
-			{% if request.user|has_group:"bookingansvarlig" %}
+					{% endif %} {% if request.user|has_group:"bookingansvarlig" %}
 
 					<li class="nav-item active">
 						<a class="nav-link" href="{% url 'bookingansvarlig' %}">Bookingansvarlig <span class="sr-only">(current)</span></a>
 					</li>
 
 					<li class="nav-item">
-	 					<a class="nav-link" href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a>
-	 				</li>
+						<a class="nav-link" href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a>
+					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a>
 					</li>
@@ -60,42 +69,34 @@
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'webapp/bookingansvarlig_tidligere_artister' %}">Tidligere artister</a>
 					</li>
-			{% endif %}
-
-			{% if request.user|has_group:"bookingsjef" %}
+					{% endif %} {% if request.user|has_group:"bookingsjef" %}
 
 					<li class="nav-item active">
 						<a class="nav-link" href="{% url 'bookingsjef' %}">Bookingsjef <span class="sr-only">(current)</span></a>
 					</li>
 
 					<li class="nav-item">
-					 <a class="nav-link" href="{% url 'webapp/bookingsjef_bandtilbud' %}">Bandtilbud</a>
-				 	</li>
-				 	<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/bookingsjef_bandtilbud' %}">Bandtilbud</a>
+					</li>
+					<li class="nav-item">
 						<a class="nav-link" href="{% url 'webapp/bookingsjef_rapport' %}">Konsertrapporter</a>
 					</li>
 					<li class="nav-item">
-					 <a class="nav-link" href="{% url 'webapp/bookingsjef_oversikt' %}">Oversikt</a>
-				 	</li>
-			{% endif %}
-
-			{% if request.user|has_group:"tekniker" %}
+						<a class="nav-link" href="{% url 'webapp/bookingsjef_oversikt' %}">Oversikt</a>
+					</li>
+					{% endif %} {% if request.user|has_group:"tekniker" %}
 
 					<li class="nav-item active">
 						<a class="nav-link" href="{% url 'tekniker' %}">Tekniker <span class="sr-only">(current)</span></a>
 					</li>
 
-			{% endif %}
-
-			{% if request.user|has_group:"manager" %}
+					{% endif %} {% if request.user|has_group:"manager" %}
 
 					<li class="nav-item active">
 						<a class="nav-link" href="{% url 'manager' %}">Manager <span class="sr-only">(current)</span></a>
 					</li>
 
-			{% endif %}
-
-			{% if request.user|has_group:"PR_ansvarlig" %}
+					{% endif %} {% if request.user|has_group:"PR_ansvarlig" %}
 
 					<li class="nav-item active">
 						<a class="nav-link" href="{% url 'PR_ansvarlig' %}">PR-ansvarlig <span class="sr-only">(current)</span></a>
@@ -104,20 +105,23 @@
 						<a class="nav-link" href="{% url 'webapp/pr_ansvarlig_bookede_band' %}">Bestilte band</a>
 					</li>
 
-			{% endif %}
+					{% endif %}
 
 					<li class="nav-item">
-					 <a class="nav-link" href="{% url 'logout' %}">Logg ut</a>
+						<a class="nav-link" href="{% url 'logout' %}"></span>Logg ut</a>
 					</li>
-		    </ul>
+
+				</ul>
+
+			</div>
 		</nav>
 
 	</header>
 
 
-	{% block content %}
-	{% endblock %}
+	{% block content %} {% endblock %}
 
 
 </body>
+
 </html>
