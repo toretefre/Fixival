@@ -187,7 +187,8 @@ def manager_mainpage(request):
 
         return render(request, 'webapp/manager_mainpage.html', {'band' : band, 'backline' : backline, 'behov' : behov, 'behov_form' : behov_form, 'backline_form' : backline_form})
 
-login_required
+
+@login_required
 def bookingsjef_prisgenerator(request):
     if request.user.groups.filter(name="bookingsjef").exists():
         konserts = Konserter.objects.all()
@@ -246,7 +247,8 @@ def bookingsjef_bandtilbud(request):
             datolist = bestillingsdato.split(" ")
             datolist[1] = months[datolist[1]]
             bestillingsdato = " ".join(datolist)
-            valgt_bestilling = Bestilling.objects.get(band=valgt_band,dato=datetime.strptime(bestillingsdato,"%d. %m %Y %H:%M"),godkjent=None)
+            bestillingsdato = datetime.strptime(bestillingsdato,"%d. %m %Y %H:%M")
+            valgt_bestilling = Bestilling.objects.get(band=valgt_band,dato=bestillingsdato,godkjent=None)
             if request.POST["answer"] == "True":
                 respons = "Bestilling godkjent"
                 valgt_bestilling.godkjent = True
@@ -258,9 +260,11 @@ def bookingsjef_bandtilbud(request):
                     konsert.band.add(valgt_band)
                     konsert.save()
                 else:
+                    #ny_bestillingsdato = datetime.strptime(bestillingsdato, "")
                     konsert=Konserter.objects.create(
                     scene = valgt_bestilling.scene,
                     konsert = valgt_band.navn,
+                    dato = bestillingsdato,
                     publikumsantall = 0,
                     festival="UKA")
                     konsert.save()
@@ -368,4 +372,14 @@ def pr_ansvarlig_bookede_band(request):
     else:
         raise PermissionDenied
 
-
+@login_required
+def pr_ansvarlig_konserter(request):
+    if request.user.groups.filter(name= "PR_ansvarlig").exists():
+        konserter = Konserter.objects.all()
+        festivaler = []
+        for konsert in konserter:
+            if konsert.festival not in festivaler:
+                festivaler.append(konsert.festival)
+        return render(request, 'webapp/pr_ansvarlig_konserter.html', {"konserter": konserter, "festivaler": festivaler})
+    else:
+        raise PermissionDenied
