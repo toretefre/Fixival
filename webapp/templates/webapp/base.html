@@ -7,9 +7,9 @@
 	<meta charset="latin1" />
 
 	<!-- BOOTSTRAP - Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<script src="https://use.fontawesome.com/fbfb5b54e1.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 
 	<script src="{% static 'js/dropdown.js' %}"></script>
 	<script src="{% static 'js/bookingansvarlig/show_konsert.js' %}"></script>
@@ -18,27 +18,28 @@
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 </head>
 
 <body>
 
+
 	<header>
 
-
-		<nav class="navbar navbar-toggleable-md navbar-light bg-light">
-			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+			<a class="navbar-brand"> <img src="{% static 'img/Fixival-logo.png' %}" width="40" height="40" alt=""> Fixival</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 			</button>
 			<!-- Logo bilde og navnet -->
-			<a class="navbar-brand"> <img src="{% static 'img/Fixival-logo.png' %}" width="40" height="40" alt=""> Fixival</a>
 
 			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 				<ul class="navbar-nav mr-auto">
 					{% if request.user|has_group:"arrangoer" %}
 
 					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'arrangoer' %}"> Arrangør <span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{% url 'arrangoer' %}"> <i class="fa fa-wpforms" aria-hidden="true"></i> Arrangør <span class="sr-only">(current)</span></a>
 					</li>
 
 					<li class="nav-item">
@@ -51,7 +52,7 @@
 					{% endif %} {% if request.user|has_group:"bookingansvarlig" %}
 
 					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'bookingansvarlig' %}">Bookingansvarlig <span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{% url 'bookingansvarlig' %}"><i class="fa fa-ticket" aria-hidden="true"></i> Bookingansvarlig <span class="sr-only">(current)</span></a>
 					</li>
 
 					<li class="nav-item">
@@ -72,7 +73,7 @@
 					{% endif %} {% if request.user|has_group:"bookingsjef" %}
 
 					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'bookingsjef' %}">Bookingsjef <span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{% url 'bookingsjef' %}"><i class="fa fa-suitcase" aria-hidden="true"></i> Bookingsjef <span class="sr-only">(current)</span></a>
 					</li>
 
 					<li class="nav-item">
@@ -87,22 +88,22 @@
 					{% endif %} {% if request.user|has_group:"tekniker" %}
 
 					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'tekniker' %}">Tekniker <span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{% url 'tekniker' %}"><i class="fa fa-wrench" aria-hidden="true"></i> Tekniker <span class="sr-only">(current)</span></a>
 					</li>
 
 					{% endif %} {% if request.user|has_group:"manager" %}
 
 					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'manager' %}">Manager <span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{% url 'manager' %}"><i class="fa fa-list-alt" aria-hidden="true"></i> Manager <span class="sr-only">(current)</span></a>
 					</li>
 
 					{% endif %} {% if request.user|has_group:"PR_ansvarlig" %}
 
 					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'PR_ansvarlig' %}">PR-ansvarlig <span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{% url 'PR_ansvarlig' %}"><i class="fa fa-newspaper-o" aria-hidden="true"></i> PR-ansvarlig <span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'webapp/pr_ansvarlig_bookede_band' %}">Bestilte band</a>
+						<a class="nav-link" href="{% url 'webapp/pr_ansvarlig_bookede_band' %}"> Bestilte band</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'webapp/pr_ansvarlig_konserter' %}">Konserter</a>
@@ -112,7 +113,7 @@
 					{% endif %}
 
 					<li class="nav-item">
-						<a class="nav-link" href="{% url 'logout' %}"></span>Logg ut</a>
+						<a class="nav-link" href="{% url 'logout' %}"></span><i class="fa fa-sign-out" aria-hidden="true"></i> Logg ut</a>
 					</li>
 
 				</ul>
