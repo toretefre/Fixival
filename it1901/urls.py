@@ -21,6 +21,7 @@ from webapp import views
 
 urlpatterns = [
     # index
+    # URL-referanser til alle de forskjellige views vi har med i prosjektet.
     url(r'^$', loginviews.login, name='login'),
     url(r'^admin/', admin.site.urls),
     url(r'^manager/tekniskebehov/', views.manager_mainpage, name='manager'),
