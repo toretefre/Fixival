@@ -395,9 +395,12 @@ def pr_ansvarlig_bookede_band(request):
 
 @login_required
 def pr_ansvarlig_konserter(request):
+    #Sjekker om PR_ansvarlig-gruppen finnes i databasen.
     if request.user.groups.filter(name= "PR_ansvarlig").exists():
+        #Henter alle konsert-objektene
         konserter = Konserter.objects.all()
         festivaler = []
+        #Går gjennom konsertene og sjekker om den ikke er i festival-lista. Viss ikke den ikke er, blir den lagt til.
         for konsert in konserter:
             if konsert.festival not in festivaler:
                 festivaler.append(konsert.festival)

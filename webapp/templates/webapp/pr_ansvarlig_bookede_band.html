@@ -11,5 +11,7 @@
           <p>Totalt solgte album:   {{ iterable_band.albums_sold }}</p>
           <p>Tidligere konserter:   {{ iterable_band.previous_concerts }}</p>
           <p>Kontaktinfo:           {{ iterable_band.kontakt_info }}</p>
+        {% empty %}
+            <p>Ingen band er blitt bestilt</p>
     {% endfor %}
 {% endblock %}

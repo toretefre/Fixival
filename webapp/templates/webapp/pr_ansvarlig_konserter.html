@@ -14,9 +14,15 @@
                     <p>Band: {{ band }}</p>
                     <p>Rating: {{ band.rating }}</p>
                     <p>Info: {{ band.info }}</p>
+                    {% empty %}
+                    <p>Ingen band funnet. Om du tror dette er feil, kontakt systemansvarlig</p>
             {% endfor %}
                 <hr>
             {% endif %}
+            {% empty %}
+            <p>Ingen konsert funnet. Om du tror dette er feil, kontakt systemansvarlig</p>
         {% endfor %}
+        {% empty %}
+        <p>Ingen festival funnet. Om du tror dette er feil, kontakt systemansvarlig</p>
     {% endfor %}
 {% endblock %}
