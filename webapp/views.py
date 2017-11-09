@@ -57,17 +57,24 @@ def arrangoer(request):
 
 @login_required
 def tech_view(request):
+    #Sjekker om tekniker-gruppen eksisterer i databasen
     if request.user.groups.filter(name="tekniker").exists():
+        #Henter alle konsertene som den innloggede brukeren er knyttet til fra databasen.
         konserter = Konserter.objects.filter(teknikere = request.user)
+        #Henter inn alle backline-objektene fra databasen.
         backline = Backline.objects.all()
+        #Henter inn alle teknisk_behov-objektene fra databasen
         behov = Tekniske_behov.objects.all()
+        #Returnerer de ulike objektene som skal vises i viewet sammen med html-filen
         return render(request, "webapp/tekniker_view.html", {'konserts': konserter, 'backline' : backline, 'behov' : behov})
     else:
         raise PermissionDenied
 
 @login_required
 def bookingansvarlig(request):
+    #Sjekker om bookingansvarlig-gruppen eksisterer i databasen
     if request.user.groups.filter(name="bookingansvarlig").exists():
+        #Returnerer html-filen som skal vises i viewet
         return render(request,'webapp/bookingansvarlig.html',{})
     else:
         raise PermissionDenied
@@ -243,7 +250,6 @@ def bookingsjef_bandtilbud(request):
         tilbud = Bestilling.objects.filter(godkjent=None)
         if request.method == "POST":
             respons = ""
-            #months = {"januar":"01","februar":"02","mars":"03","april":"04","mai":"05","juni":"06","juli":"07","august":"08","september":"09","oktober":"10","november":"11","desember":"12"}
             if Band.objects.filter(navn=request.POST["tilbud"]).exists():
                 valgt_band = Band.objects.get(navn=request.POST["tilbud"])
             else:
@@ -288,16 +294,19 @@ def bookingsjef_bandtilbud(request):
 
 @login_required
 def bookingansvarlig_tidligere_artister(request):
+    #Sjekker om bookingansvarlig-gruppen eksisterer i databasen.
     if request.user.groups.filter(name="bookingansvarlig").exists():
+        #Henter inn alle konsert-objekter
         konserter = Konserter.objects.all()
         tidligere_konserter = []
-        scene_tabell = []
         today = timezone.now()
         relevant_konsert = []
+        #Går gjennom alle konsert-objektene
         for konsert in konserter:
+            #Sjekker om datoen til konserten er før dagenes dato
             if konsert.dato < today:
+                #Legger konserter som har dato før dagens dato til lista tidligere_konserter.
                 tidligere_konserter.append(konsert)
-
         if request.method == 'POST':
             all_bands = Band.objects.all()
             all_bandnames = []
