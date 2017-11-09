@@ -18,7 +18,7 @@ body, html {
 }
 
 .utstyrdiv {
-  display: block;
+  display: none;
 }
 
 .sjangerkonserter {
@@ -35,4 +35,7 @@ body, html {
     border-radius: 5px;
     background-color: #FAF2EF;
     color: black;
+}
+
+.konsertheader{
 }
