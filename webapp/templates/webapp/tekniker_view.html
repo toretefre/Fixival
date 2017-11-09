@@ -4,7 +4,7 @@
     <h1>Mine konserter</h1>
     <!-- Iterer gjennom alle konserter som brukeren er med på -->
     {% for konsert in konserts %}
-        <div>
+        <div class="col-sm-4 col">
             <h3>{{ konsert }} --- {{ konsert.dato }} --- {{ konsert.scene }}</h3>
             <h5>Band: {{ konsert.band.all|unordered_list}}</h5>
             <b>Teknikere:</b>
@@ -39,7 +39,7 @@
 
         </div>
 
-        <hr>
+
 
     {% empty %}
     <p>Du er ikke satt opp på noen konserter enda.</p>

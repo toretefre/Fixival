@@ -8,11 +8,13 @@
         </form>
         <!--Viser info hentet fra Django-->
             {% if band %}
+                    <div class="col-sm-4 col">
                     <h2>{{ band }}</h2>
                     <p>Spilte på scene(r) på datoen(e):{{ datostring }}   </p>
                     <p>Popularitet Spotify: {{ band.rating }}</p>
                     <p>Solgte album: {{ band.albums_sold }}</p>
                     <p>Andre konserter:{{ band.previous_concerts }}</p>
+                    </div>
         {% endif %}
         <!--Viser evt. feilmelding-->
         <p>{{ error }}</p>

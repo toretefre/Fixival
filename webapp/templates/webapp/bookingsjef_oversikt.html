@@ -4,7 +4,10 @@ Viser litt statistikk om konserter, tilbud og datoer.
 -->
 
 {% block content %}
+
 <h3>Viser en måned frem i tid</h3>
+<div class="col-sm-4 col">
+
   <div>
   <p> Antall konsertdatoer booket: </p>
   <p>
@@ -22,6 +25,7 @@ Viser litt statistikk om konserter, tilbud og datoer.
 <p>
   {{ ledige_datoer|length }}   <!--to show length-->
 </p>
+</div>
 </div>
 
 {% endblock %}
