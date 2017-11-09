@@ -5,31 +5,13 @@ body, html {
   font-family: 'Roboto', sans-serif;
 }
 
-body {
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-}
-
-li {
-  display: inline-block;
-  margin-left: 2%;
-}
-
-li > a {
-  color: #FFFFFF;
-  text-decoration: none;
-  font-weight: none;
-  font-size: 1.2em;
-}
-
-#content{
+#wrapper{
   padding:1%;
   background-color: #F7F3F2;
   height:97%;
   text-align: center;
   font-family: 'Roboto', sans-serif;
+  margin: 2%;
 }
 
 .teknikerdiv {
@@ -44,51 +26,14 @@ li > a {
   display: none;
 }
 
-#navbar{
-  margin:0px;
-  background-color: #000;
-  opacity: 0.75;
-  padding:1.5%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-transform: uppercase;
-  font-family: 'Julius Sans One', sans-serif;
-}
-
 .col-sm-4 {
-    margin-right: 10px;
-    margin-top: 10px;
-    width: 400px;
-    height: 300px;
+    margin-right: 2%;
+    margin-top: 2%;
+    width: 25%;
+    height: auto;
     border: 1px solid #ECD4C8;
     box-sizing: border-box;
     border-radius: 5px;
     background-color: #FAF2EF;
     color: black;
-}
-
-.col {
-    height: 150px;
-}
-
-#container {
-    margin-left: 10px;
-
-}
-
-.bandheader:hover {
-    background-color: #D0BC99;
-    border: 1px solid #D0BC99;
-    border-radius: 3px;
-    font-size 1.3em;
-    cursor: pointer;
-}
-
-.konsertheader:hover {
-    background-color: #D0BC99;
-    border: 1px solid #D0BC99;
-    border-radius: 3px;
-    font-size 1.3em;
-    cursor: pointer;
 }
