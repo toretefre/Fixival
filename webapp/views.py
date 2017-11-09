@@ -121,6 +121,7 @@ def bookingansvarlig_tekniske_behov(request):
         backline = Backline.objects.all()
         behov = Tekniske_behov.objects.all()
         today = timezone.now()
+        
 
         for konsert in konserter:
             # Hent alle konserter som skal skjer nå eller i framtiden
@@ -379,9 +380,12 @@ def pr_ansvarlig_mainpage(request):
 
 @login_required
 def pr_ansvarlig_bookede_band(request):
+    #Sjekker om PR_ansvarlig-gruppen finnes i databasen.
     if request.user.groups.filter(name="PR_ansvarlig").exists():
+        #Filtrerer ut bestillinger som er blitt godkjent
         godkjente_bestillinger = Bestilling.objects.filter(godkjent = True)
         bookede_band = []
+        #Går gjennom de godkjente bestillingene og legger de til i en tabell
         for bestilling in godkjente_bestillinger:
             bookede_band.append(bestilling.band)
 
@@ -392,9 +396,12 @@ def pr_ansvarlig_bookede_band(request):
 
 @login_required
 def pr_ansvarlig_konserter(request):
+    #Sjekker om PR_ansvarlig-gruppen finnes i databasen.
     if request.user.groups.filter(name= "PR_ansvarlig").exists():
+        #Henter alle konsert-objektene
         konserter = Konserter.objects.all()
         festivaler = []
+        #Går gjennom konsertene og sjekker om den ikke er i festival-lista. Viss ikke den ikke er, blir den lagt til.
         for konsert in konserter:
             if konsert.festival not in festivaler:
                 festivaler.append(konsert.festival)

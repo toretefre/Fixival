@@ -1,12 +1,20 @@
 {% extends "webapp/base.html" %}
 {% block content %}
+<!--
+Viser omtale, info og annen informasjon om bookede band.
+Omtalen lenker til google-søk på spesifikke sider med bandnavnet.
+-->
+    <!--Går gjennom alle band i som er blitt godkjent av bookingsjef-->
     {% for iterable_band in bookede_band %}
         <h1>{{ iterable_band }}</h1>
         <a href="https://www.google.com/search?q=site:bbc.co.uk+{{ iterable_band }}">Presseomtale engelsk</a>
         <a href="https://www.google.com/search?q=site:vg.no+ {{ iterable_band }}">Presseomtale norsk</a>
+        <!--Generell info om bandet som er hentet fra databasen-->
           <p>Popularitet Spotify:   {{ iterable_band.rating }}</p>
           <p>Totalt solgte album:   {{ iterable_band.albums_sold }}</p>
           <p>Tidligere konserter:   {{ iterable_band.previous_concerts }}</p>
           <p>Kontaktinfo:           {{ iterable_band.kontakt_info }}</p>
+        {% empty %}
+            <p>Ingen band er blitt bestilt</p>
     {% endfor %}
 {% endblock %}

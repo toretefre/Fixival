@@ -1,18 +1,28 @@
 {% extends "webapp/base.html" %}
 {% block content %}
     <h1>Oversikt over konserter på de ulike festivalene:</h1>
+    <!--Går gjennom alle festivaler-->
     {% for festival in festivaler %}
         <h2>{{ festival }}</h2>
+        <!--Går gjennom alle konserter-->
         {% for konsert in konserter %}
+            <!--Sjekker om festivalen har en konsert-->
             {% if festival == konsert.festival %}
                 <h3> Konsert: {{ konsert.konsert }}</h3>
+                <!--Går gjennom band-objekter i alle konsertene-->
                 {% for band in konsert.band.all %}
                     <p>Band: {{ band }}</p>
                     <p>Rating: {{ band.rating }}</p>
                     <p>Info: {{ band.info }}</p>
+                    {% empty %}
+                    <p>Ingen band funnet. Om du tror dette er feil, kontakt systemansvarlig</p>
             {% endfor %}
                 <hr>
             {% endif %}
+            {% empty %}
+            <p>Ingen konsert funnet. Om du tror dette er feil, kontakt systemansvarlig</p>
         {% endfor %}
+        {% empty %}
+        <p>Ingen festival funnet. Om du tror dette er feil, kontakt systemansvarlig</p>
     {% endfor %}
 {% endblock %}
