@@ -61,3 +61,7 @@ body, html {
     cursor: pointer;
     opacity: 0.8;
  }
+
+.navbar-nav{
+  flex-wrap: wrap;
+}
