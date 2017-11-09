@@ -24,7 +24,9 @@ body, html {
 .sjangerkonserter {
   display: none;
 }
-
+.nav-link{
+  font-family: 'Audiowide', cursive;
+}
 .col-sm-4 {
     margin-right: 2%;
     margin-top: 2%;
