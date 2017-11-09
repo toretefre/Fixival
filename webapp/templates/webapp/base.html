@@ -1,5 +1,4 @@
-{% load static %}
-{% load groupAccess %}
+{% load static %} {% load groupAccess %}
 <!DOCTYPE html>
 <html lang="no-nb">
 
@@ -9,9 +8,13 @@
 	<meta charset="utf-8" />
 
 	<!-- BOOTSTRAP - Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="{% static 'css/main.css' %}">
-	<script src="https://use.fontawesome.com/fbfb5b54e1.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Audiowide|Roboto" rel="stylesheet">
+	<!-- Den siste css filen er de viktigste -->
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+	<!-- Fancy iconer -->
+	<script src="https://use.fontawesome.com/fbfb5b54e1.js"></script>
 
 	<!--Katt-->
 	<!--
@@ -28,16 +31,16 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 </head>
 
 
 <body>
 
-
 	<header>
 
 		<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-			<a class="navbar-brand"> <img src="{% static 'img/Fixival-logo.png' %}" width="40" height="40" alt=""> Fixival</a>
+			<a class="navbar-brand"> <img src="{% static 'img/Fixival-logo.png' %}" width="60" height="60" alt=""></a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 			</button>
@@ -136,11 +139,11 @@
 	</header>
 
 	<div id="wrapper">
-	{% block content %} {% endblock %}
+		{% block content %} {% endblock %}
 	</div>
-<!-- Husk at script skal stå nederst! Kun script til Bootstrap i header.-->
-<script src="{% static 'js/dropdown.js' %}"></script>
-<script src="{% static 'js/bookingansvarlig/show_konsert.js' %}"></script>
+	<!-- Husk at script skal stå nederst! Kun script til Bootstrap i header.-->
+	<script src="{% static 'js/dropdown.js' %}"></script>
+	<script src="{% static 'js/bookingansvarlig/show_konsert.js' %}"></script>
 </body>
 
 </html>
