@@ -1,8 +1,10 @@
 {% extends 'webapp/base.html' %}
 
 {% block content %}
+  <h2>Riggeliste</h2>
+  <p>Klikk på bandnavnene for mer informasjon...</p>
   {% for konsert in konserts %}
-    <div>
+    <div class="col-sm-4">
       <h1 class="konsertheader">{{konsert}}</h1>
       <div class="teknikerdiv">
         <p>Teknikere:</p>
@@ -18,5 +20,6 @@
   {% if konserts|length == 0 %}
   <p>Ingen konserter satt opp</p>
   {% endif %}
+
 
 {% endblock %}

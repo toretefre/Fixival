@@ -1,16 +1,16 @@
 body, html {
-  margin: 0;
-  width: 100%;
-  height: 100%;
+  margin:0;
+  width:100%;
+  height:100%;
+  font-family: 'Roboto', sans-serif;
 }
 
-
-
-#content {
-  padding: 1%;
-  background-color: rgba(244,212,66,0.1);
-  height: 97%;
+#wrapper {
+  padding:1%;
+  background-color: #F7F3F2;
+  height:97%;
   text-align: center;
+  margin: 2%;
 }
 
 .teknikerdiv {
@@ -18,9 +18,21 @@ body, html {
 }
 
 .utstyrdiv {
-  display: block;
+  display: none;
 }
 
 .sjangerkonserter {
   display: none;
+}
+
+.col-sm-4 {
+    margin-right: 2%;
+    margin-top: 2%;
+    width: 25%;
+    height: auto;
+    border: 1px solid #ECD4C8;
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: #FAF2EF;
+    color: black;
 }

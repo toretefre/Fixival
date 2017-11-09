@@ -5,12 +5,11 @@ dropdown_on_headers('bandheader');
 dropdown_on_headers('konsertheader');
 
 // Funker bare på class, går gjennom alle elementene i classen og viser det
-// Tips: slett cach hvis ikke funker og husk å legge til "hide" i css
+// Tips: slett cache hvis ikke funker og husk å legge til "hide" i css
 
 function dropdown_on_headers(header) {
 
   header = document.getElementsByClassName(header);
-
   for(var i = 0; i < header.length;i++){
     header[i].addEventListener("click",function(){
       if(this.nextSibling.innerHTML == undefined){
@@ -31,4 +30,4 @@ function dropdown_on_headers(header) {
       }
     })
   }
-};
+}
