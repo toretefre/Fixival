@@ -1,5 +1,9 @@
 {% extends "webapp/base.html" %}
 {% block content %}
+<!--
+Viser omtale, info og annen informasjon om bookede band.
+Omtalen lenger til google-søk på spesifikke sider med bandnavnet.
+-->
     {% for iterable_band in bookede_band %}
         <h1>{{ iterable_band }}</h1>
         <a href="https://www.google.com/search?q=site:bbc.co.uk+{{ iterable_band }}">Presseomtale engelsk</a>

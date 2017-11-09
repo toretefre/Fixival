@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Legg inn bestilling her for godkjenning til bookingssjef</h1>
 <form method="POST">
-
+<!--Django lager skjemaet automagisk fra forms.py-->
 
       {% csrf_token %}
 
@@ -12,5 +12,6 @@
       <input type="submit" value="Send til godkjenning" class="btn btn-default">
 
 </form>
+  <!--Viser respons utfra om det ble sendt eller ikke-->
   <p>{{response}}</p>
 {% endblock %}
