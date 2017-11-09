@@ -377,9 +377,12 @@ def pr_ansvarlig_mainpage(request):
 
 @login_required
 def pr_ansvarlig_bookede_band(request):
+    #Sjekker om PR_ansvarlig-gruppen finnes i databasen.
     if request.user.groups.filter(name="PR_ansvarlig").exists():
+        #Filtrerer ut bestillinger som er blitt godkjent
         godkjente_bestillinger = Bestilling.objects.filter(godkjent = True)
         bookede_band = []
+        #Går gjennom de godkjente bestillingene og legger de til i en tabell
         for bestilling in godkjente_bestillinger:
             bookede_band.append(bestilling.band)
 
