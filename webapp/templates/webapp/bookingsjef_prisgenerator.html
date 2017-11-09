@@ -1,7 +1,9 @@
 {% extends 'webapp/base.html' %}
 
 {% block content %}
-
+<!--
+Denne siden viser et prisforlag til konserter på forskjellige scener basert på popularitet, scenestørrelse og kostnader.
+-->
 
   <select name="konsertliste" form="prisform">
     {% for konsert in konserter %}
