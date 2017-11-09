@@ -44,13 +44,6 @@ body, html {
     display: inline-block;
 }
 
-.konsertheader:hover {
-    background-color: #D0BC99;
-    border: 1px solid #D0BC99;
-    border-radius: 3px;
-    font-size 1.3em;
-    cursor: pointer;
-}
 
 /* Bruk pressable klassen på headers som det skal være mulig å trykke på */
 .pressable:hover {
