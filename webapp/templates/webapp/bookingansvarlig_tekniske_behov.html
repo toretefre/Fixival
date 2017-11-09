@@ -6,36 +6,21 @@
   <!-- Iterer gjennom band som har blitt godkjent av bookingsjef -->
 
   {% for band in bands %}
-  <div class="col-sm-4">
+  <div class="col-sm-4 col">
     <h1 class="bandheader pressable">{{band.navn}}</h1>
     <div class="utstyrdiv">
       <h3>Utstyr:</h3>
       <ul>
-        <!-- Itererer gjennom alle backline-elementene -->
-        {% for backln in backline %}
-        <!-- Sjekker om backlinen er koblet til et band som er godkjent -->
-        {% if backln.band == band %}
+        <!-- Itererer gjennom alle teknsike behov -->
+        {% for behv in behov %}
+        <!-- Sjekker om det tekniske behovet matcher backline og band -->
+        {% if behv.backline == backln and behv.band == band %}
         <li>
-          <p>{{backln}}:</p>
+          <p>{{behv.behov}}</p>
         </li>
-        {% endif %}
-        <!-- Viser backline som ikke er koblet mot et spesifikt band (mikrofoner) -->
-        {% if not backln.band %}
-        <li>
-          <p>{{backln}}:</p>
-        </li>
-        {% endif %}
-        <ul>
-          <!-- Itererer gjennom alle teknsike behov -->
-          {% for behv in behov %}
-          <!-- Sjekker om det tekniske behovet matcher backline og band -->
-          {% if behv.backline == backln and behv.band == band %}
-          <li>
-            <p>{{behv.behov}}</p>
-          </li>
-          {% endif %} {% endfor %}
-        </ul>
-        {% endfor %}
+        {% endif %} {% endfor %}
+      </ul>
+      {% endfor %}
       </ul>
     </div>
   </div>

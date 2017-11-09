@@ -85,9 +85,12 @@
 					{% endif %} {% if request.user|has_group:"bookingsjef" %}
 
 					<li class="nav-item active">
-						<a class="nav-link" href="{% url 'bookingsjef' %}"><i class="fa fa-suitcase" aria-hidden="true"></i> Bookingsjef <span class="sr-only">(current)</span></a>
+						<a class="nav-link" href="{% url 'bookingsjef_velkommen' %}"><i class="fa fa-suitcase" aria-hidden="true"></i> Bookingsjef <span class="sr-only">(current)</span></a>
 					</li>
 
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/bookingsjef_prisgenerator' %}">Prisgenerator</a>
+					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="{% url 'webapp/bookingsjef_bandtilbud' %}">Bandtilbud</a>
 					</li>
