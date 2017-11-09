@@ -2,9 +2,11 @@
 
 {% block content %}
   <h3>Artist:</h3>
+  <!--Lager en dropdownmeny med alle artister/band-->
     <form id="artistform" method="POST">{% csrf_token %}
     <select id="artistpicker" name="Artist" form="artistform">
     {% for iterable_artist in band %}
+      <!--Hvis man tidligere har valgt noe, sett denne som selected. Kun kosmetisk.-->
         {% if iterable_artist == artist %}
             <option value="{{ iterable_artist }}" selected>{{ iterable_artist }}</option>
         {% else %}
@@ -15,7 +17,7 @@
     {% endfor %}
   </select>
     <button type="submit" name="submit" value="submit" class="btn btn-default">Rock'n'roll baby</button></form>
-
+    <!--Displayer informasjonen hentet fra formet. Fikses dynamisk gjennom Django-->
         <div class="artistinfo" id="{{ artist }}">
           <h1>{{ artist }}</h1>
           <p>Informasjon om band:   {{ artist.info }}</p>

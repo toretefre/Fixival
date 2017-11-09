@@ -2,9 +2,11 @@
     {% block content %}
         <h1>Søk etter band som har spilt her tidligere:</h1>
         <form method="POST" action="."> {% csrf_token %}
+          <!--Søkefelt i form-->
         <input  id="search_box" type="text" name="search_box"  placeholder="Skriv inn band">
             <button type="submit" name="submit" value="submit">Søk</button>
         </form>
+        <!--Viser info hentet fra Django-->
             {% if band %}
                     <h2>{{ band }}</h2>
                     <p>Spilte på scene(r) på datoen(e):{{ datostring }}   </p>
@@ -12,6 +14,7 @@
                     <p>Solgte album: {{ band.albums_sold }}</p>
                     <p>Andre konserter:{{ band.previous_concerts }}</p>
         {% endif %}
+        <!--Viser evt. feilmelding-->
         <p>{{ error }}</p>
 
     {% endblock %}
