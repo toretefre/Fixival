@@ -9,6 +9,7 @@ from django.shortcuts import render, redirect
 from .forms import PostBehov, PostBackline, PostBestilling, PostBand
 from django.utils import timezone
 from datetime import datetime
+import pytz
 
 # Create your views here.
 @login_required
@@ -189,7 +190,8 @@ def manager_mainpage(request):
 
         return render(request, 'webapp/manager_mainpage.html', {'band' : band, 'backline' : backline, 'behov' : behov, 'behov_form' : behov_form, 'backline_form' : backline_form})
 
-login_required
+
+@login_required
 def bookingsjef_prisgenerator(request):
     if request.user.groups.filter(name="bookingsjef").exists():
         konserts = Konserter.objects.all()
@@ -201,6 +203,8 @@ def bookingsjef_prisgenerator(request):
                 bandpopularity = 0
                 bandamount = 0
                 # Iterer over alle band i konserten, finner gjennomsnittlig popularitet, antall band og samlet kostnad
+                if relevantKonsert.band.all().count() == 0:
+                    return render(request,'webapp/bookingsjef_prisgenerator.html',{"konserter":konserts,"error":"Konserten har ingen band. Book et band til denne konserten eller kontakt systemansvarlig om du tror det er feil."})
                 for band in relevantKonsert.band.all():
                     bandcost += band.kostnad
                     bandpopularity += band.rating
@@ -239,35 +243,41 @@ def bookingsjef_bandtilbud(request):
         tilbud = Bestilling.objects.filter(godkjent=None)
         if request.method == "POST":
             respons = ""
-            months = {"januar":"01","februar":"02","mars":"03","april":"04","mai":"05","juni":"06","juli":"07","august":"08","september":"09","oktober":"10","november":"11","desember":"12"}
+            #months = {"januar":"01","februar":"02","mars":"03","april":"04","mai":"05","juni":"06","juli":"07","august":"08","september":"09","oktober":"10","november":"11","desember":"12"}
             if Band.objects.filter(navn=request.POST["tilbud"]).exists():
                 valgt_band = Band.objects.get(navn=request.POST["tilbud"])
             else:
                 return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud": tilbud})
             bestillingsdato = request.POST["dato"]
-            datolist = bestillingsdato.split(" ")
-            datolist[1] = months[datolist[1]]
-            bestillingsdato = " ".join(datolist)
-            valgt_bestilling = Bestilling.objects.get(band=valgt_band,dato=datetime.strptime(bestillingsdato,"%d. %m %Y %H:%M"),godkjent=None)
+            bestillingsPK = request.POST["chosenPK"]
+            if Bestilling.objects.filter(band=valgt_band,pk=bestillingsPK,godkjent=None).exists():
+                valgt_bestilling = Bestilling.objects.get(band=valgt_band,pk=bestillingsPK,godkjent=None)
+            else:
+                return HttpResponse("Dataen ble sendt flere ganger og dermed ikke godkjent.")
             if request.POST["answer"] == "True":
                 respons = "Bestilling godkjent"
-                valgt_bestilling.godkjent = True
-                valgt_bestilling.save()
-                valgt_band.kostnad = valgt_bestilling.pris
-                valgt_band.save()
+
                 if Konserter.objects.filter(dato=valgt_bestilling.dato).exists():
-                    konsert = Konserter.objects.get(dato=valgt_bestilling.dato)
-                    konsert.band.add(valgt_band)
-                    konsert.save()
+                    if not 'extraConf' in request.POST:
+                        return render(request, 'webapp/bookingsjef_bandtilbud.html',{"tilbud":tilbud,"chosenTilbud":valgt_bestilling})
+                    if request.POST['extraConf']:
+                        konsert = Konserter.objects.get(dato=valgt_bestilling.dato)
                 else:
                     konsert=Konserter.objects.create(
                     scene = valgt_bestilling.scene,
                     konsert = valgt_band.navn,
+                    dato = bestillingsdato,
                     publikumsantall = 0,
                     festival="UKA")
-                    konsert.save()
-                    konsert.band.add(valgt_band)
-                    konsert.save()
+
+
+                valgt_bestilling.godkjent = True
+                valgt_bestilling.save()
+                valgt_band.kostnad = valgt_bestilling.pris
+                valgt_band.save()
+                konsert.save()
+                konsert.band.add(valgt_band)
+                konsert.save()
             else:
                 respons = "Bestilling avslått"
                 valgt_bestilling.godkjent = False
@@ -369,3 +379,17 @@ def pr_ansvarlig_bookede_band(request):
         return render(request, 'webapp/pr_ansvarlig_bookede_band.html', {"bookede_band": bookede_band})
     else:
         raise PermissionDenied
+
+
+@login_required
+def pr_ansvarlig_konserter(request):
+    if request.user.groups.filter(name= "PR_ansvarlig").exists():
+        konserter = Konserter.objects.all()
+        festivaler = []
+        for konsert in konserter:
+            if konsert.festival not in festivaler:
+                festivaler.append(konsert.festival)
+        return render(request, 'webapp/pr_ansvarlig_konserter.html', {"konserter": konserter, "festivaler": festivaler})
+    else:
+        raise PermissionDenied
+

@@ -8,14 +8,23 @@
             <p><b>Band/Artist: </b>{{ tilbud.band }}<br>
                 <b>Pris: </b>{{ tilbud.pris }}<br>
                 <b>Scene: </b>{{ tilbud.scene }}<br>
-                <b>Dato: </b>{{ tilbud.dato }}</p>
+                <b>Dato: </b>{{ tilbud.dato | date:"Y-m-d H:i" }}</p>
 
             <form id="bandtilbudsform" method="POST">{% csrf_token %}
                 <p><input type="radio" name="answer" value="True" required/>Godkjenn
                 <input type="radio" name="answer" value="False" required/>Avslå</p>
-                <input type="submit" name="submit" value="Ok"/>
                 <input type="text" name="tilbud" value="{{ tilbud }}" style="display: none" readonly>
-                <input type="text" name="dato" value="{{ tilbud.dato }}" style="display: none" readonly>
+                <input type="text" name="dato" value="{{ tilbud.dato | date:"Y-m-d H:i" }}" style="display: none" readonly>
+                <input type="number" name="chosenPK" value="{{ tilbud.pk }}" style="display:none" readonly>
+
+            {% if tilbud == chosenTilbud %}
+              <p>Bandet vil bli lagt til den eksisterende konserten på denne scenen, dette tidspunktet.
+              </br>Om bandet allerede spiller denne konserten vil prisen oppdateres.
+              </br>OK?</p>
+              <p><input type="radio" name="extraConf" value="True" required/>Ja
+              <input type="radio" name="extraConf" value="False" required/>Nei</p>
+            {% endif %}
+            <input type="submit" name="submit" value="Ok"/>
             </form>
         </div>
     {% endfor %}

@@ -8,11 +8,11 @@ class Band(models.Model):
     kostnad = models.IntegerField()
     manager = models.ForeignKey('auth.User')
     utstyr = models.TextField()
-    sjanger = models.CharField(max_length=100)
+    sjanger = models.CharField(default='undefined', max_length=100)
     info = models.TextField()
     rating = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(100)])
     albums_sold = models.PositiveIntegerField(default=0)
-    previous_concerts = models.TextField(default='')
+    previous_concerts = models.TextField(default='Ingen')
 
     def __str__(self):
         return self.navn
