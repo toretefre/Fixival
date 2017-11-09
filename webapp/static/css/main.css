@@ -25,9 +25,7 @@ body, html {
   display: none;
 }
 
-.sjangerkonserter {
-  display: none;
-}
+
 .nav-link, h1{
   font-family: 'Audiowide', cursive;
 }
@@ -45,7 +43,9 @@ body, html {
 }
 
 
-  
+.sjangerkonserter {
+  display: none;
+}
 
 
 /* Bruk pressable klassen på headers som det skal være mulig å trykke på */
