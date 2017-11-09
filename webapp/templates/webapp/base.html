@@ -3,19 +3,38 @@
 <html lang="no-nb">
 
 <head>
+	<!---->
 	<title>Fixival - {{ request.user.groups.all.0 }}</title>
 	<meta charset="utf-8" />
 
 	<!-- BOOTSTRAP - Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="{% static 'css/main.css' %}">
-	<script src="https://use.fontawesome.com/fbfb5b54e1.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
+	<!-- Den siste css filen er de viktigste -->
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+	<!-- Fancy iconer -->
+	<script src="https://use.fontawesome.com/fbfb5b54e1.js"></script>
+
+	<!--Katt-->
+	<!--
+	,/|         _.--''^``-...___.._.,;
+/, \'.     _-'          ,--,,,--'''
+{ \    `_-''       '    /}
+`;;'            ;   ; ;
+._.--''     ._,,, _..'  .;.'
+(,_....----'''     (,..--''
+	-->
 
 	<!-- Latest compiled and minified JavaScript -->
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+
+
+<body>
 
 	<header>
 
@@ -25,7 +44,7 @@
 			<span class="navbar-toggler-icon"></span>
 			</button>
 			<!-- Logo bilde og navnet -->
-
+			<!--Viser dynamisk meny utifra rolle-->
 			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
 				<ul class="navbar-nav mr-auto">
 					{% if request.user|has_group:"arrangoer" %}
@@ -121,6 +140,6 @@
 	<!-- Husk at script skal stå nederst! Kun script til Bootstrap i header.-->
 	<script src="{% static 'js/dropdown.js' %}"></script>
 	<script src="{% static 'js/bookingansvarlig/show_konsert.js' %}"></script>
-	</body>
+</body>
 
 </html>
