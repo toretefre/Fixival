@@ -14,15 +14,17 @@
   </select>
 
 
-    <form method="POST" action="" id="prisform">
+    <form method="POST" action="" id="prisform"><br>
       {% csrf_token %}
       <input type="submit" value="Generer pris" class="btn btn-default"/>
-    </form>
+    </form><br>
 
 
     {% for key, item in scenecost.items %}
+      <div class="col-sm-4 col">
       <h3>{{key}}</h3>
       <p>{{item}}</p>
+      </div>
     {% endfor %}
 
     <p>{{error}}</p>

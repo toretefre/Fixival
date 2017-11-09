@@ -20,10 +20,12 @@
 {% endif %}
 
 {% for key,item in konsertinfo.items %}
+<div class="col-sm-4 col">
   <h3>{{key}}</h3>
   <p>Publikumsantall: {{item.publikumsantall}}</p>
   <p>Kostnad: {{item.kostnad}}</p>
   <p>Økonomisk resultat: {{item.resultat}}</p>
+</div>
 {% endfor %}
 
 {% endblock %}

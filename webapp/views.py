@@ -402,3 +402,10 @@ def pr_ansvarlig_konserter(request):
     else:
         raise PermissionDenied
 
+
+@login_required
+def bookingsjef_velkommen(request):
+    if request.user.groups.filter(name="bookingsjef").exists():
+        return render(request,'webapp/bookingsjef_velkommen.html',{})
+    else:
+        raise PermissionDenied
