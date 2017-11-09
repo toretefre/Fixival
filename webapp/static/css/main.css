@@ -8,7 +8,7 @@ body, html {
 #wrapper {
   padding:1%;
   background-color: #F7F3F2;
-  height:97%;
+  height:auto; /* må tilpasse seg avhengig av hvor mye content det er, skal være auto */
   text-align: center;
   margin: 2%;
 }
@@ -36,3 +36,9 @@ body, html {
     background-color: #FAF2EF;
     color: black;
 }
+
+/* Bruk pressable klassen på headers som det skal være mulig å trykke på */
+.pressable:hover {
+    cursor: pointer;
+    opacity: 0.8;
+ }
