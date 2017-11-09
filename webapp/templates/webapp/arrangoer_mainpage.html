@@ -1,27 +1,22 @@
-{% extends 'webapp/base.html' %}
-
-{% block content %}
-  <h2>Riggeliste</h2>
-  <p>Klikk på bandnavnene for mer informasjon...</p>
-  {% for konsert in konserts %}
-  <!--Pakker konsertene inn i egne blokker -->
-    <div class="col-sm-4">
-      <h1 class="konsertheader ">{{konsert}}</h1>
-      <div class="teknikerdiv">
-        <!--Lager en liste over alle teknikere som egne elementer om det er noen -->
-        <p>Teknikere:</p>
-        {% for tekniker in konsert.teknikere.all %}
-        <p>{{tekniker}}</p>
-        {% empty %}
-        <p>Ingen tekniker satt opp</p>
-        {% endfor %}
-      </div>
-    </div>
-  {% endfor %}
-  <!--Hvis det ikke finnes noen konserter, vis en beskjed om det.-->
-  {% if konserts|length == 0 %}
-  <p>Ingen konserter satt opp</p>
-  {% endif %}
-
-
-{% endblock %}
+{% extends 'webapp/base.html' %} {% block content %}
+<h2>Riggeliste</h2>
+<p>Klikk på bandnavnene for mer informasjon...</p>
+{% for konsert in konserts %}
+<!--Pakker konsertene inn i egne blokker -->
+<div class="col-sm-4">
+  <h1 class="konsertheader pressable">{{konsert}}</h1>
+  <div class="teknikerdiv">
+    <!--Lager en liste over alle teknikere som egne elementer om det er noen -->
+    <p>Teknikere:</p>
+    {% for tekniker in konsert.teknikere.all %}
+    <p>{{tekniker}}</p>
+    {% empty %}
+    <p>Ingen tekniker satt opp</p>
+    {% endfor %}
+  </div>
+</div>
+{% endfor %}
+<!--Hvis det ikke finnes noen konserter, vis en beskjed om det.-->
+{% if konserts|length == 0 %}
+<p>Ingen konserter satt opp</p>
+{% endif %} {% endblock %}

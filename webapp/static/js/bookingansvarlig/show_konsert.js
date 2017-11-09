@@ -1,3 +1,5 @@
+// TODO: add document on load
+
 var sjangerkonserter = document.getElementsByClassName('sjangerkonserter');
 var sjangerpicker = document.getElementById('sjangerpicker');
 var valgtSjanger;

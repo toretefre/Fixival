@@ -9,7 +9,7 @@ body, html {
 #wrapper {
   padding:1%;
   background-color: #F7F3F2;
-  height:97%;
+  height:auto; /* må tilpasse seg avhengig av hvor mye content det er, skal være auto */
   text-align: center;
   margin: 2%;
   height:82vh;
@@ -28,7 +28,9 @@ body, html {
 .sjangerkonserter {
   display: none;
 }
-
+.nav-link, h1{
+  font-family: 'Audiowide', cursive;
+}
 .col-sm-4 {
     margin-right: 2%;
     margin-top: 2%;
@@ -42,6 +44,7 @@ body, html {
     display: inline-block;
 }
 
+
 .konsertheader:hover {
     background-color: #D0BC99;
     border: 1px solid #D0BC99;
@@ -53,3 +56,8 @@ body, html {
 /* .............. */
 
 
+/* Bruk pressable klassen på headers som det skal være mulig å trykke på */
+.pressable:hover {
+    cursor: pointer;
+    opacity: 0.8;
+ }
