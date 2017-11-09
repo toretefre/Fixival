@@ -1,8 +1,10 @@
 {% extends 'webapp/base.html' %}
-
 {% block content %}
+  <h2>Tekniske behov</h2>
+  <p>Klikk på bandnavnene for mer informasjon...</p>
+  <div class="row">
   {% for band in bands %}
-    <div>
+    <div class="col-sm-4">
       <h1 class="bandheader">{{band.navn}}</h1>
       <div class="utstyrdiv">
         <h3>Utstyr:</h3>
@@ -25,5 +27,5 @@
   {% empty %}
   <p>Ingen band er registrert i systemet. Om du tror dette er feil, kontakt systemansvarlig.</p>
   {% endfor %}
-
+  </div>
 {% endblock %}

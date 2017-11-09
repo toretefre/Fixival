@@ -1,64 +1,133 @@
-{% load static %}
-{% load groupAccess %}
+{% load static %} {% load groupAccess %}
 <!DOCTYPE html>
 <html lang="no-nb">
+
 <head>
 	<title>Fixival - {{ request.user.groups.all.0 }}</title>
-	<link rel="stylesheet" href="{% static 'css/main.css' %}">
-	<meta charset="latin1"/>
+	<meta charset="utf-8" />
 
 	<!-- BOOTSTRAP - Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-</head>
-<body>
-	<ul id="navbar">
-		{% if request.user|has_group:"arrangoer" %}
-			<li><a href="{% url 'arrangoer' %}">Hjem</a></li>
-			<li><a href="{% url 'webapp/sceneoversikt' %}">Sceneoversikt</a></li>
-			<li><a href="{% url 'webapp/riggeliste' %}">Riggelister</a></li>
-		{% endif %}
-		{% if request.user|has_group:"bookingansvarlig" %}
-			{% if request.user.groups.all.count == 1 %}
-				<li><a href="{% url 'bookingansvarlig' %}">Hjem</a></li>
-			{% endif %}
-			<li><a href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a></li>
-			<li><a href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a></li>
-			<li><a href="{% url 'webapp/bookingansvarlig_bestilling' %}">Bestilling</a></li>
-      <li><a href="{% url 'webapp/bookingansvarlig_artister' %}">Artist</a></li>
-      <li><a href="{% url 'webapp/bookingansvarlig_tidligere_artister' %}">Tidligere artister</a></li>
-
-
-		{% endif %}
-		{% if request.user|has_group:"tekniker" %}
-			<li><a href="{% url 'tekniker' %}">Tekniker</a></li>
-		{% endif %}
-		{% if request.user|has_group:"bookingsjef" %}
-			<li><a href="{% url 'bookingsjef' %}">Prisgenerator</a></li>
-            <li><a href="{% url 'webapp/bookingsjef_bandtilbud' %}">Bandtilbud</a></li>
-			<li><a href="{% url 'webapp/bookingsjef_rapport' %}">Konsertrapporter</a></li>
-			<li><a href="{% url 'webapp/bookingsjef_oversikt' %}">Oversikt</a></li>
-		{% endif %}
-		{% if request.user|has_group:"manager" %}
-			<li><a href="{% url 'manager' %}">Tekniske behov</a></li>
-		{% endif %}
-        {% if request.user|has_group:"PR_ansvarlig" %}
-            <li><a href="{% url 'PR_ansvarlig' %}">Hjem</a></li>
-            <li><a href="{% url 'webapp/pr_ansvarlig_bookede_band' %}">Bestilte band</a></li>
-            <li><a href="{% url 'webapp/pr_ansvarlig_konserter' %}">Konserter</a></li>
-		{% endif %}
-        <li><a href="{% url 'logout' %}">Log out</a></li>
-
-	</ul>
-	<div id="content">
-
-	{% block content %}
-	{% endblock %}
-	</div>
+	<link rel="stylesheet" href="{% static 'css/main.css' %}">
+	<script src="https://use.fontawesome.com/fbfb5b54e1.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css">
 
 	<script src="{% static 'js/dropdown.js' %}"></script>
 	<script src="{% static 'js/bookingansvarlig/show_konsert.js' %}"></script>
 
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+
+	<header>
+
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+			<a class="navbar-brand"> <img src="{% static 'img/Fixival-logo.png' %}" width="40" height="40" alt=""> Fixival</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			<!-- Logo bilde og navnet -->
+
+			<div class="collapse navbar-collapse" id="navbarsExampleDefault">
+				<ul class="navbar-nav mr-auto">
+					{% if request.user|has_group:"arrangoer" %}
+
+					<li class="nav-item active">
+						<a class="nav-link" href="{% url 'arrangoer' %}"> <i class="fa fa-wpforms" aria-hidden="true"></i> Arrangør <span class="sr-only">(current)</span></a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/sceneoversikt' %}">Sceneoversikt</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/riggeliste' %}">Riggelister</a>
+					</li>
+
+					{% endif %} {% if request.user|has_group:"bookingansvarlig" %}
+
+					<li class="nav-item active">
+						<a class="nav-link" href="{% url 'bookingansvarlig' %}"><i class="fa fa-ticket" aria-hidden="true"></i> Bookingansvarlig <span class="sr-only">(current)</span></a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/bookingansvarlig_tidligere_konserter' %}">Tidligere konserter</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/bookingansvarlig_tekniske_behov' %}">Tekniske behov</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/bookingansvarlig_bestilling' %}">Bestilling</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/bookingansvarlig_artister' %}">Artist</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/bookingansvarlig_tidligere_artister' %}">Tidligere artister</a>
+					</li>
+					{% endif %} {% if request.user|has_group:"bookingsjef" %}
+
+					<li class="nav-item active">
+						<a class="nav-link" href="{% url 'bookingsjef' %}"><i class="fa fa-suitcase" aria-hidden="true"></i> Bookingsjef <span class="sr-only">(current)</span></a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/bookingsjef_bandtilbud' %}">Bandtilbud</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/bookingsjef_rapport' %}">Konsertrapporter</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/bookingsjef_oversikt' %}">Oversikt</a>
+					</li>
+					{% endif %} {% if request.user|has_group:"tekniker" %}
+
+					<li class="nav-item active">
+						<a class="nav-link" href="{% url 'tekniker' %}"><i class="fa fa-wrench" aria-hidden="true"></i> Tekniker <span class="sr-only">(current)</span></a>
+					</li>
+
+					{% endif %} {% if request.user|has_group:"manager" %}
+
+					<li class="nav-item active">
+						<a class="nav-link" href="{% url 'manager' %}"><i class="fa fa-list-alt" aria-hidden="true"></i> Manager <span class="sr-only">(current)</span></a>
+					</li>
+
+					{% endif %} {% if request.user|has_group:"PR_ansvarlig" %}
+
+					<li class="nav-item active">
+						<a class="nav-link" href="{% url 'PR_ansvarlig' %}"><i class="fa fa-newspaper-o" aria-hidden="true"></i> PR-ansvarlig <span class="sr-only">(current)</span></a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/pr_ansvarlig_bookede_band' %}"> Bestilte band</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'webapp/pr_ansvarlig_konserter' %}">Konserter</a>
+					</li>
+
+
+					{% endif %}
+
+					<li class="nav-item">
+						<a class="nav-link" href="{% url 'logout' %}"></span><i class="fa fa-sign-out" aria-hidden="true"></i> Logg ut</a>
+					</li>
+
+				</ul>
+
+			</div>
+		</nav>
+
+	</header>
+
+	<div id="wrapper">
+	{% block content %} {% endblock %}
+	</div>
+
+
 </body>
+
 </html>

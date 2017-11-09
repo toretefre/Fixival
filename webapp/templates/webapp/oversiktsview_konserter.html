@@ -2,8 +2,12 @@
 
 {% block content %}
     <h1> Oversikt over scenene og tilhørende konserter:</h1>
+
     {% for scene in scener %}
-        <h2 class="sceneoversikt">{{scene}}:</h2>
+    <div class="col-sm-4 col">
+        <div id="sceneoversikt">
+            <h2 class="sceneoversikt">{{scene}}:</h2>
+        </div>
         {% for konsert in konserter %}
         <div>
             {% if konsert.scene == scene %}
@@ -13,6 +17,8 @@
         {% empty %}
         <p>Ingen konserter på denne scenen.</p>
         {% endfor %}
+    </div>
+
         {% empty %}
         <p>Ingen scener lagt til enda. Om du tror dette er feil, kontakt systemansvarlig.</p>
     {% endfor %}
