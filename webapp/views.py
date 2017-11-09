@@ -292,16 +292,19 @@ def bookingsjef_bandtilbud(request):
 
 @login_required
 def bookingansvarlig_tidligere_artister(request):
+    #Sjekker om bookingansvarlig-gruppen eksisterer i databasen.
     if request.user.groups.filter(name="bookingansvarlig").exists():
+        #Henter inn alle konsert-objekter
         konserter = Konserter.objects.all()
         tidligere_konserter = []
-        scene_tabell = []
         today = timezone.now()
         relevant_konsert = []
+        #Går gjennom alle konsert-objektene
         for konsert in konserter:
+            #Sjekker om datoen til konserten er før dagenes dato
             if konsert.dato < today:
+                #Legger konserter som har dato før dagens dato til lista tidligere_konserter.
                 tidligere_konserter.append(konsert)
-
         if request.method == 'POST':
             all_bands = Band.objects.all()
             all_bandnames = []

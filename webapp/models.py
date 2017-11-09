@@ -13,6 +13,7 @@ class Band(models.Model):
     rating = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(100)])
     albums_sold = models.PositiveIntegerField(default=0)
     previous_concerts = models.TextField(default='Ingen')
+    kontakt_info = models.TextField()
 
     def __str__(self):
         return self.navn
