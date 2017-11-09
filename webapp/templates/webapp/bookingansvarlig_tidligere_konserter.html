@@ -12,8 +12,10 @@
         <option value="{{sjanger}}">{{sjanger}}</option>
       {% endif %}
     {% endfor %}
+
   </select><br>
   
+
   {% if sjangre|length == 1 %}
   <p>Ingen konserter har vært tidligere.</p>
   {% endif %}
@@ -22,8 +24,11 @@
     {% for konsert in tidligere_konserter %}
      {% for band in konsert.band.all %}
       {% if band.sjanger == sjanger %}
+
         <div class="sjangerkonserter col-sm-4 col" id="{{sjanger}}">
           <h3>{{konsert.konsert}}</h3>
+          <p>Band: {{ konsert.band.all|unordered_list}}</p>
+
           <p>Scene: {{konsert.scene}}</p>
           <p>Publikumsantall: {{konsert.publikumsantall}}
         </div>

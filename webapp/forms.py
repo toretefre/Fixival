@@ -1,18 +1,22 @@
 from django import forms
 from .models import Backline, Tekniske_behov, Bestilling, Band
 
-
+#lager formet for å kunne poste tekniske behov
 class PostBehov(forms.ModelForm):
 
     class Meta:
+        #velger hvilken model som brukes i formen
         model = Tekniske_behov
+        #velger hvilke felter fra elementet som skal brukes i formet
         fields = ('band', 'backline', 'behov')
 
-
+#lager formet for å kunne poste backline
 class PostBackline(forms.ModelForm):
 
     class Meta:
+        #velger hvilken model som brukes i formen
         model = Backline
+        #velger hvilke felter fra elementet som skal brukes i formet
         fields = ('band', 'backline')
 
 

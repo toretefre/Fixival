@@ -174,6 +174,7 @@ def manager_mainpage(request):
         behov = Tekniske_behov.objects.all()
         backline_form = PostBackline()
 
+        #sender formet for å kunne poste tekniske behov til viewet
         if request.method == 'POST' and 'submitBehov' in request.POST:
             behov_form = PostBehov(request.POST)
             if behov_form.is_valid():
@@ -183,6 +184,7 @@ def manager_mainpage(request):
         else:
             behov_form = PostBehov()
 
+        #sender formet for å kunne poste backline til viewet
         if request.method == 'POST' and 'submitBackline' in request.POST:
             backline_form = PostBackline(request.POST)
             if backline_form.is_valid():
@@ -400,5 +402,13 @@ def pr_ansvarlig_konserter(request):
             if konsert.festival not in festivaler:
                 festivaler.append(konsert.festival)
         return render(request, 'webapp/pr_ansvarlig_konserter.html', {"konserter": konserter, "festivaler": festivaler})
+    else:
+        raise PermissionDenied
+
+
+@login_required
+def bookingsjef_velkommen(request):
+    if request.user.groups.filter(name="bookingsjef").exists():
+        return render(request,'webapp/bookingsjef_velkommen.html',{})
     else:
         raise PermissionDenied

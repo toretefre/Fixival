@@ -1,25 +1,36 @@
 {% extends 'webapp/base.html' %}
 {% block content %}
+
   <h2>Tekniske behov</h2>
   <p>Klikk på bandnavnene for mer informasjon...</p>
   <div class="row">
+  <!-- Iterer gjennom band som har blitt godkjent av bookingsjef -->
+
   {% for band in bands %}
-    <div class="col-sm-4">
+    <div class="col-sm-4 col">
       <h1 class="bandheader">{{band.navn}}</h1>
       <div class="utstyrdiv">
         <h3>Utstyr:</h3>
         <ul>
+          <!-- Itererer gjennom alle backline-elementene -->
           {% for backln in backline %}
-          {% if backln.band == band %}
-            <li><p>{{backln}}</p></li>
+            <!-- Sjekker om backlinen er koblet til et band som er godkjent -->
+            {% if backln.band == band %}
+            <li><p>{{backln}}:</p></li>
+            {% endif %}
+            <!-- Viser backline som ikke er koblet mot et spesifikt band (mikrofoner) -->
+            {% if not backln.band %}
+            <li><p>{{backln}}:</p></li>
+            {% endif %}
               <ul>
+                <!-- Itererer gjennom alle teknsike behov -->
                 {% for behv in behov %}
+                <!-- Sjekker om det tekniske behovet matcher backline og band -->
                 {% if behv.backline == backln and behv.band == band %}
                   <li><p>{{behv.behov}}</p></li>
                 {% endif %}
                 {% endfor %}
               </ul>
-          {% endif %}
           {% endfor %}
         </ul>
       </div>

@@ -2,24 +2,44 @@
 
 {% block content %}
     <h1>Mine konserter</h1>
+    <!-- Iterer gjennom alle konserter som brukeren er med på -->
     {% for konsert in konserts %}
-        <div>
+        <div class="col-sm-4 col">
             <h3>{{ konsert }} --- {{ konsert.dato }} --- {{ konsert.scene }}</h3>
             <h5>Band: {{ konsert.band.all|unordered_list}}</h5>
-            <p>Teknikere:</p>
+            <b>Teknikere:</b>
             <p class = "teknikerList">
+              <!-- Iterer gjennom og viser alle teknikere som jobber på konserten -->
               {% for tekniker in konsert.teknikere.all %}
               <li>{{ tekniker }}</li>
               {% empty %}
+              <!-- Vises dersom listen er tom, men skal ikke konserten vises i utgangspunktet -->
               <li>Ingen teknikere satt opp på denne konserten.</li>
               {% endfor %}
               </p>
             <p>Tekniske behov for konserten:</p>
-
+              <!-- iterer gjennom bandene koblet til konserten -->
+              {% for band in konsert.band.all %}
+               <b>{{band}}</b>
+                  <!-- iterer gjennom alle backlineelementer -->
+                 {% for backln in backline %}
+                 <!-- sjekker om elementet er koblet til bandet -->
+                 {% if backln.band == band %}
+                  <p>{{backln}}:</p>
+                       <!-- iterer gjennom alle behovelementer -->
+                       {% for behv in behov %}
+                       <!-- sjekker om behov kan kobles til backline- og bandelementene -->
+                       {% if behv.backline == backln and behv.band == band %}
+                        <p><li>{{behv.behov}}</li></p>
+                       {% endif %}
+                       {% endfor %}
+                 {% endif %}
+                 {% endfor %}
+              {% endfor %}
 
         </div>
 
-        <hr>
+
 
     {% empty %}
     <p>Du er ikke satt opp på noen konserter enda.</p>
