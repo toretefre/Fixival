@@ -29,7 +29,7 @@ Om en festival pågår, altså at en konsert fra fortiden og en fremtiden har sa
      {% for band in konsert.band.all %}
       {% if band.sjanger == sjanger %}
 
-        <div class="sjangerkonserter col-sm-4 col" id="{{sjanger}}">
+        <div class="col-sm-4 col sjangerkonserter" id="{{sjanger}}">
           <h3>{{konsert.konsert}}</h3>
           <p>Band: {{ konsert.band.all|unordered_list}}</p>
 
