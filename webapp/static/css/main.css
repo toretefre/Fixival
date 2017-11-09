@@ -38,6 +38,15 @@ body, html {
     border-radius: 5px;
     background-color: #FAF2EF;
     color: black;
+    display: inline-block;
+}
+
+.konsertheader:hover {
+    background-color: #D0BC99;
+    border: 1px solid #D0BC99;
+    border-radius: 3px;
+    font-size 1.3em;
+    cursor: pointer;
 }
 
 /* .............. */
