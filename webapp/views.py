@@ -121,7 +121,7 @@ def bookingansvarlig_tekniske_behov(request):
         backline = Backline.objects.all()
         behov = Tekniske_behov.objects.all()
         today = timezone.now()
-        print(behov)
+        
 
         for konsert in konserter:
             # Hent alle konserter som skal skjer nå eller i framtiden
