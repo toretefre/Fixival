@@ -390,3 +390,11 @@ def pr_ansvarlig_konserter(request):
         return render(request, 'webapp/pr_ansvarlig_konserter.html', {"konserter": konserter, "festivaler": festivaler})
     else:
         raise PermissionDenied
+
+
+@login_required
+def bookingsjef_velkommen(request):
+    if request.user.groups.filter(name="bookingsjef").exists():
+        return render(request,'webapp/bookingsjef_velkommen.html',{})
+    else:
+        raise PermissionDenied
