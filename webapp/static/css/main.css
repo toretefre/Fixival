@@ -4,6 +4,7 @@ body, html {
   height: 100%
   min-height: 100%
   font-family: 'Roboto', sans-serif;
+  color: #0A0909;
 }
 
 #wrapper {
@@ -12,7 +13,6 @@ body, html {
   height:auto; /* må tilpasse seg avhengig av hvor mye content det er, skal være auto */
   text-align: center;
   margin: 2%;
-  height:82vh;
 }
 
 
@@ -28,8 +28,11 @@ body, html {
 .sjangerkonserter {
   display: none;
 }
-.nav-link, h1{
+.nav-link {
   font-family: 'Audiowide', cursive;
+}
+.bg-dark{
+  background-color: #0A0909!important;
 }
 .col-sm-4 {
     margin-right: 2%;
