@@ -1,6 +1,8 @@
+# Kjør python manage.py shell og paste alt inn der
+# Om du får feilmeldinger, slett din gamle database og kjør python manage.py migrate
 from django.contrib.auth.models import User, Group
 from .models import *
-# Creates all users
+# Oppretter alle brukere
 User.objects.create(username="mrarrangoer",password="12345678o").save()
 User.objects.create(username="mrpr",password="12345678o").save()
 User.objects.create(username="mrbookingansvarlig",password="12345678o").save()
@@ -8,14 +10,14 @@ User.objects.create(username="mrbookingsjef",password="12345678o").save()
 User.objects.create(username="mrtekniker",password="12345678o").save()
 User.objects.create(username="mrtekniker2",password="12345678o").save()
 User.objects.create(username="mrmanager",password="12345678o").save()
-# Creates all groups
+# Lager alle grupper
 Group.objects.create(name="bookingansvarlig").user_set.add(User.objects.get(username="mrbookingansvarlig"))
 Group.objects.create(name="bookingsjef").user_set.add(User.objects.get(username="mrbookingsjef"))
 Group.objects.create(name="tekniker").user_set.add(User.objects.get(username="mrtekniker"),User.objects.get(username="mrtekniker2"))
 Group.objects.create(name="manager").user_set.add(User.objects.get(username="mrmanager"))
 Group.objects.create(name="arrangoer").user_set.add(User.objects.get(username="mrarrangoer"))
 Group.objects.create(name="PR-ansvarlig").user_set.add(User.objects.get(username="mrpr"))
-# Creates bands
+# Lager band
 Band.objects.create(navn="",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
 Band.objects.create(navn="",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
 Band.objects.create(navn="",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
