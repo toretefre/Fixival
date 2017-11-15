@@ -121,7 +121,7 @@ def bookingansvarlig_tekniske_behov(request):
         backline = Backline.objects.all()
         behov = Tekniske_behov.objects.all()
         today = timezone.now()
-        
+
 
         for konsert in konserter:
             # Hent alle konserter som skal skjer nå eller i framtiden
@@ -383,11 +383,12 @@ def pr_ansvarlig_bookede_band(request):
     #Sjekker om PR_ansvarlig-gruppen finnes i databasen.
     if request.user.groups.filter(name="PR_ansvarlig").exists():
         #Filtrerer ut bestillinger som er blitt godkjent
-        godkjente_bestillinger = Bestilling.objects.filter(godkjent = True)
+        godkjente_bestillinger = Konserter.objects.all()
+        #Bestilling.objects.filter(godkjent = True)
         bookede_band = []
         #Går gjennom de godkjente bestillingene og legger de til i en tabell
         for bestilling in godkjente_bestillinger:
-            bookede_band.append(bestilling.band)
+            bookede_band.append(bestilling.band.all()[0])
 
         return render(request, 'webapp/pr_ansvarlig_bookede_band.html', {"bookede_band": bookede_band})
     else:
