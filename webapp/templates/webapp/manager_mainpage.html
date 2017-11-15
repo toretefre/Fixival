@@ -1,57 +1,57 @@
-{% extends 'webapp/base.html' %}
+{% extends 'webapp/base.html' %} {% block content %}
+<h1>Tekniske behov</h1>
 
-{% block content %}
-  <h1>Tekniske behov</h1>
+<h3>Legg til backline</h3>
+<!-- Oppretter et post-form. csrf_token passer på sikkerheten og valideringen av formet -->
+<form method="POST" class="post-form">{% csrf_token %}
+  <!-- henter backline_form fra forms.py som form -->
+  {{ backline_form.as_p }}
+  <button type="submit" name="submitBackline">Save</button>
+</form>
 
-  <h3>Legg til backline</h3>
+<h3>Legg til behov</h3>
+<!-- henter behov_form fra forms.py som form -->
+<form method="POST" class="post-form">{% csrf_token %}
   <!-- Oppretter et post-form. csrf_token passer på sikkerheten og valideringen av formet -->
-  <form method="POST" class="post-form">{% csrf_token %}
-    <!-- henter backline_form fra forms.py som form -->
-    {{ backline_form.as_p }}
-    <button type="submit" name="submitBackline">Save</button>
-  </form>
-
-  <h3>Legg til behov</h3>
-  <!-- henter behov_form fra forms.py som form -->
-  <form method="POST" class="post-form">{% csrf_token %}
-    <!-- Oppretter et post-form. csrf_token passer på sikkerheten og valideringen av formet -->
-    {{ behov_form.as_p }}
-    <button type="submit" name="submitBehov">Save</button>
-  </form>
+  {{ behov_form.as_p }}
+  <button type="submit" name="submitBehov">Save</button>
+</form>
 
 
 <h2>Tekniske behov</h2>
-  <!-- Iterer gjennom alle band relatert til manageren -->
-  {% for bands in band %}
+<!-- Iterer gjennom alle band relatert til manageren -->
+{% for bands in band %}
+<ul>
+  <li>Band: {{bands.navn}}</li>
+  <ul>
+    <!-- Itererer gjennom alle backline-elementene -->
+    {% for backln in backline %}
+    <!-- Sjekker om backlinen er koblet til samme band som manager -->
+    {% if backln.band == bands %}
+    <li>
+      <p>{{backln.backline}}</p>
+    </li>
+    {% endif %}
+    <!-- Viser backline som ikke er koblet mot et spesifikt band (mikrofoner) -->
+    {% if not backln.band %}
+    <li>
+      <p>{{backln.backline}}:</p>
+    </li>
+    {% endif %}
     <ul>
-      <li>Band: {{bands.navn}}</li>
-        <ul>
-        <!-- Itererer gjennom alle backline-elementene -->
-        {% for backln in backline %}
-          <!-- Sjekker om backlinen er koblet til samme band som manager -->
-          {% if backln.band == bands %}
-            <li><p>{{backln.backline}}</p></li>
-          {% endif %}
-          <!-- Viser backline som ikke er koblet mot et spesifikt band (mikrofoner) -->
-          {% if not backln.band %}
-            <li><p>{{backln.backline}}:</p></li>
-          {% endif %}
-            <ul>
-            <p>
-            <!-- Iterer gjennom alle tekniske behov -->
-            {% for behv in behov %}
-              <!-- Sjekker om det tekniske behovet matcher backline og band -->
-              {% if behv.backline == backln and behv.band == bands %}
-              <li>{{behv.behov}}</li>
-              {% endif %}
-            {% endfor %}
-            </p>
-            </ul>
-        {% endfor %}
-        </ul>
+      <p>
+        <!-- Iterer gjennom alle tekniske behov -->
+        {% for behv in behov %}
+        <!-- Sjekker om det tekniske behovet matcher backline og band -->
+        {% if behv.backline == backln and behv.band == bands %}
+        <li>{{behv.behov}}</li>
+        {% endif %} {% endfor %}
+      </p>
     </ul>
-    <hr>
-  {% endfor %}
+    {% endfor %}
+  </ul>
+</ul>
+<hr> {% endfor %}
 
-  <p><a href="">Return to home</a></p>
+<p><a href="">Return to home</a></p>
 {% endblock %}
