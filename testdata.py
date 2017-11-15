@@ -18,16 +18,20 @@ Group.objects.create(name="manager").user_set.add(User.objects.get(username="mrm
 Group.objects.create(name="arrangoer").user_set.add(User.objects.get(username="mrarrangoer"))
 Group.objects.create(name="PR-ansvarlig").user_set.add(User.objects.get(username="mrpr"))
 # Lager band
-Band.objects.create(navn="",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
-Band.objects.create(navn="",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
-Band.objects.create(navn="",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
-Band.objects.create(navn="",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
-Band.objects.create(navn="",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
+Band.objects.create(navn="Dream Theater",sjanger="Prog.metal",kostnad=1000,info="",utstyr="Amp, Monitor, Mikrofon, Gitar, Bass",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
+Band.objects.create(navn="Shakira",sjanger="Pop",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
+Band.objects.create(navn="Metallica",sjanger="Metal",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
+Band.objects.create(navn="Alestorm",sjanger="Piratmetal",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
+Band.objects.create(navn="M83",sjanger="Electronica",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
+Band.objects.create(navn="Kjartan Lauritzen",sjanger="Rap",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
+Band.objects.create(navn="The Seatbelts",sjanger="Jazz",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
+Band.objects.create(navn="Otto Knows",sjanger="House",kostnad=1000,info="",utstyr="",rating=0,albums_sold=0,kontakt_info="").manager = User.objects.get(username="mrmanager")
 # Scener
-Scener.objects.create(navn="",storrelse=0,kostnad=0)
-Scener.objects.create(navn="",storrelse=0,kostnad=0)
-Scener.objects.create(navn="",storrelse=0,kostnad=0)
-Scener.objects.create(navn="",storrelse=0,kostnad=0)
+Scener.objects.create(navn="Knaus",storrelse=0,kostnad=0)
+Scener.objects.create(navn="Dødens Dal",storrelse=0,kostnad=0)
+Scener.objects.create(navn="Storsalen",storrelse=0,kostnad=0)
+Scener.objects.create(navn="Edgar",storrelse=0,kostnad=0)
+Scener.objects.create(navn="Bodegaen",storrelse=0,kostnad=0)
 # Konserter
 Konserter.objects.create(konsert="",dato="2019-11-11 11:11",festival="",publikumsantall=0,solgtebilletter=0,billettpris=0)
 Konserter.objects.create(konsert="",dato="2019-11-11 11:11",festival="",publikumsantall=0,solgtebilletter=0,billettpris=0)
@@ -69,3 +73,7 @@ kons2.save()
 kons3.save()
 kons4.save()
 kons5.save()
+
+# Oppretter backlines
+
+# Oppretter Tekniske_behov
