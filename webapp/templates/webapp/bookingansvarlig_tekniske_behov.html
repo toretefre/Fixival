@@ -14,7 +14,7 @@
         <!-- Itererer gjennom alle teknsike behov -->
         {% for behv in behov %}
         <!-- Sjekker om det tekniske behovet matcher backline og band -->
-        {% if behv.backline == backln and behv.band == band %}
+        {% if behv.band == band %}
         <li>
           <p>{{behv.behov}}</p>
         </li>
